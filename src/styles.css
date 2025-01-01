@@ -1,1 +1,64 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary: #2563EB;
+  --primary-light: #497DEE;
+  --primary-dark: #134FD2;
+  
+  --secondary: #111827;
+  --secondary-light: #172135;
+  --secondary-dark: #090D15;
+
+  --white: #F7F3F3;
+  --white-light: #FFFFFF;
+  --white-dark: #E3E8ED;
+
+  --black: #060504;
+  --black-light: #120F0C;
+  --black-dark: #000000;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Source Code Pro';
+  font-weight: 600;
+  background-color: var(--white-light);
+}
+
+h1 {
+  font-size: 60px;
+}
+
+h2 {
+  font-size: 48px;
+}
+
+h3 {
+  font-size: 36px;
+}
+
+h4 {
+  font-size: 30px;
+}
+
+h5 {
+  font-size: 24px;
+}
+
+.lead {
+  font-size: 24px;
+}
+
+.body-text {
+  font-size: 16px;
+}
+
+.small-text {
+  font-size: 12px;
+}
