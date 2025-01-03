@@ -19,7 +19,7 @@
         <ul>
           <li><a href="#">Home</a></li>
           <li><a href="#">About</a></li>
-          <li><a href="#">Work</a></li>
+          <li><a href="#">Blog</a></li>
           <li class="header__icon--github">
             <a href="#">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,15 +35,22 @@
             </a>
           </li>
           <li class="header__icon--menu">
-            <button>
+            <a href="#" (click)="toggleMenu()">
               <svg width="17" height="14" viewBox="0 0 17 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1 13H17M1 1H17H1ZM1 7H17H1Z" stroke="#111827" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
-            </button>
+            </a>
           </li>
         </ul>
       </nav>
       <button>Contact Me -></button>
     </div>
+  </div>
+
+  <!-- Side Menu -->
+  <div id="sideMenu" class="side-menu">
+    <button>He</button>
+    <button id="closeMenuBtn" (click)="closeMenu()">Close</button>
+    <p>Hello</p>
   </div>
 </header>

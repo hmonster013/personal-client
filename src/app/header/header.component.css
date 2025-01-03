@@ -71,6 +71,45 @@ button {
   margin-left: 28px;
 }
 
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -70vw; /* Menu ẩn bên phải */
+  width: 70vw;
+  height: 100%;
+  background-color: #fff;
+  transition: right 0.3s ease-in-out;
+  z-index: 999; /* Đảm bảo menu hiển thị trên các phần tử khác */
+  padding: 20px;
+}
+
+.side-menu.open {
+  left: 0; /* Hiển thị menu khi thêm class 'open' */
+}
+
+.side-menu button {
+  position: absolute;
+  top: 20px;
+  left: 20px; /* Đặt nút đóng ở bên trái của menu */
+}
+
+.side-menu ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.side-menu ul li {
+  margin-bottom: 20px;
+}
+
+.side-menu ul li a {
+  text-decoration: none;
+  color: #111827;
+  font-size: 18px;
+}
+
+
+
 @media (max-width: 1216px) {
   header {
     width: 100%;
