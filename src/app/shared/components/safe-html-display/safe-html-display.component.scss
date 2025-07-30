@@ -1,0 +1,452 @@
+.safe-html-content {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  /* Headings - Format dropdown from CKEditor */
+  h1, h2, h3, h4, h5, h6 {
+    margin: 1.5em 0 0.75em 0;
+    font-weight: 600;
+    line-height: 1.3;
+    color: inherit;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    scroll-margin-top: 100px; /* Account for sticky navigation */
+  }
+
+  h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin: 1.2em 0 0.8em 0;
+  }
+  h2 {
+    font-size: 2em;
+    font-weight: 600;
+    margin: 1.3em 0 0.7em 0;
+  }
+  h3 {
+    font-size: 1.75em;
+    font-weight: 600;
+    margin: 1.4em 0 0.6em 0;
+  }
+  h4 {
+    font-size: 1.5em;
+    font-weight: 500;
+    margin: 1.5em 0 0.5em 0;
+  }
+  h5 {
+    font-size: 1.25em;
+    font-weight: 500;
+  }
+  h6 {
+    font-size: 1.1em;
+    font-weight: 500;
+  }
+
+  /* Paragraphs */
+  p {
+    margin: 0 0 1.2em 0;
+    line-height: 1.7;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Text formatting - Bold, Italic, Underline from CKEditor */
+  strong, b {
+    font-weight: 700;
+  }
+
+  em, i {
+    font-style: italic;
+  }
+
+  u {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+
+  /* Lists - NumberedList, BulletedList from CKEditor */
+  ul, ol {
+    margin: 1.2em 0;
+    padding-left: 2em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li {
+    margin-bottom: 0.6em;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Nested lists */
+  ul ul, ol ol, ul ol, ol ul {
+    margin: 0.5em 0;
+    padding-left: 1.5em;
+  }
+
+  ul ul {
+    list-style-type: circle;
+  }
+
+  ul ul ul {
+    list-style-type: square;
+  }
+
+  ol ol {
+    list-style-type: lower-alpha;
+  }
+
+  ol ol ol {
+    list-style-type: lower-roman;
+  }
+
+  /* Blockquote from CKEditor */
+  blockquote {
+    margin: 2em 0;
+    padding: 1.5em 2em;
+    border-left: 5px solid #007bff;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    font-style: italic;
+    color: #495057;
+    position: relative;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  blockquote::before {
+    content: '"';
+    font-size: 4em;
+    color: #007bff;
+    position: absolute;
+    top: -0.2em;
+    left: 0.3em;
+    font-family: Georgia, serif;
+    opacity: 0.2;
+    font-weight: bold;
+  }
+
+  blockquote p {
+    margin: 0;
+    padding-left: 1.5em;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    font-size: 1.1em;
+    line-height: 1.6;
+  }
+
+  blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Links - Link, Unlink from CKEditor */
+  a {
+    color: #007bff;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    transition: all 0.2s ease;
+  }
+
+  a:hover {
+    color: #0056b3;
+    text-decoration: none;
+    background-color: rgba(0, 123, 255, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+  }
+
+  /* Images from CKEditor */
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5em auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease;
+  }
+
+  img:hover {
+    transform: scale(1.02);
+  }
+
+  /* Code snippets - CodeSnippet plugin with monokai_sublime theme */
+  pre {
+    background-color: #23241f;
+    color: #f8f8f2;
+    padding: 1.5em;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 2em 0;
+    font-family: 'Fira Code', 'Courier New', Consolas, 'Monaco', monospace;
+    font-size: 0.9em;
+    line-height: 1.5;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    /* Desktop: preserve formatting */
+    white-space: pre;
+    word-wrap: normal;
+    overflow-wrap: normal;
+
+    /* Force mobile wrapping on small screens - HIGHEST SPECIFICITY */
+    @media (max-width: 768px) {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+      /* Override home.component.scss global * selector */
+      &.safe-html-content pre,
+      &.safe-html-content pre * {
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        word-break: break-word !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+      /* Override home.component.scss global * selector */
+      &.safe-html-content pre,
+      &.safe-html-content pre * {
+        white-space: pre-wrap !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+        word-break: break-word !important;
+      }
+    }
+  }
+
+  /* Inline code */
+  code {
+    background-color: #f1f3f4;
+    color: #d73a49;
+    padding: 0.25em 0.5em;
+    border-radius: 4px;
+    font-family: 'Fira Code', 'Courier New', Consolas, 'Monaco', monospace;
+    font-size: 0.9em;
+    word-break: break-word;
+    border: 1px solid #e1e4e8;
+    font-weight: 500;
+  }
+
+  /* Code inside pre blocks */
+  pre code {
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+    border: none;
+    /* Inherit from parent pre */
+    white-space: inherit;
+    word-break: inherit;
+    word-wrap: inherit;
+    overflow-wrap: inherit;
+
+    /* Force mobile wrapping on small screens */
+    @media (max-width: 768px) {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+    }
+
+    @media (max-width: 480px) {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+    }
+  }
+
+  /* Tables (if any) */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2em 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  th, td {
+    border: 1px solid #dee2e6;
+    padding: 1em;
+    text-align: left;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    vertical-align: top;
+  }
+
+  th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #dee2e6;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  tr:hover {
+    background-color: #e9ecef;
+  }
+
+  /* Horizontal rule */
+  hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #007bff, transparent);
+    margin: 2em 0;
+    border-radius: 1px;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    ul, ol {
+      padding-left: 1.5em;
+    }
+
+    blockquote {
+      padding: 1em 1.5em;
+      margin: 1.5em 0;
+    }
+
+    blockquote::before {
+      font-size: 3em;
+      top: -0.3em;
+      left: 0.2em;
+    }
+
+
+
+    h1 { font-size: 2em; }
+    h2 { font-size: 1.75em; }
+    h3 { font-size: 1.5em; }
+    h4 { font-size: 1.25em; }
+    h5, h6 { font-size: 1.1em; }
+
+    table {
+      font-size: 0.9em;
+    }
+
+    th, td {
+      padding: 0.75em 0.5em;
+    }
+
+    img {
+      margin: 1em auto;
+    }
+  }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 1.8em; }
+    h2 { font-size: 1.6em; }
+    h3 { font-size: 1.4em; }
+    h4 { font-size: 1.2em; }
+    h5, h6 { font-size: 1em; }
+
+    blockquote {
+      padding: 0.8em 1em;
+      margin: 1em 0;
+    }
+
+
+
+    ul, ol {
+      padding-left: 1.2em;
+    }
+
+    table {
+      font-size: 0.8em;
+    }
+
+    th, td {
+      padding: 0.5em 0.3em;
+    }
+  }
+}
+
+/* CRITICAL FIX: Override ALL CSS conflicts for mobile code wrapping */
+/* Using ViewEncapsulation.None for global scope */
+
+/* Target all safe-html-content containers globally */
+.safe-html-content,
+.blog-article-content .safe-html-content,
+.experience-description .safe-html-content,
+.project-description .safe-html-content {
+
+  @media (max-width: 768px) {
+    /* Force code wrapping with maximum specificity */
+    pre,
+    pre *,
+    pre code,
+    pre code *,
+    code {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+      max-width: 100% !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    /* Force code wrapping with maximum specificity */
+    pre,
+    pre *,
+    pre code,
+    pre code *,
+    code {
+      white-space: pre-wrap !important;
+      word-wrap: break-word !important;
+      overflow-wrap: break-word !important;
+      word-break: break-word !important;
+      max-width: 100% !important;
+    }
+  }
+}
+
+/* Additional global override for stubborn cases */
+@media (max-width: 768px) {
+  .safe-html-content pre,
+  .safe-html-content pre *,
+  .safe-html-content pre code,
+  .safe-html-content pre code *,
+  .blog-article-content .safe-html-content pre,
+  .blog-article-content .safe-html-content pre *,
+  .blog-article-content .safe-html-content pre code,
+  .blog-article-content .safe-html-content pre code * {
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    max-width: 100% !important;
+  }
+}

@@ -1,0 +1,50 @@
+<footer class="footer">
+  <div class="footer__body">
+    <!-- Logo/Brand Section -->
+    <div class="footer__brand" (click)="goToHome()">
+      <svg width="12" height="22" viewBox="0 0 12 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_607_921)">
+          <path d="M0.571429 0.5V6.77409C0.571429 7.1692 0.6078 7.55538 0.67722 7.92916L6.1552 7.92905C8.07305 7.92905 9.77516 8.89895 10.8409 10.3971C11.5683 9.39055 12 8.13525 12 6.77409V6.63704C12 3.24765 9.38319 0.5 6.1552 0.5H0.571429Z" fill="currentColor"/>
+          <path d="M5.71443 9.5H0.00014019V15.5C0.00014019 18.8137 2.55851 21.5 5.71443 21.5C8.87034 21.5 11.4287 18.8137 11.4287 15.5C11.4287 12.1863 8.87034 9.5 5.71443 9.5Z" fill="currentColor"/>
+        </g>
+        <defs>
+          <clipPath id="clip0_607_921">
+            <rect width="12" height="21" fill="white" transform="translate(0 0.5)"/>
+          </clipPath>
+        </defs>
+      </svg>
+      <span class="footer__brand-text">de013</span>
+    </div>
+
+    <!-- Copyright Section -->
+    <div class="footer__copyright">
+      <p>&copy; {{ currentYear }} DE013. All rights reserved.</p>
+    </div>
+
+    <!-- Social Links Section -->
+    <div class="footer__social">
+      <ul class="footer__social__list">
+        <li class="footer__social__item">
+          <a [href]="linkedInLink" target="_blank" class="social-icon social-icon--linkedin" title="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+          </a>
+        </li>
+        <li class="footer__social__item">
+          <a [href]="telegramLink" target="_blank" class="social-icon social-icon--telegram" title="Telegram">
+            <i class="fab fa-telegram"></i>
+          </a>
+        </li>
+        <li class="footer__social__item">
+          <a [href]="facebookLink" target="_blank" class="social-icon social-icon--facebook" title="Facebook">
+            <i class="fab fa-facebook"></i>
+          </a>
+        </li>
+        <li class="footer__social__item">
+          <a [href]="githubLink" target="_blank" class="social-icon social-icon--github" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Text Wrapping</title>
+    <style>
+        .container {
+            width: 300px;
+            border: 2px solid red;
+            padding: 10px;
+            margin: 20px;
+            background-color: #f0f0f0;
+        }
+        
+        .test-content {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        
+        .test-content * {
+            word-wrap: break-word !important;
+            overflow-wrap: break-word !important;
+            word-break: break-word !important;
+        }
+        
+        .test-content li {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+        
+        .test-content strong {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Text Wrapping</h1>
+    
+    <div class="container">
+        <h3>Test 1: Long words should wrap</h3>
+        <div class="test-content">
+            <ul>
+                <li><strong>WebCrawlerDataPipelineOptimization</strong> (Pyspider)</li>
+                <li><strong>DataWarehouseArchitectureImplementation</strong> (Star Schema and Snow Schema)</li>
+                <li>ApacheNutchAndOpenSearchServerIntegration</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h3>Test 2: Your actual data</h3>
+        <div class="test-content">
+            <ul>
+                <li><strong>Web&nbsp;Crawler</strong>&nbsp;(Pyspider)</li>
+                <li><strong>Data&nbsp;Warehouse</strong>&nbsp;(Star&nbsp;Schema&nbsp;and&nbsp;Snow&nbsp;Schema)</li>
+                <li>Apache&nbsp;Nutch&nbsp;and&nbsp;OpenSearchServer</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h3>Test 3: Very long URL</h3>
+        <div class="test-content">
+            <p>Link: https://verylongdomainname.example.com/very/long/path/to/documentation/file.html</p>
+        </div>
+    </div>
+    
+    <script>
+        // Test on different screen sizes
+        function testResize() {
+            const containers = document.querySelectorAll('.container');
+            containers.forEach(container => {
+                container.style.width = '200px';
+            });
+        }
+        
+        // Add button to test
+        const button = document.createElement('button');
+        button.textContent = 'Make containers smaller (200px)';
+        button.onclick = testResize;
+        document.body.insertBefore(button, document.body.firstChild);
+    </script>
+</body>
+</html>

@@ -1,0 +1,313 @@
+<div class="home">
+  <!-- INTRODUCE -->
+  <section class="home__introduce">
+    <h1>Hello I'm <br><span class="text-primary">DE013</span></h1>
+    <p>I am a fresh graduate Information Systems Engineer awaiting graduation and diploma certification. Currently seeking opportunities as a Backend Developer, Frontend Developer, or Full Stack Developer. I specialize in Angular for frontend development and Python for backend services, with additional experience in Data Engineering. I'm passionate about building responsive web applications and handling complex data pipelines. Ready to contribute to innovative projects while continuing to grow and learn in a professional environment.</p>
+    <div class="home__introduce__skill-group">
+      <div class="home__introduce__skill-item" *ngFor="let skill of listSkills">
+        <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
+      </div>
+    </div>
+  </section>
+  <!-- EXPERIENCES -->
+  <section class="home__experience">
+    <h2>My experience</h2>
+    <div class="home__experience__body">
+      <div class="home__experience--left">
+        <button
+          *ngFor="let experience of listExperiences"
+          [ngClass]="{'home__experience--left--active': experience.id == selectedExperience?.id}"
+          (click)="changeExperience(experience)">
+          <img
+            [src]="experience.company_img.full_url"
+            [alt]="experience.company_name + ' logo'"
+            loading="lazy">
+          <p>{{experience.company_name}}<span>{{experience.job_title}}</span></p>
+        </button>
+      </div>
+      <div
+        class="home__experience--right"
+        *ngIf="selectedExperience; else noExperienceSelected"
+        [@fadeIn]>
+        <div class="home__experience--right__header">
+          <h3 class="home__experience--right__title">
+            {{selectedExperience.job_title}}
+          </h3>
+          <p class="home__experience--right__company">
+            {{selectedExperience.company_name}}
+          </p>
+          <div class="home__experience--right__period">
+            <span class="home__experience--right__duration">{{selectedExperience.working_period}}</span>
+            <span class="home__experience--right__dates">{{getDateRange(selectedExperience.join_date, selectedExperience.leave_date)}}</span>
+          </div>
+        </div>
+        <div class="home__experience--right__content">
+          <app-safe-html-display
+            [htmlContent]="selectedExperience.description"
+            cssClass="experience-description">
+          </app-safe-html-display>
+        </div>
+      </div>
+
+      <ng-template #noExperienceSelected>
+        <div class="home__experience--right home__experience--right--placeholder">
+          <div class="home__experience--right__placeholder-content">
+            <i class="fas fa-briefcase"></i>
+            <h3>Chọn một công ty để xem chi tiết kinh nghiệm</h3>
+            <p>Click vào logo công ty bên trái để xem thông tin chi tiết về kinh nghiệm làm việc.</p>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </section>
+  <!-- PROJECT -->
+  <section class="home__project">
+    <div class="home__project__header">
+      <h2>Featured Projects</h2>
+      <p>Explore some of my recent work and personal projects</p>
+    </div>
+
+    <div class="home__project__body">
+      <article
+        class="home__project__card"
+        *ngFor="let project of listProjects; let i = index">
+
+        <!-- Project Image -->
+        <div class="home__project__card__image-container">
+          <img
+            [src]="project.images && project.images.length > 0 ? project.images[0].image.full_url : '/assets/images/project-placeholder.jpg'"
+            [alt]="project.name + ' screenshot'"
+            loading="lazy"
+            class="home__project__card__image">
+          <div class="home__project__card__image-overlay">
+            <div class="home__project__card__links">
+              <a
+                *ngIf="project.link_github?.url"
+                [href]="project.link_github.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'View ' + project.name + ' on GitHub'"
+                class="home__project__card__link home__project__card__link--github">
+                <i class="fab fa-github"></i>
+                <span>Code</span>
+              </a>
+              <a
+                *ngIf="project.link_website?.url"
+                [href]="project.link_website.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="'Visit ' + project.name + ' website'"
+                class="home__project__card__link home__project__card__link--demo">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Demo</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Content -->
+        <div class="home__project__card__content">
+          <!-- Project Title -->
+          <h3 class="home__project__card__title">{{project.name}}</h3>
+
+          <!-- Project Description -->
+          <div class="home__project__card__description">
+            <app-safe-html-display
+              [htmlContent]="project.descriptions"
+              [maxLength]="150"
+              cssClass="project-description">
+            </app-safe-html-display>
+          </div>
+
+          <!-- Project Technologies -->
+          <div class="home__project__card__technologies">
+            <div class="home__project__card__tech-list">
+              <div
+                class="home__project__card__tech-item"
+                *ngFor="let skill of project.skills">
+                <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project Footer -->
+          <div class="home__project__card__footer">
+            <div class="home__project__card__meta">
+              <span class="home__project__card__type">Web Application</span>
+            </div>
+            <div class="home__project__card__actions">
+              <button
+                *ngIf="project.link_github?.url"
+                (click)="openLink(project.link_github.url)"
+                class="home__project__card__action-btn home__project__card__action-btn--secondary">
+                <i class="fab fa-github"></i>
+                View Code
+              </button>
+              <button
+                *ngIf="project.link_website?.url"
+                (click)="openLink(project.link_website.url)"
+                class="home__project__card__action-btn home__project__card__action-btn--primary">
+                <i class="fas fa-external-link-alt"></i>
+                Live Demo
+              </button>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="home__contact" id="contact">
+    <div class="home__contact__container">
+      <!-- Header Section -->
+      <div class="home__contact__header">
+        <h2>Let's Work Together</h2>
+        <p class="home__contact__subtitle">
+          Ready to start your next project? I'm here to help bring your ideas to life with modern web technologies and data-driven solutions.
+        </p>
+      </div>
+
+      <!-- Contact Content -->
+      <div class="home__contact__content">
+        <!-- Contact Info -->
+        <div class="home__contact__info">
+          <h3>Get In Touch</h3>
+          <div class="home__contact__info-list">
+            <div class="home__contact__info-item">
+              <div class="home__contact__info-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="home__contact__info-details">
+                <h4>Email</h4>
+                <a href="mailto:tranphuhuyit@gmail.com">tranphuhuyit&#64;gmail.com</a>
+              </div>
+            </div>
+
+            <div class="home__contact__info-item">
+              <div class="home__contact__info-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="home__contact__info-details">
+                <h4>Phone</h4>
+                <a href="tel:+84123456789">+84 965199203</a>
+              </div>
+            </div>
+
+            <div class="home__contact__info-item">
+              <div class="home__contact__info-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="home__contact__info-details">
+                <h4>Location</h4>
+                <span>Hà Nội, Vietnam</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Links -->
+          <div class="home__contact__social">
+            <h4>Follow Me</h4>
+            <div class="home__contact__social-links">
+              <a
+                *ngIf="socialLinks.GITHUB"
+                [href]="socialLinks.GITHUB"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="home__contact__social-link">
+                <i class="fab fa-github"></i>
+                <span>GitHub</span>
+              </a>
+              <a
+                *ngIf="socialLinks.LINKEDIN"
+                [href]="socialLinks.LINKEDIN"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="home__contact__social-link">
+                <i class="fab fa-linkedin"></i>
+                <span>LinkedIn</span>
+              </a>
+              <a
+                *ngIf="socialLinks.FACEBOOK"
+                [href]="socialLinks.FACEBOOK"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="home__contact__social-link">
+                <i class="fab fa-facebook"></i>
+                <span>Facebook</span>
+              </a>
+              <a
+                *ngIf="socialLinks.TELEGRAM"
+                [href]="socialLinks.TELEGRAM"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="home__contact__social-link">
+                <i class="fab fa-telegram"></i>
+                <span>Telegram</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="home__contact__form">
+          <h3>Send Message</h3>
+          <form class="home__contact__form-container" (ngSubmit)="onSubmitContact()" #contactForm="ngForm">
+            <div class="home__contact__form-row">
+              <div class="home__contact__form-group">
+                <label for="name">Full Name *</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  [(ngModel)]="contactData.name"
+                  required
+                  placeholder="Enter your full name">
+              </div>
+              <div class="home__contact__form-group">
+                <label for="email">Email Address *</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  [(ngModel)]="contactData.email"
+                  required
+                  placeholder="Enter your email">
+              </div>
+            </div>
+
+            <div class="home__contact__form-group">
+              <label for="subject">Subject *</label>
+              <input
+                type="text"
+                id="subject"
+                name="subject"
+                [(ngModel)]="contactData.subject"
+                required
+                placeholder="What's this about?">
+            </div>
+
+            <div class="home__contact__form-group">
+              <label for="message">Message *</label>
+              <textarea
+                id="message"
+                name="message"
+                [(ngModel)]="contactData.message"
+                required
+                rows="5"
+                placeholder="Tell me about your project..."></textarea>
+            </div>
+
+            <button
+              type="submit"
+              class="home__contact__form-submit"
+              [disabled]="!contactForm.valid">
+              <i class="fas fa-paper-plane"></i>
+              Send Message
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

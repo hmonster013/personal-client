@@ -1,0 +1,7 @@
+<div class="skill-badge"
+     [ngClass]="['skill-badge--' + variant, 'skill-badge--' + size]"
+     [class.skill-badge--interactive]="interactive"
+     [attr.aria-label]="currentSkill.name + ' skill'">
+  <div [innerHTML]="sanitizedIcon" class="skill-badge__icon" [attr.aria-hidden]="true"></div>
+  <span class="skill-badge__text">{{ currentSkill.name }}</span>
+</div>

@@ -1,0 +1,248 @@
+// ===================================
+// ICON SYSTEM
+// ===================================
+
+// Font Awesome Base Reset
+.fa,
+.fas,
+.far,
+.fab,
+.fal,
+.fad {
+  display: inline-block;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  line-height: 1;
+  font-weight: 900; // Font Awesome default
+}
+
+// Icon Container Base Class
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  
+  // Icon sizes
+  &--xs {
+    width: 1rem;
+    height: 1rem;
+    font-size: 0.75rem;
+  }
+  
+  &--sm {
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 1rem;
+  }
+  
+  &--md {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.125rem;
+  }
+  
+  &--lg {
+    width: 2rem;
+    height: 2rem;
+    font-size: 1.25rem;
+  }
+  
+  &--xl {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.5rem;
+  }
+  
+  &--2xl {
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.75rem;
+  }
+}
+
+// Icon Button Base Class
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+  position: relative;
+  
+  // Sizes
+  &--sm {
+    width: 2rem;
+    height: 2rem;
+    padding: var(--spacing-xs);
+    
+    .icon {
+      font-size: 0.875rem;
+    }
+  }
+  
+  &--md {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: var(--spacing-sm);
+    
+    .icon {
+      font-size: 1rem;
+    }
+  }
+  
+  &--lg {
+    width: 3rem;
+    height: 3rem;
+    padding: var(--spacing-md);
+    
+    .icon {
+      font-size: 1.125rem;
+    }
+  }
+  
+  // Variants
+  &--primary {
+    background-color: var(--primary);
+    color: var(--white-light);
+    
+    &:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    &:active {
+      transform: translateY(0);
+    }
+  }
+  
+  &--secondary {
+    background-color: var(--white-dark);
+    color: var(--black);
+    
+    &:hover {
+      background-color: var(--primary);
+      color: var(--white-light);
+      transform: scale(1.05);
+    }
+  }
+  
+  &--ghost {
+    background-color: transparent;
+    color: var(--black);
+    
+    &:hover {
+      background-color: var(--white-dark);
+    }
+  }
+  
+  &--round {
+    border-radius: var(--radius-full);
+  }
+  
+  // States
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+}
+
+// Specific Icon Fixes for Font Awesome
+.header__icon,
+.side-menu__icon,
+.footer__icon {
+  i {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    position: static !important;
+    transform: none !important;
+    flex-shrink: 0;
+  }
+}
+
+// Theme Toggle Specific
+.theme-toggle {
+  .icon {
+    transition: transform var(--transition-normal);
+  }
+  
+  &.dark-mode .icon {
+    transform: rotate(180deg);
+  }
+}
+
+// Social Icons
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-full);
+  background-color: var(--white-light);
+  color: var(--black);
+  text-decoration: none;
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  &--github:hover {
+    background-color: #333;
+    color: white;
+  }
+  
+  &--linkedin:hover {
+    background-color: #0077b5;
+    color: white;
+  }
+  
+  &--twitter:hover {
+    background-color: #1da1f2;
+    color: white;
+  }
+  
+  &--facebook:hover {
+    background-color: #1877f2;
+    color: white;
+  }
+  
+  &--telegram:hover {
+    background-color: #0088cc;
+    color: white;
+  }
+  
+  i {
+    font-size: 1.125rem;
+  }
+}
+
+// Menu Icons
+.menu-icon {
+  transition: transform var(--transition-normal);
+  
+  &.active {
+    transform: rotate(90deg);
+  }
+}

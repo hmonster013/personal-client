@@ -1,0 +1,122 @@
+<div class="blog-detail" *ngIf="currentBlog">
+  <!-- Navigation -->
+  <nav class="blog-detail__nav">
+    <button class="blog-detail__back-btn" (click)="goToBlog()">
+      <i class="fas fa-arrow-left"></i>
+      <span>Back to Blog</span>
+    </button>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="blog-detail__hero">
+    <div class="blog-detail__hero-content">
+      <!-- Featured Image -->
+      <div class="blog-detail__image-container" *ngIf="currentBlog.cover_img?.full_url">
+        <img
+          [src]="currentBlog.cover_img.full_url"
+          [alt]="currentBlog.title + ' featured image'"
+          class="blog-detail__featured-image"
+          loading="lazy">
+        <div class="blog-detail__image-overlay"></div>
+      </div>
+
+      <!-- Article Meta -->
+      <div class="blog-detail__meta">
+        <div class="blog-detail__meta-item">
+          <i class="fas fa-calendar-alt"></i>
+          <span>Published: {{currentBlog.createDate | date: 'MMM dd, yyyy'}}</span>
+        </div>
+        <div class="blog-detail__meta-item" *ngIf="currentBlog.updateDate !== currentBlog.createDate">
+          <i class="fas fa-edit"></i>
+          <span>Updated: {{currentBlog.updateDate | date: 'MMM dd, yyyy'}}</span>
+        </div>
+        <div class="blog-detail__meta-item">
+          <i class="fas fa-clock"></i>
+          <span>{{getReadingTime()}} min read</span>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h1 class="blog-detail__title">{{currentBlog.title}}</h1>
+
+      <!-- Skills/Tags -->
+      <div class="blog-detail__skills" *ngIf="currentBlog.skills?.length">
+        <div class="blog-detail__skill-item" *ngFor="let skill of currentBlog.skills">
+          <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="blog-detail__main">
+    <article class="blog-detail__content">
+      <app-safe-html-display
+        [htmlContent]="currentBlog.content"
+        cssClass="blog-article-content"
+        [addHeadingIds]="true">
+      </app-safe-html-display>
+    </article>
+
+    <!-- Sidebar -->
+    <aside class="blog-detail__sidebar">
+      <!-- Table of Contents -->
+      <div class="blog-detail__toc" *ngIf="toc.length > 0">
+        <h3>Table of Contents</h3>
+        <ul>
+          <li *ngFor="let item of toc">
+            <a [href]="'#' + item.id" (click)="scrollToSection(item.id, $event)">
+              {{item.title}}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Share Section -->
+      <div class="blog-detail__share">
+        <h3>Share this article</h3>
+        <div class="blog-detail__share-buttons">
+          <button class="share-btn share-btn--twitter" (click)="shareOnTwitter()">
+            <i class="fab fa-twitter"></i>
+            <span>Twitter</span>
+          </button>
+          <button class="share-btn share-btn--linkedin" (click)="shareOnLinkedIn()">
+            <i class="fab fa-linkedin"></i>
+            <span>LinkedIn</span>
+          </button>
+          <button class="share-btn share-btn--copy" (click)="copyLink()">
+            <i class="fas fa-link"></i>
+            <span>Copy Link</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Footer -->
+  <footer class="blog-detail__footer">
+    <div class="blog-detail__footer-content">
+      <div class="blog-detail__author">
+        <div class="blog-detail__author-info">
+          <h3>About the Author</h3>
+          <p>Fullstack Web Developer & Data Engineer passionate about creating efficient, scalable solutions.</p>
+        </div>
+      </div>
+
+      <div class="blog-detail__cta">
+        <h3>Enjoyed this article?</h3>
+        <p>Check out more of my work and connect with me!</p>
+        <div class="blog-detail__cta-buttons">
+          <button class="cta-btn cta-btn--primary" (click)="goToBlog()">
+            <i class="fas fa-blog"></i>
+            More Articles
+          </button>
+          <button class="cta-btn cta-btn--secondary" (click)="goToHome()">
+            <i class="fas fa-user"></i>
+            About Me
+          </button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>

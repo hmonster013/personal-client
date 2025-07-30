@@ -1,0 +1,18 @@
+<div class="card-blog">
+  <p> {{currentBLog.createDate | date: 'MM/yyyy'}} </p>
+  <h4><a href="/blogs/{{currentBLog.id}}">{{currentBLog.title}}</a></h4>
+  <div class="card-blog__description">
+    <app-safe-html-display
+      [htmlContent]="currentBLog.description"
+      [maxLength]="150"
+      cssClass="blog-card-description">
+    </app-safe-html-display>
+  </div>
+  <div class="card-blog__skill-group">
+    <div
+      class="card-blog__skill-item"
+      *ngFor="let skill of currentBLog.skillsVOs">
+      <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
+    </div>
+  </div>
+</div>

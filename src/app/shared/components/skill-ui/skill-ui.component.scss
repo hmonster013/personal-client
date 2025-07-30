@@ -1,0 +1,125 @@
+// ===================================
+// SKILL UI COMPONENT STYLES
+// ===================================
+
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
+  background-color: var(--white-dark);
+  color: var(--black);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+
+  // Variants
+  &--primary {
+    background-color: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+    border-color: rgba(var(--primary-rgb), 0.2);
+  }
+
+  &--secondary {
+    background-color: var(--white-dark);
+    color: var(--black);
+  }
+
+  &--outline {
+    background-color: transparent;
+    border-color: var(--white-dark);
+    color: var(--black);
+
+    &:hover {
+      background-color: var(--white-dark);
+    }
+  }
+
+  // Sizes
+  &--sm {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+
+    .skill-badge__icon {
+      width: 0.75rem;
+      height: 0.75rem;
+    }
+  }
+
+  &--md {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: var(--font-size-sm);
+
+    .skill-badge__icon {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+
+  &--lg {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-base);
+
+    .skill-badge__icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
+  // Interactive states
+  &--interactive {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--primary);
+      color: var(--white-light);
+      border-color: var(--primary);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+  }
+
+  &__text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Legacy support (for backward compatibility)
+.skill-group__card {
+  @extend .skill-badge;
+  @extend .skill-badge--secondary;
+  @extend .skill-badge--md;
+}
+
+.skill-group__card__svg {
+  @extend .skill-badge__icon;
+}
+
+.skill-group__card p {
+  @extend .skill-badge__text;
+  margin: 0;
+}

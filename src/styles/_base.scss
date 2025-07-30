@@ -1,0 +1,294 @@
+// ===================================
+// BASE STYLES
+// ===================================
+
+// HTML & Body
+html {
+  font-size: 16px; // Base font size for rem calculations
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; // Prevent horizontal scroll
+}
+
+body {
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  line-height: 1.6;
+  color: var(--black);
+  background-color: var(--white-light);
+  transition: background-color var(--transition-normal),
+              color var(--transition-normal);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  overflow-x: hidden; // Prevent horizontal scroll
+  width: 100%;
+  max-width: 100vw;
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+  margin-bottom: var(--spacing-lg);
+  color: var(--black);
+  transition: color var(--transition-normal);
+}
+
+h1 {
+  font-size: var(--font-size-6xl);
+  font-weight: var(--font-weight-black);
+}
+
+h2 {
+  font-size: var(--font-size-5xl);
+}
+
+h3 {
+  font-size: var(--font-size-4xl);
+}
+
+h4 {
+  font-size: var(--font-size-3xl);
+}
+
+h5 {
+  font-size: var(--font-size-2xl);
+}
+
+h6 {
+  font-size: var(--font-size-xl);
+}
+
+// Paragraphs
+p {
+  margin-bottom: var(--spacing-lg);
+  line-height: 1.7;
+}
+
+// Links
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+
+  &:hover,
+  &:focus {
+    color: var(--primary-dark);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
+// Buttons
+button {
+  font-family: inherit;
+  font-weight: var(--font-weight-semibold);
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Form elements
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: var(--font-size-base);
+  border: 1px solid var(--white-dark);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md) var(--spacing-lg);
+  background-color: var(--white-light);
+  color: var(--black);
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast);
+
+  &:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+  }
+}
+
+// Utility Classes
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+// Color utility classes
+.text-primary {
+  color: var(--primary) !important;
+}
+
+.text-secondary {
+  color: var(--secondary) !important;
+}
+
+.text-success {
+  color: var(--success) !important;
+}
+
+.text-warning {
+  color: var(--warning) !important;
+}
+
+.text-error {
+  color: var(--error) !important;
+}
+
+// Typography utility classes
+.lead {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-normal);
+}
+
+.body-text {
+  font-size: var(--font-size-base);
+}
+
+.small-text {
+  font-size: var(--font-size-xs);
+}
+
+// Responsive utilities
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 769px) {
+  .hidden-desktop {
+    display: none !important;
+  }
+}
+
+// Overflow utilities
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden !important;
+}
+
+.overflow-auto {
+  overflow: auto !important;
+}
+
+.overflow-x-auto {
+  overflow-x: auto !important;
+}
+
+.overflow-y-auto {
+  overflow-y: auto !important;
+}
+
+// Width utilities
+.w-full {
+  width: 100% !important;
+}
+
+.max-w-full {
+  max-width: 100% !important;
+}
+
+.max-w-screen {
+  max-width: 100vw !important;
+}
+
+// Text utilities
+.text-wrap {
+  word-wrap: break-word !important;
+  hyphens: auto !important;
+}
+
+.text-nowrap {
+  white-space: nowrap !important;
+}
+
+.text-ellipsis {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+// Performance utilities
+.gpu-accelerated {
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+}
+
+.no-transition {
+  transition: none !important;
+}
+
+.fast-transition {
+  transition-duration: 0.15s !important;
+}
+
+.smooth-scroll {
+  scroll-behavior: smooth !important;
+}
+
+.contain-layout {
+  contain: layout !important;
+}
+
+.contain-paint {
+  contain: paint !important;
+}
+
+.contain-strict {
+  contain: strict !important;
+}

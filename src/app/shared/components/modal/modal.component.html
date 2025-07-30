@@ -1,0 +1,8 @@
+<div class="modal-wrapper">
+  <section class="modal" #modal>
+    <!--  Content will be projected here    -->
+    <ng-content></ng-content>
+  </section>
+
+  <div class="modal-overlay" #overlay (click)="onClose()"></div>
+</div>

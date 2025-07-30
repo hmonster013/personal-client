@@ -1,0 +1,95 @@
+<header>
+  <div class="header__body">
+    <div class="header__icon" (click)="goToHome()">
+      <svg width="12" height="22" viewBox="0 0 12 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_607_921)">
+        <path d="M0.571429 0.5V6.77409C0.571429 7.1692 0.6078 7.55538 0.67722 7.92916L6.1552 7.92905C8.07305 7.92905 9.77516 8.89895 10.8409 10.3971C11.5683 9.39055 12 8.13525 12 6.77409V6.63704C12 3.24765 9.38319 0.5 6.1552 0.5H0.571429Z" fill="#111827"/>
+        <path d="M5.71443 9.5H0.00014019V15.5C0.00014019 18.8137 2.55851 21.5 5.71443 21.5C8.87034 21.5 11.4287 18.8137 11.4287 15.5C11.4287 12.1863 8.87034 9.5 5.71443 9.5Z" fill="#111827"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_607_921">
+        <rect width="12" height="21" fill="white" transform="translate(0 0.5)"/>
+        </clipPath>
+        </defs>
+      </svg>
+      de013
+    </div>
+    <div class="header__menu">
+      <nav>
+        <ul>
+          <li><a href="">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="/blogs">Blog</a></li>
+          <li class="header__icon header__icon--github">
+            <a [href]="githubLink" target="_blank" class="icon-btn icon-btn--md icon-btn--secondary icon-btn--round">
+              <i class="fab fa-github icon"></i>
+            </a>
+          </li>
+          <li class="header__icon header__icon--theme">
+            <button (click)="toggleTheme()" class="icon-btn icon-btn--md icon-btn--secondary icon-btn--round theme-toggle" [class.dark-mode]="isDarkMode">
+              <i class="fas icon" [ngClass]="isDarkMode ? 'fa-moon' : 'fa-sun'"></i>
+            </button>
+          </li>
+          <li class="header__icon header__icon--menu" *ngIf="isMobile">
+            <button (click)="toggleMenu()" class="icon-btn icon-btn--md icon-btn--secondary icon-btn--round">
+              <i class="fas fa-bars icon menu-icon" [class.active]="isMenuOpen"></i>
+            </button>
+          </li>
+        </ul>
+      </nav>
+      <button (click)="scrollToContact()" class="contact-btn">
+        <i class="fas fa-envelope"></i>
+        Contact Me
+      </button>
+    </div>
+  </div>
+
+  <!-- Side Menu -->
+  <div id="sideMenu" class="side-menu">
+    <div class="side-menu__header">
+      <div class="side-menu__logo">
+        <svg width="12" height="22" viewBox="0 0 12 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <g clip-path="url(#clip0_607_921)">
+          <path d="M0.571429 0.5V6.77409C0.571429 7.1692 0.6078 7.55538 0.67722 7.92916L6.1552 7.92905C8.07305 7.92905 9.77516 8.89895 10.8409 10.3971C11.5683 9.39055 12 8.13525 12 6.77409V6.63704C12 3.24765 9.38319 0.5 6.1552 0.5H0.571429Z" fill="currentColor"/>
+          <path d="M5.71443 9.5H0.00014019V15.5C0.00014019 18.8137 2.55851 21.5 5.71443 21.5C8.87034 21.5 11.4287 18.8137 11.4287 15.5C11.4287 12.1863 8.87034 9.5 5.71443 9.5Z" fill="currentColor"/>
+          </g>
+          <defs>
+          <clipPath id="clip0_607_921">
+          <rect width="12" height="21" fill="white" transform="translate(0 0.5)"/>
+          </clipPath>
+          </defs>
+        </svg>
+        <span>de013</span>
+      </div>
+      <button id="closeMenuBtn" (click)="closeMenu()" class="close-btn">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <nav class="side-menu__nav">
+      <ul>
+        <li><a href="" (click)="closeMenu()"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="/about" (click)="closeMenu()"><i class="fas fa-user"></i> About</a></li>
+        <li><a href="/blogs" (click)="closeMenu()"><i class="fas fa-blog"></i> Blog</a></li>
+      </ul>
+    </nav>
+
+    <div class="side-menu__footer">
+      <div class="side-menu__social">
+        <a [href]="githubLink" target="_blank" class="social-icon social-icon--github">
+          <i class="fab fa-github icon"></i>
+        </a>
+        <button (click)="toggleTheme()" class="social-icon icon-btn--primary" [class.dark-mode]="isDarkMode">
+          <i class="fas icon" [ngClass]="isDarkMode ? 'fa-moon' : 'fa-sun'"></i>
+        </button>
+      </div>
+      <button (click)="scrollToContact(); closeMenu()" class="contact-btn-mobile">
+        <i class="fas fa-envelope"></i>
+        Contact Me
+      </button>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div id="menuOverlay" class="menu-overlay" (click)="closeMenu()"></div>
+</header>
