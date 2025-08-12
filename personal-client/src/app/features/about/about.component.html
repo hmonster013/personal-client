@@ -1,0 +1,257 @@
+<div class="about">
+  <!-- Hero Section -->
+  <section class="about__hero">
+    <div class="about__hero__avatar">
+      <img [src]="personalInfo.avatar" [alt]="personalInfo.name + '\'s Avatar'" class="about__hero__image">
+      <div class="about__hero__status">
+        <span class="status-indicator"></span>
+        Available for Full-time Opportunities
+      </div>
+    </div>
+    <div class="about__hero__content">
+      <h1 class="about__hero__title">
+        Hi, I'm <span class="text-primary">{{ personalInfo.name }}</span>
+      </h1>
+      <p class="about__hero__subtitle">{{ personalInfo.title }}</p>
+      <div class="about__hero__description">
+        <p>I'm a fresh graduate Information Systems Engineer, passionate about backend development and data engineering. Ready to start my professional journey and contribute to innovative projects while continuing to learn and grow in the tech industry.</p>
+      </div>
+      <div class="about__hero__stats">
+        <div class="stat-item">
+          <span class="stat-number">{{ personalInfo.yearsExperience }}+</span>
+          <span class="stat-label">Years Learning</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ personalInfo.projectsCompleted }}+</span>
+          <span class="stat-label">Projects Completed</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-number">{{ personalInfo.technologiesUsed }}+</span>
+          <span class="stat-label">Technologies</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about__section">
+    <div class="about__section__header">
+      <h2 class="section-title">About Me</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="about__section__content">
+      <div class="about__story">
+        <p>As a fresh graduate Information Systems Engineer, I bring a solid foundation in software development, database management, and data analytics. My academic journey has equipped me with both theoretical knowledge and practical skills through various projects and coursework.</p>
+        <p>I'm excited to begin my professional career and contribute to innovative projects while continuing to grow and learn in a dynamic tech environment. Ready to bring fresh perspectives and dedication to your team! 🚀</p>
+      </div>
+      <div class="about__highlights">
+        <div class="highlight-item">
+          <i class="fas fa-rocket"></i>
+          <h4>Fresh Perspective</h4>
+          <p>Bringing new ideas and modern approaches</p>
+        </div>
+        <div class="highlight-item">
+          <i class="fas fa-code"></i>
+          <h4>Technical Skills</h4>
+          <p>Strong foundation in programming and development</p>
+        </div>
+        <div class="highlight-item">
+          <i class="fas fa-chart-line"></i>
+          <h4>Growth Mindset</h4>
+          <p>Committed to continuous learning and improvement</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="about__section">
+    <div class="about__section__header">
+      <h2 class="section-title">Technical Skills</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="about__section__content">
+      <div class="about__skills">
+        <div class="about__skills__grid">
+          <div
+            class="about__skills__item"
+            *ngFor="let skill of listSkills">
+            <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experience Section -->
+  <section class="about__section">
+    <div class="about__section__header">
+      <h2 class="section-title">Experience</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="about__section__content">
+      <div class="about__timeline">
+        <div
+          class="timeline-item"
+          *ngFor="let experience of listExperiences; let i = index">
+          <div class="timeline-marker">
+            <img
+              [src]="experience.company_img.full_url"
+              [alt]="experience.company_name + ' logo'"
+              class="timeline-company-logo">
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h4>{{ experience.job_title }}</h4>
+              <span class="timeline-period">{{ getDateRange(experience.join_date, experience.leave_date) }}</span>
+            </div>
+            <div class="timeline-company-info">
+              <p class="timeline-company">{{ experience.company_name }}</p>
+              <span class="timeline-duration">{{ experience.working_period }}</span>
+            </div>
+            <div class="timeline-achievements">
+              <app-safe-html-display
+                [htmlContent]="experience.description"
+                cssClass="experience-description">
+              </app-safe-html-display>
+            </div>
+          </div>
+        </div>
+
+        <!-- Loading state -->
+        <div class="timeline-item timeline-item--loading" *ngIf="isLoadingExperiences">
+          <div class="timeline-marker timeline-marker--loading">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h4>Loading experiences...</h4>
+            </div>
+            <p class="timeline-company">Please wait while we load the experience data.</p>
+          </div>
+        </div>
+
+        <!-- Fallback message if no experiences -->
+        <div class="timeline-item timeline-item--empty" *ngIf="!isLoadingExperiences && listExperiences.length === 0">
+          <div class="timeline-marker timeline-marker--empty">
+            <i class="fas fa-briefcase"></i>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <h4>No experiences found</h4>
+            </div>
+            <p class="timeline-company">Experience data will be available soon.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Education Section -->
+  <section class="about__section">
+    <div class="about__section__header">
+      <h2 class="section-title">Education</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="about__section__content">
+      <div class="about__education">
+        <div class="education-item">
+          <div class="education-icon">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          <div class="education-content">
+            <h4>Information Systems Engineer</h4>
+            <p class="education-school">University of Transport Technology</p>
+            <div class="education-details">
+              <p class="education-period">2021 - 2025 (Graduated)</p>
+              <div class="education-gpa">
+                <span class="gpa-label">GPA:</span>
+                <span class="gpa-value">3.45/4.0</span>
+              </div>
+            </div>
+            <p class="education-description">
+              Graduated with Information Systems Engineer degree, specializing in software development,
+              database management, and data analytics. Successfully completed capstone projects in web development and data engineering,
+              demonstrating practical application of theoretical knowledge and readiness for professional challenges.
+            </p>
+            <div class="education-highlights">
+              <div class="highlight-tag">
+                <i class="fas fa-code"></i>
+                <span>Software Development</span>
+              </div>
+              <div class="highlight-tag">
+                <i class="fas fa-database"></i>
+                <span>Database Management</span>
+              </div>
+              <div class="highlight-tag">
+                <i class="fas fa-chart-line"></i>
+                <span>Data Analytics</span>
+              </div>
+              <div class="highlight-tag">
+                <i class="fas fa-globe"></i>
+                <span>Web Technologies</span>
+              </div>
+              <div class="highlight-tag">
+                <i class="fas fa-project-diagram"></i>
+                <span>Capstone Projects</span>
+              </div>
+              <div class="highlight-tag">
+                <i class="fas fa-medal"></i>
+                <span>Honor Graduate</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Certifications Section -->
+  <section class="about__section">
+    <div class="about__section__header">
+      <h2 class="section-title">Certifications</h2>
+      <div class="section-divider"></div>
+    </div>
+    <div class="about__section__content">
+      <div class="about__certifications">
+        <div class="cert-item cert-item--verified">
+          <div class="cert-icon cert-icon--hackerrank">
+            <i class="fas fa-code"></i>
+          </div>
+          <div class="cert-content">
+            <h4>SQL (Advanced) Certificate</h4>
+            <p>HackerRank</p>
+            <span class="cert-year">05 Dec 2021</span>
+            <a
+              href="https://www.hackerrank.com/certificates/iframe/52f083f58dea"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="cert-link">
+              <i class="fas fa-external-link-alt"></i>
+              View Certificate
+            </a>
+          </div>
+        </div>
+
+        <div class="cert-item cert-item--verified">
+          <div class="cert-icon cert-icon--hackerrank">
+            <i class="fab fa-python"></i>
+          </div>
+          <div class="cert-content">
+            <h4>Python (Basic) Certificate</h4>
+            <p>HackerRank</p>
+            <span class="cert-year">19 Jun 2024</span>
+            <a
+              href="https://www.hackerrank.com/certificates/iframe/44f0e5dbbcc9"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="cert-link">
+              <i class="fas fa-external-link-alt"></i>
+              View Certificate
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

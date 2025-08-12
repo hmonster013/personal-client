@@ -1,0 +1,31 @@
+// ===================================
+// MAIN STYLES ENTRY POINT
+// ===================================
+
+// Base Styles (Order matters!)
+@use './styles/variables';
+@use './styles/reset';
+@use './styles/base';
+@use './styles/icons';
+@use './styles/components';
+
+// External Libraries
+@import'~@fortawesome/fontawesome-free/css/all.css';
+
+// Theme System
+html {
+  &[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  &[data-theme="light"] {
+    color-scheme: light;
+  }
+}
+
+// Global Transitions
+* {
+  transition: background-color var(--transition-normal),
+              color var(--transition-normal),
+              border-color var(--transition-normal);
+}

@@ -1,0 +1,50 @@
+.app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.app__body {
+  width: 1216px;
+  min-height: calc(100vh - 120px);
+  display: flex;
+  flex-direction: column;
+  padding-top: 70px; // Height of fixed header
+}
+
+@media (max-width: 1216px) {
+  .app__body {
+    width: 100%;
+    padding: 70px 48px 0px 48px; // 70px top padding for fixed header
+    box-sizing: border-box;
+  }
+
+  app-header {
+    width: 100%;
+  }
+
+  app-footer {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .app__body {
+    padding: 70px 32px 0px 32px; // 70px top padding for fixed header
+  }
+}
+
+@media (max-width: 780px) {
+  .app__body {
+    padding: 60px 28px 0px 28px; // 60px top padding for mobile header height
+  }
+}
+
+@media (max-width: 400px) {
+  .app__body {
+    padding: 60px 10px 0px 10px; // 60px top padding for mobile header height
+  }
+}
