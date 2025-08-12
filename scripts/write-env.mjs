@@ -5,7 +5,7 @@ const env = {
   apiUrl: process.env.API_URL ?? ''
 };
 
-writeFileSync('src/environments/environment.prod.ts',
+writeFileSync('src/environments/environments.prod.ts',
 `export const environment = ${JSON.stringify(env, null, 2)};\n`
 );
 console.log('✔ Wrote src/environments/environment.ts');
