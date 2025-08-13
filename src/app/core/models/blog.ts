@@ -260,4 +260,99 @@ export class BlogApiResponseModel implements BlogApiResponse {
   }
 }
 
+// Blog Search Interfaces
+export interface BlogSearchParams {
+  kw?: string;
+  skills?: string;
+  skill_ids?: string | number;
+  page?: number;
+  page_size?: number;
+}
+
+export class BlogSearchParamsModel implements BlogSearchParams {
+  kw?: string;
+  skills?: string;
+  skill_ids?: string | number;
+  page?: number;
+  page_size?: number;
+
+  constructor(
+    kw?: string,
+    skills?: string,
+    skill_ids?: string | number,
+    page: number = 1,
+    page_size: number = 5
+  ) {
+    this.kw = kw;
+    this.skills = skills;
+    this.skill_ids = skill_ids;
+    this.page = page;
+    this.page_size = page_size;
+  }
+
+  static fromJson(json: any): BlogSearchParamsModel {
+    return new BlogSearchParamsModel(
+      json.kw,
+      json.skills,
+      json.skill_ids,
+      json.page || 1,
+      json.page_size || 5
+    );
+  }
+
+  toJson(): any {
+    const params: any = {};
+    if (this.kw) params.kw = this.kw;
+    if (this.skills) params.skills = this.skills;
+    if (this.skill_ids) params.skill_ids = this.skill_ids;
+    if (this.page) params.page = this.page;
+    if (this.page_size) params.page_size = this.page_size;
+    return params;
+  }
+
+  // Helper methods
+  get hasKeyword(): boolean {
+    return !!this.kw && this.kw.trim().length > 0;
+  }
+
+  get hasSkillFilter(): boolean {
+    return !!this.skills || !!this.skill_ids;
+  }
+
+  get hasFilters(): boolean {
+    return this.hasKeyword || this.hasSkillFilter;
+  }
+
+  clearFilters(): void {
+    this.kw = undefined;
+    this.skills = undefined;
+    this.skill_ids = undefined;
+    this.page = 1;
+  }
+
+  setKeyword(keyword: string): void {
+    this.kw = keyword.trim() || undefined;
+    this.page = 1; // Reset to first page when searching
+  }
+
+  setSkills(skills: string): void {
+    this.skills = skills || undefined;
+    this.page = 1; // Reset to first page when filtering
+  }
+
+  setSkillIds(skillIds: string | number): void {
+    this.skill_ids = skillIds;
+    this.page = 1; // Reset to first page when filtering
+  }
+
+  setPage(page: number): void {
+    this.page = Math.max(1, page);
+  }
+
+  setPageSize(pageSize: number): void {
+    this.page_size = Math.max(1, pageSize);
+    this.page = 1; // Reset to first page when changing page size
+  }
+}
+
 

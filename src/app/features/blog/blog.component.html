@@ -9,6 +9,41 @@
   <div class="blog__header">
     <h1>Welcome to My Blog</h1>
     <p>Discover insights, tutorials, and thoughts on web development, data engineering, and technology trends.</p>
+
+    <!-- Search Bar -->
+    <div class="blog__search">
+      <div class="blog__search__container">
+        <i class="fas fa-search blog__search__icon"></i>
+        <input
+          type="text"
+          class="blog__search__input"
+          placeholder="Search blogs by keyword..."
+          [(ngModel)]="searchKeyword"
+          (keydown.enter)="onSearchSubmit()"
+          [value]="searchKeyword">
+        <button
+          class="blog__search__submit"
+          (click)="onSearchSubmit()"
+          [disabled]="!searchKeyword || !searchKeyword.trim()"
+          title="Search blogs">
+          <i class="fas fa-search"></i>
+        </button>
+        <button
+          *ngIf="searchKeyword || selectedSkills.size > 0"
+          class="blog__search__clear"
+          (click)="clearAllFilters()"
+          title="Clear all filters">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Search Status -->
+      <div class="blog__search__status" *ngIf="isSearchMode">
+        <i class="fas fa-filter"></i>
+        <span>{{ getSearchStatusText() }}</span>
+        <span class="blog__search__results">({{ totalRows }} results found)</span>
+      </div>
+    </div>
   </div>
 
   <!-- Main Content -->
@@ -59,12 +94,31 @@
     <!-- Sidebar -->
     <aside class="blog__sidebar">
       <div class="blog__sidebar__section">
-        <h3 class="blog__sidebar__title">Skills & Technologies</h3>
+        <h3 class="blog__sidebar__title">
+          Skills & Technologies
+          <span class="blog__sidebar__title__badge" *ngIf="selectedSkills.size > 0">
+            {{ selectedSkills.size }} selected
+          </span>
+        </h3>
         <div class="blog__sidebar__skills">
-          <div class="blog__sidebar__skill-item" *ngFor="let skill of listSkills">
+          <div
+            class="blog__sidebar__skill-item"
+            *ngFor="let skill of listSkills"
+            [class.blog__sidebar__skill-item--selected]="isSkillSelected(skill)"
+            (click)="onSkillClick(skill)"
+            [title]="isSkillSelected(skill) ? 'Click to remove filter' : 'Click to filter by this skill'">
             <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
           </div>
         </div>
+
+        <!-- Simple Clear All Button (only show when filters are active) -->
+        <button
+          class="blog__sidebar__clear-all"
+          *ngIf="selectedSkills.size > 0"
+          (click)="clearAllFilters()">
+          <i class="fas fa-times-circle"></i>
+          Clear Filters ({{ selectedSkills.size }})
+        </button>
       </div>
     </aside>
   </div>
