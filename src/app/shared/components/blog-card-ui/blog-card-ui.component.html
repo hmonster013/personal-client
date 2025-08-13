@@ -28,13 +28,6 @@
       <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
     </div>
   </div>
-
-  <!-- Blog Status -->
-  <div class="card-blog__status" *ngIf="blogStatus !== null">
-    <span class="card-blog__status-badge" [class.card-blog__status-badge--published]="blogStatus">
-      {{ blogStatus ? 'Published' : 'Draft' }}
-    </span>
-  </div>
 </div>
 
 <!-- Fallback for missing data -->
@@ -53,7 +46,6 @@
   Title: {{ blogTitle }}<br>
   Has Description: {{ !!blogDescription }}<br>
   Skills Count: {{ blogSkills.length }}<br>
-  Status: {{ blogStatus }}<br>
   Date: {{ blogDate }}<br>
   <button (click)="logBlogData()" style="margin-top: 8px;">Log Full Data</button>
 </div>

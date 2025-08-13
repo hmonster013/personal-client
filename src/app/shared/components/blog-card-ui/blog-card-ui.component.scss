@@ -254,6 +254,9 @@
 
 .card-blog__skill-group {
   @extend .blog-card__skills;
+  margin-top: var(--spacing-xl); // Add spacing above skills
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--white-dark); // Optional: subtle separator line
 }
 
 .card-blog__skill-item {
@@ -293,25 +296,7 @@
 
 
 
-  &__status {
-    margin-top: var(--spacing-md);
-    display: flex;
-    justify-content: flex-end;
 
-    &-badge {
-      padding: var(--spacing-xs) var(--spacing-sm);
-      border-radius: var(--radius-full);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
-      background: var(--white-dark);
-      color: var(--black-light);
-
-      &--published {
-        background: rgba(var(--success-rgb), 0.1);
-        color: var(--success);
-      }
-    }
-  }
 
   &__debug {
     background: rgba(255, 0, 0, 0.1);
@@ -370,6 +355,11 @@
     &__date {
       font-size: var(--font-size-xs);
       margin-bottom: var(--spacing-sm);
+    }
+
+    &__skill-group {
+      margin-top: var(--spacing-lg); // Reduce spacing on mobile
+      padding-top: var(--spacing-sm);
     }
   }
 }

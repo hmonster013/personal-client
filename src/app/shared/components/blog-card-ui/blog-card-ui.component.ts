@@ -17,7 +17,7 @@ import { Blog } from '../../../core/models/blog';
   styleUrl: './blog-card-ui.component.scss'
 })
 export class BlogCardUiComponent {
-  @Input() currentBLog: Blog | any; // Allow both Blog type and any for flexibility
+  @Input() currentBLog: Blog | any;
 
   // Helper methods for template
   get blogDate(): string | null {
@@ -61,15 +61,7 @@ export class BlogCardUiComponent {
     return this.currentBLog?.id || 0;
   }
 
-  get blogStatus(): boolean | null {
-    if (this.currentBLog?.status !== undefined) {
-      return this.currentBLog.status;
-    }
-    if (this.currentBLog?.published !== undefined) {
-      return this.currentBLog.published;
-    }
-    return null;
-  }
+
 
   // Debug method to log blog data structure
   logBlogData(): void {
