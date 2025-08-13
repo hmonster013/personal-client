@@ -380,8 +380,14 @@
       &__image-container {
         position: relative;
         overflow: hidden;
-        height: 250px;
+        height: 250px; // Fallback for browsers that don't support aspect-ratio
+        aspect-ratio: 16/9; // Maintain 16:9 aspect ratio for 1920x1080 images
         background: linear-gradient(135deg, var(--primary), var(--secondary));
+
+        // For browsers that support aspect-ratio, remove the fixed height
+        @supports (aspect-ratio: 16/9) {
+          height: auto;
+        }
 
         &:hover .home__project__card__image-overlay {
           opacity: 1;
@@ -392,6 +398,7 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
+        object-position: center; // Ensure image is centered when cropped
         transition: transform var(--transition-normal);
 
         &:hover {
@@ -919,7 +926,12 @@
 
       &__card {
         &__image-container {
-          height: 220px;
+          height: 220px; // Fallback for browsers that don't support aspect-ratio
+          aspect-ratio: 16/9; // Maintain aspect ratio on tablet
+
+          @supports (aspect-ratio: 16/9) {
+            height: auto;
+          }
         }
 
         &__content {
@@ -1163,7 +1175,12 @@
 
       &__card {
         &__image-container {
-          height: 200px;
+          height: 200px; // Fallback for browsers that don't support aspect-ratio
+          aspect-ratio: 16/9; // Maintain aspect ratio on mobile
+
+          @supports (aspect-ratio: 16/9) {
+            height: auto;
+          }
         }
 
         &__content {
@@ -1462,7 +1479,12 @@
 
       &__card {
         &__image-container {
-          height: 180px;
+          height: 180px; // Fallback for browsers that don't support aspect-ratio
+          aspect-ratio: 16/9; // Maintain aspect ratio on small mobile
+
+          @supports (aspect-ratio: 16/9) {
+            height: auto;
+          }
         }
 
         &__content {
