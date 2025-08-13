@@ -254,8 +254,112 @@
 
 .card-blog__skill-group {
   @extend .blog-card__skills;
+  margin-top: var(--spacing-xl); // Add spacing above skills
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--white-dark); // Optional: subtle separator line
 }
 
 .card-blog__skill-item {
   @extend .blog-card__skill-item;
+}
+
+// Additional card-blog specific styles
+.card-blog {
+  &__date {
+    font-size: var(--font-size-sm);
+    color: var(--black-light);
+    margin-bottom: var(--spacing-md);
+    font-weight: var(--font-weight-medium);
+
+    &::before {
+      content: '📅 ';
+      margin-right: var(--spacing-xs);
+    }
+  }
+
+  &__title {
+    margin-bottom: var(--spacing-lg);
+
+    &-link {
+      color: var(--black);
+      text-decoration: none;
+      font-size: var(--font-size-xl);
+      font-weight: var(--font-weight-semibold);
+      line-height: 1.3;
+      transition: color var(--transition-fast);
+
+      &:hover {
+        color: var(--primary);
+      }
+    }
+  }
+
+
+
+
+
+  &__debug {
+    background: rgba(255, 0, 0, 0.1);
+    border: 1px solid red;
+    color: red;
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    text-align: center;
+  }
+
+  &--empty {
+    border: 2px dashed var(--white-dark);
+    background: var(--white-light);
+    opacity: 0.7;
+  }
+
+  &__empty-state {
+    text-align: center;
+    padding: var(--spacing-3xl);
+    color: var(--black-light);
+
+    i {
+      font-size: var(--font-size-4xl);
+      color: var(--primary);
+      margin-bottom: var(--spacing-lg);
+      opacity: 0.5;
+    }
+
+    h4 {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-semibold);
+      color: var(--black);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    p {
+      font-size: var(--font-size-sm);
+      color: var(--black-light);
+      margin: 0;
+    }
+  }
+}
+
+// Responsive adjustments for new elements
+@media (max-width: 768px) {
+  .card-blog {
+    &__title {
+      &-link {
+        font-size: var(--font-size-lg);
+      }
+    }
+
+
+
+    &__date {
+      font-size: var(--font-size-xs);
+      margin-bottom: var(--spacing-sm);
+    }
+
+    &__skill-group {
+      margin-top: var(--spacing-lg); // Reduce spacing on mobile
+      padding-top: var(--spacing-sm);
+    }
+  }
 }

@@ -1,18 +1,51 @@
-<div class="card-blog">
-  <p> {{currentBLog.createDate | date: 'MM/yyyy'}} </p>
-  <h4><a href="/blogs/{{currentBLog.id}}">{{currentBLog.title}}</a></h4>
-  <div class="card-blog__description">
+<div class="card-blog" *ngIf="currentBLog" (click)="logBlogData()">
+  <!-- Blog Date -->
+  <p class="card-blog__date" *ngIf="blogDate">
+    {{ blogDate | date: 'MMM yyyy' }}
+  </p>
+
+  <!-- Blog Title with proper routing -->
+  <h4 class="card-blog__title">
+    <a [routerLink]="['/blogs', blogId]" class="card-blog__title-link">
+      {{ blogTitle }}
+    </a>
+  </h4>
+
+  <!-- Blog Description -->
+  <div class="card-blog__description" *ngIf="blogDescription">
     <app-safe-html-display
-      [htmlContent]="currentBLog.description"
+      [htmlContent]="blogDescription"
       [maxLength]="150"
       cssClass="blog-card-description">
     </app-safe-html-display>
   </div>
-  <div class="card-blog__skill-group">
+
+  <!-- Skills -->
+  <div class="card-blog__skill-group" *ngIf="blogSkills.length > 0">
     <div
       class="card-blog__skill-item"
-      *ngFor="let skill of currentBLog.skillsVOs">
+      *ngFor="let skill of blogSkills">
       <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
     </div>
   </div>
+</div>
+
+<!-- Fallback for missing data -->
+<div class="card-blog card-blog--empty" *ngIf="!currentBLog">
+  <div class="card-blog__empty-state">
+    <i class="fas fa-file-alt"></i>
+    <h4>No Blog Data</h4>
+    <p>Blog information is not available</p>
+  </div>
+</div>
+
+<!-- Debug info (remove in production) -->
+<div class="card-blog__debug" *ngIf="currentBLog" style="display: none;">
+  <strong>Debug Info:</strong><br>
+  ID: {{ blogId }}<br>
+  Title: {{ blogTitle }}<br>
+  Has Description: {{ !!blogDescription }}<br>
+  Skills Count: {{ blogSkills.length }}<br>
+  Date: {{ blogDate }}<br>
+  <button (click)="logBlogData()" style="margin-top: 8px;">Log Full Data</button>
 </div>
