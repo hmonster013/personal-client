@@ -4,7 +4,8 @@ import { BlogComponent } from './features/blog/blog.component';
 import { AboutComponent } from './features/about/about.component';
 import { BlogDetailComponent } from './features/blog-detail/blog-detail.component';
 import { URI } from './shared/utils/URI';
-import { HeaderComponent } from './layout/header/header.component';
+import { TestComponent } from './features/test/test.component';
+import { NotFoundComponent } from './features/not-found/not-found.component';
 
 export const routes: Routes = [
     {
@@ -25,10 +26,10 @@ export const routes: Routes = [
     },
     {
         path: "test",
-        component: HeaderComponent
+        component: TestComponent
     },
     {
-        path: '**/*',
-        redirectTo: ''
+        path: '**',
+        component: NotFoundComponent
     }
 ];

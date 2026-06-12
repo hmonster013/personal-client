@@ -4,49 +4,18 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class ThemeService {
-  private lightTheme = {
-    '--primary': '#2563EB',
-    '--primary-light': '#497DEE',
-    '--primary-dark': '#134FD2',
-
-    '--secondary': '#111827',
-    '--secondary-light': '#172135',
-    '--secondary-dark': '#090D15',
-
-    '--white': '#F7F3F3',
-    '--white-light': '#FFFFFF',
-    '--white-dark': '#E3E8ED',
-
-    '--black': '#060504',
-    '--black-light': '#120F0C',
-    '--black-dark': '#000000',
-  };
-
-  private darkTheme = {
-    '--primary': '#3B82F6',
-    '--primary-light': '#60A5FA',
-    '--primary-dark': '#1D4ED8',
-
-    '--secondary': '#E5E7EB',
-    '--secondary-light': '#F3F4F6',
-    '--secondary-dark': '#D1D5DB',
-
-    '--white': '#1F2937',
-    '--white-light': '#111827',
-    '--white-dark': '#374151',
-
-    '--black': '#F9FAFB',
-    '--black-light': '#F3F4F6',
-    '--black-dark': '#E5E7EB',
-  };
-
-  private isDarkMode = false;
+  private isDarkMode = true; // Mặc định: dark (night) cho user mới
 
   constructor() {
     // Load saved theme from localStorage
     const savedTheme = localStorage.getItem('isDarkMode');
-    this.isDarkMode = savedTheme === 'true';
-    this.applyTheme(this.isDarkMode ? this.darkTheme : this.lightTheme);
+    if (savedTheme !== null) {
+      this.isDarkMode = savedTheme === 'true';
+    } else {
+      this.isDarkMode = true; // Default: dark (night) cho user mới
+      localStorage.setItem('isDarkMode', 'true');
+    }
+    this.applyTheme();
   }
 
   getCurrentTheme(): boolean {
@@ -60,28 +29,22 @@ export class ThemeService {
       this.isDarkMode = !this.isDarkMode;
     }
 
-    const theme = this.isDarkMode ? this.darkTheme : this.lightTheme;
-    this.applyTheme(theme);
+    this.applyTheme();
 
     // Save theme preference to localStorage
     localStorage.setItem('isDarkMode', this.isDarkMode.toString());
   }
 
-  private applyTheme(theme: { [key: string]: string }): void {
+  private applyTheme(): void {
     // Use requestAnimationFrame for better performance
     requestAnimationFrame(() => {
       const root = document.documentElement;
 
-      // Set data-theme attribute for CSS
+      // Set data-theme attribute for CSS variables in SCSS to handle
       root.setAttribute('data-theme', this.isDarkMode ? 'dark' : 'light');
 
-      // Batch CSS custom properties updates
-      const cssText = Object.entries(theme)
-        .map(([key, value]) => `${key}: ${value}`)
-        .join('; ');
-
-      // Apply all properties at once
-      root.style.cssText += '; ' + cssText;
+      // Bỏ inject inline style để tránh bug cộng dồn cssText +=
+      root.removeAttribute('style');
     });
   }
 }

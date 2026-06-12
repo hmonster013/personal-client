@@ -1,0 +1,122 @@
+<div class="game-world">
+  <!-- Game Scene host canvas -->
+  <div class="game-canvas-container">
+    <canvas #gameCanvas class="pixelated"></canvas>
+  </div>
+
+  <!-- HUD Overlay -->
+  <div class="game-world__hud rpg-hud">
+    <div class="rpg-hud__avatar-frame" (click)="toggleCharacterMenu()" style="cursor: pointer;">
+      <img src="assets/img.png" alt="Avatar DE013" class="pixelated" onerror="this.src='https://placehold.co/48x48/29366f/ffd75e?text=DE'"/>
+    </div>
+    <div class="rpg-hud__info">
+      <div class="rpg-hud__name">DE013</div>
+      <div class="rpg-hud__level">LV.{{ yearsOfExperience() }} (Developer)</div>
+    </div>
+  </div>
+
+  <!-- Hint Controls & Skip -->
+  <div class="game-world__controls">
+    <div class="game-world__hints">
+      <span class="rpg-badge">WASD / Phím mũi tên: Di chuyển</span>
+      <span class="rpg-badge" style="cursor: pointer;" (click)="toggleCharacterMenu()">C / Click Avatar: Xem thông tin</span>
+    </div>
+    <button type="button" class="rpg-btn rpg-btn--danger" (click)="skipGame()">
+      ⏭ Skip game
+    </button>
+  </div>
+
+  <!-- Interactive Overlap Prompt Floating Hover -->
+  @if (currentInteractionObj() && !gameState.isDialogOpen()) {
+    <div class="game-world__prompt" (click)="triggerMobileInteract()">
+      <div class="rpg-badge pulse">
+        [E] {{ getInteractionLabel(currentInteractionObj()!.name) }}
+      </div>
+    </div>
+  }
+
+  <!-- Mobile D-pad & Action buttons -->
+  <div class="mobile-controls">
+    <div class="dpad">
+      <button type="button" class="dpad-btn dpad-btn--up" 
+              (pointerdown)="setMobileDirection(0, -1)" 
+              (pointerup)="setMobileDirection(0, 0)" 
+              (pointerleave)="setMobileDirection(0, 0)"
+              aria-label="Move Up">▲</button>
+      <button type="button" class="dpad-btn dpad-btn--left" 
+              (pointerdown)="setMobileDirection(-1, 0)" 
+              (pointerup)="setMobileDirection(0, 0)" 
+              (pointerleave)="setMobileDirection(0, 0)"
+              aria-label="Move Left">◀</button>
+      <button type="button" class="dpad-btn dpad-btn--right" 
+              (pointerdown)="setMobileDirection(1, 0)" 
+              (pointerup)="setMobileDirection(0, 0)" 
+              (pointerleave)="setMobileDirection(0, 0)"
+              aria-label="Move Right">▶</button>
+      <button type="button" class="dpad-btn dpad-btn--down" 
+              (pointerdown)="setMobileDirection(0, 1)" 
+              (pointerup)="setMobileDirection(0, 0)" 
+              (pointerleave)="setMobileDirection(0, 0)"
+              aria-label="Move Down">▼</button>
+    </div>
+    <div class="action-buttons">
+      <button type="button" class="rpg-btn action-btn" (pointerdown)="triggerMobileInteract()" aria-label="Interact Button">
+        A
+      </button>
+    </div>
+  </div>
+
+  <!-- RPG Dialog Box at bottom -->
+  @if (gameState.isDialogOpen()) {
+    <div class="rpg-dialog" (click)="handleInteract()">
+      <div class="rpg-dialog__speaker">
+        {{ getInteractionTitle(gameState.activeInteraction() || '') }}
+      </div>
+      <p class="rpg-dialog__content">
+        {{ getInteractionDialogText(gameState.activeInteraction() || '') }}
+      </p>
+      <span class="rpg-dialog__arrow">▼</span>
+    </div>
+  }
+
+  <!-- Character Menu / Stats Overlay -->
+  @if (gameState.isCharacterMenuOpen()) {
+    <div class="game-world__menu-overlay" (click)="toggleCharacterMenu()">
+      <div class="rpg-panel game-world__menu" (click)="$event.stopPropagation()">
+        <div class="rpg-panel__header">
+          <h3>🛡️ THÔNG TIN NHÂN VẬT (STATS)</h3>
+          <button type="button" class="game-world__close-btn" (click)="toggleCharacterMenu()">✕</button>
+        </div>
+        <div class="rpg-panel__body">
+          <div class="character-stats">
+            <div class="character-stats__item">
+              <span class="stats-label">Nghề nghiệp:</span>
+              <span class="stats-value">Fullstack & Data Engineer</span>
+            </div>
+            <div class="character-stats__item">
+              <span class="stats-label">Cấp độ (Kinh nghiệm):</span>
+              <span class="stats-value">LV.{{ yearsOfExperience() }} ({{ yearsOfExperience() }} năm làm việc)</span>
+            </div>
+          </div>
+
+          <h4 style="font-family: var(--font-pixel); margin-top: var(--spacing-lg); color: var(--gold); border-bottom: 2px double var(--ui-border); padding-bottom: 4px;">🎯 KỸ NĂNG (XP BARS)</h4>
+          <div class="skills-xp">
+            @for (skill of skills(); track skill.id) {
+              <div class="skill-xp-item">
+                <div class="skill-xp-name">{{ skill.name }}</div>
+                <div class="rpg-progress">
+                  <div class="rpg-progress__bar">
+                    <div class="rpg-progress__fill" [style.width.%]="getSkillPercentage(skill)"></div>
+                  </div>
+                  <span class="rpg-progress__label">LV.{{ getSkillLevel(skill) }}</span>
+                </div>
+              </div>
+            } @empty {
+              <div style="font-size: 0.875rem; text-align: center; color: var(--ui-border);">Chưa tải được danh sách kỹ năng</div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

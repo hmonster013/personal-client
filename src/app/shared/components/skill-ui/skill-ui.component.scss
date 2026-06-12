@@ -2,39 +2,40 @@
 // SKILL UI COMPONENT STYLES
 // ===================================
 
+// "Viên gạch" pixel theo spec .rpg-badge (plan/01-design-system.md)
 .skill-badge {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-xs);
   padding: var(--spacing-xs) var(--spacing-md);
-  background-color: var(--white-dark);
-  color: var(--black);
-  border-radius: var(--radius-md);
+  background-color: var(--bg-dusk);
+  color: var(--gold);
+  font-family: var(--font-pixel);
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   line-height: 1;
   transition: all var(--transition-fast);
-  border: 1px solid transparent;
+  border: 2px solid var(--ui-border-dark);
 
   // Variants
   &--primary {
-    background-color: rgba(var(--primary-rgb), 0.1);
-    color: var(--primary);
-    border-color: rgba(var(--primary-rgb), 0.2);
+    background-color: rgba(var(--gold-rgb), 0.15);
+    color: var(--gold);
+    border-color: var(--gold);
   }
 
   &--secondary {
-    background-color: var(--white-dark);
-    color: var(--black);
+    background-color: var(--bg-dusk);
+    color: var(--gold);
   }
 
   &--outline {
     background-color: transparent;
-    border-color: var(--white-dark);
-    color: var(--black);
+    border-color: var(--ui-border);
+    color: inherit;
 
     &:hover {
-      background-color: var(--white-dark);
+      background-color: rgba(var(--gold-rgb), 0.1);
     }
   }
 
@@ -74,15 +75,16 @@
     cursor: pointer;
 
     &:hover {
-      background-color: var(--primary);
-      color: var(--white-light);
-      border-color: var(--primary);
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-sm);
+      background-color: var(--gold);
+      color: var(--text-ink);
+      border-color: var(--ui-border-dark);
+      transform: translate(-1px, -1px);
+      box-shadow: 2px 2px 0 var(--ui-border-dark); // bóng cứng pixel
     }
 
     &:active {
-      transform: translateY(0);
+      transform: translate(0, 0);
+      box-shadow: none;
     }
   }
 

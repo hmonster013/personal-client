@@ -1,10 +1,12 @@
 <div class="blog-detail" *ngIf="currentBlog">
-  <!-- Navigation -->
+  <!-- Navigation / Breadcrumb -->
   <nav class="blog-detail__nav">
-    <button class="blog-detail__back-btn" (click)="goToBlog()">
-      <i class="fas fa-arrow-left"></i>
-      <span>Back to Blog</span>
+    <button class="rpg-btn rpg-btn--secondary" (click)="goToBlog()" style="font-size: 0.875rem; padding: 6px 12px; margin-right: 15px;">
+      <i class="fas fa-arrow-left"></i> Về Thư Viện
     </button>
+    <span class="blog-detail__breadcrumb">
+      🗺 Thư viện ▸ <span class="blog-detail__breadcrumb-title">{{currentBlog.title}}</span>
+    </span>
   </nav>
 
   <!-- Hero Section -->
@@ -15,7 +17,7 @@
         <img
           [src]="currentBlog.cover_img.full_url"
           [alt]="currentBlog.title + ' featured image'"
-          class="blog-detail__featured-image"
+          class="blog-detail__featured-image pixelated"
           loading="lazy">
         <div class="blog-detail__image-overlay"></div>
       </div>

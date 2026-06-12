@@ -1,0 +1,84 @@
+<div class="test-page" style="padding: 40px; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px; min-height: 100vh; width: 100%;">
+  <h1 style="font-family: var(--font-pixel); color: var(--gold); text-align: center;">RPG UI Kit Test Page</h1>
+
+  <!-- RPG Dialog -->
+  <div class="test-section">
+    <h2 style="font-family: var(--font-pixel); color: var(--gold); margin-bottom: 20px;">1. RPG Dialog (.rpg-dialog)</h2>
+
+    <div class="rpg-dialog">
+      <div class="rpg-dialog__speaker">DE013</div>
+      <p class="rpg-dialog__content">
+        Chào mừng bạn đến với thế giới pixel của tôi! Đây là một hộp thoại phong cách RPG cổ điển với viền pixel và chữ Tiếng Việt có dấu hiển thị vô cùng chuẩn xác.
+      </p>
+      <div class="rpg-dialog__arrow">▼</div>
+    </div>
+  </div>
+
+  <!-- RPG Buttons -->
+  <div class="test-section">
+    <h2 style="font-family: var(--font-pixel); color: var(--gold); margin-bottom: 20px;">2. RPG Buttons (.rpg-btn)</h2>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+      <button class="rpg-btn">Gửi tin nhắn</button>
+      <button class="rpg-btn rpg-btn--secondary">Hủy bỏ</button>
+      <button class="rpg-btn rpg-btn--danger">Xóa dữ liệu</button>
+      <button class="rpg-btn" disabled>Bị khóa</button>
+    </div>
+  </div>
+
+  <!-- RPG Panel -->
+  <div class="test-section">
+    <h2 style="font-family: var(--font-pixel); color: var(--gold); margin-bottom: 20px;">3. RPG Panel (.rpg-panel)</h2>
+
+    <div class="rpg-panel">
+      <div class="rpg-panel__header">
+        <span style="font-size: 1.5rem;">🏠</span>
+        <h3>Nhà của DE013</h3>
+      </div>
+      <div class="rpg-panel__body">
+        <p>Đây là khu vực hiển thị thông tin chi tiết về kỹ năng, kinh nghiệm và các dự án của tôi. Panel có thể tự động thích ứng với cả giao diện sáng (day) và tối (night) nhờ vào CSS variables.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RPG Progress Bar -->
+  <div class="test-section">
+    <h2 style="font-family: var(--font-pixel); color: var(--gold); margin-bottom: 20px;">4. RPG Progress Bar (.rpg-progress)</h2>
+
+    <div class="rpg-progress">
+      <div class="rpg-progress__bar">
+        <div class="rpg-progress__fill" [style.width.%]="progressValue"></div>
+      </div>
+      <span class="rpg-progress__label">LV.{{ progressValue }} %</span>
+    </div>
+
+    <div style="margin-top: 15px; display: flex; gap: 10px;">
+      <button class="rpg-btn rpg-btn--secondary" style="padding: 5px 15px; font-size: 0.875rem;" (click)="decreaseProgress()">- 10% XP</button>
+      <button class="rpg-btn rpg-btn--secondary" style="padding: 5px 15px; font-size: 0.875rem;" (click)="increaseProgress()">+ 10% XP</button>
+    </div>
+  </div>
+
+  <!-- RPG Badges -->
+  <div class="test-section">
+    <h2 style="font-family: var(--font-pixel); color: var(--gold); margin-bottom: 20px;">5. RPG Badge (.rpg-badge)</h2>
+    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+      <span class="rpg-badge">Angular 19</span>
+      <span class="rpg-badge">TypeScript</span>
+      <span class="rpg-badge">Django</span>
+      <span class="rpg-badge">PostgreSQL</span>
+    </div>
+  </div>
+
+  <!-- RPG HUD -->
+  <div class="test-section">
+    <h2 style="font-family: var(--font-pixel); color: var(--gold); margin-bottom: 20px;">6. RPG HUD (.rpg-hud)</h2>
+    <div class="rpg-hud">
+      <div class="rpg-hud__avatar-frame">
+        <img src="assets/img.png" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;" class="pixelated">
+      </div>
+      <div class="rpg-hud__info">
+        <span class="rpg-hud__name">DE013 (Huy)</span>
+        <span class="rpg-hud__level">LV.2 Developer</span>
+      </div>
+    </div>
+  </div>
+</div>

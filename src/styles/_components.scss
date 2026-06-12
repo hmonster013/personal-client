@@ -35,7 +35,7 @@
   // Button variants
   &--primary {
     background-color: var(--primary);
-    color: var(--white-light);
+    color: var(--text-light);
     border-color: var(--primary);
 
     &:hover:not(:disabled) {
@@ -70,7 +70,7 @@
 
     &:hover:not(:disabled) {
       background-color: var(--primary);
-      color: var(--white-light);
+      color: var(--text-light);
       transform: translateY(-1px);
       box-shadow: var(--shadow-md);
     }
@@ -89,7 +89,7 @@
 
   &--danger {
     background-color: var(--error);
-    color: var(--white-light);
+    color: var(--text-light);
     border-color: var(--error);
 
     &:hover:not(:disabled) {
@@ -269,7 +269,7 @@
   
   &--primary {
     background-color: var(--primary);
-    color: var(--white-light);
+    color: var(--text-light);
   }
   
   &--secondary {
@@ -279,17 +279,17 @@
   
   &--success {
     background-color: var(--success);
-    color: var(--white-light);
+    color: var(--text-light);
   }
   
   &--warning {
     background-color: var(--warning);
-    color: var(--white-light);
+    color: var(--text-light);
   }
   
   &--error {
     background-color: var(--error);
-    color: var(--white-light);
+    color: var(--text-light);
   }
   
   &--outline {
@@ -304,4 +304,282 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+// ===================================
+// ===== RPG UI KIT COMPONENTS =====
+// ===================================
+
+// ===== rpg-dialog — RPG Dialog box =====
+.rpg-dialog {
+  background-color: var(--ui-parchment);
+  box-shadow: var(--pixel-border);
+  border: none;
+  padding: var(--spacing-xl);
+  position: relative;
+  font-family: var(--font-pixel-body);
+  font-size: 1.5rem;
+  color: var(--text-ink);
+  margin-top: var(--spacing-xl);
+
+  &__speaker {
+    position: absolute;
+    top: -24px;
+    left: 12px;
+    background-color: var(--ui-border);
+    color: var(--gold);
+    font-family: var(--font-pixel);
+    font-weight: 600;
+    font-size: 1rem;
+    padding: var(--spacing-xs) var(--spacing-md);
+    box-shadow: 
+      0 -3px 0 0 var(--ui-border-dark), 0 3px 0 0 var(--ui-border-dark),
+      -3px 0 0 0 var(--ui-border-dark), 3px 0 0 0 var(--ui-border-dark);
+    text-transform: uppercase;
+  }
+
+  &__content {
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  &__arrow {
+    position: absolute;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    color: var(--ui-border);
+    font-size: 1.25rem;
+    animation: rpg-arrow-bounce 0.8s infinite steps(2);
+  }
+}
+
+@keyframes rpg-arrow-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+// ===== rpg-btn — RPG Buttons =====
+.rpg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-family: var(--font-pixel);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  color: var(--text-ink);
+  background-color: var(--gold);
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  box-shadow: var(--pixel-border);
+  transition: transform var(--transition-step), box-shadow var(--transition-step);
+  transform: translateY(0);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--pixel-border), 4px 4px 0 0 var(--ui-border-dark);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(1px);
+    box-shadow: var(--pixel-border), 2px 2px 0 0 var(--ui-border-dark);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: var(--pixel-border) !important;
+  }
+
+  &--secondary {
+    background-color: var(--ui-parchment);
+    color: var(--ui-border-dark);
+  }
+
+  &--danger {
+    background-color: var(--berry);
+    color: var(--text-light);
+  }
+}
+
+// ===== rpg-panel — RPG Panel =====
+.rpg-panel {
+  background-color: var(--rpg-panel-bg, var(--ui-parchment));
+  color: var(--rpg-panel-color, var(--text-ink));
+  box-shadow: var(--pixel-border);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    border-bottom: 3px double var(--ui-border);
+    padding-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+
+    h1, h2, h3, h4, h5, h6 {
+      margin: 0;
+      font-family: var(--font-pixel);
+      color: inherit;
+    }
+  }
+
+  &__body {
+    font-family: var(--font-pixel-body);
+    font-size: 1.35rem;
+    line-height: 1.5;
+  }
+}
+
+[data-theme="dark"] {
+  .rpg-panel {
+    --rpg-panel-bg: var(--bg-dusk);
+    --rpg-panel-color: var(--text-light);
+  }
+}
+
+// ===== rpg-progress — RPG Experience/Health bar =====
+.rpg-progress {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  width: 100%;
+
+  &__bar {
+    flex: 1;
+    height: 24px;
+    background-color: var(--ui-border-dark);
+    position: relative;
+    box-shadow: 
+      0 -2px 0 0 var(--ui-border), 0 2px 0 0 var(--ui-border),
+      -2px 0 0 0 var(--ui-border), 2px 0 0 0 var(--ui-border);
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    background-color: var(--grass);
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 8px,
+      rgba(0, 0, 0, 0.15) 8px,
+      rgba(0, 0, 0, 0.15) 16px
+    );
+    width: 0%;
+    transition: width 0.4s steps(5);
+  }
+
+  &__label {
+    font-family: var(--font-pixel);
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--gold);
+    white-space: nowrap;
+    min-width: 50px;
+  }
+}
+
+// ===== rpg-badge — RPG tiny square badge =====
+.rpg-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-family: var(--font-pixel);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--gold);
+  background-color: var(--bg-dusk);
+  border: 2px solid var(--ui-border);
+  box-shadow: 2px 2px 0 0 var(--ui-border-dark);
+  text-transform: uppercase;
+}
+
+// ===== rpg-hud — RPG HUD (avatar and level) =====
+.rpg-hud {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  background-color: rgba(26, 28, 44, 0.85);
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 0 2px var(--ui-border-dark);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: var(--text-light);
+  font-family: var(--font-pixel);
+  width: fit-content;
+
+  &__avatar-frame {
+    width: 48px;
+    height: 48px;
+    border: 2px solid var(--ui-border);
+    background-color: var(--bg-dusk);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    image-rendering: pixelated;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__name {
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+  }
+
+  &__level {
+    font-size: 0.75rem;
+    color: var(--gold);
+  }
+}
+
+// Global visual adjustments & utility classes
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+::selection {
+  background-color: var(--gold);
+  color: var(--text-ink);
+}
+
+// Scrollbar styling
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-night);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ui-border);
+  border: 2px solid var(--bg-night);
+  border-radius: 0;
+  
+  &:hover {
+    background: var(--ui-parchment-dark);
+  }
+}
+
+body {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' style='image-rendering:pixelated;'><polygon points='0,0 0,11 3,8 6,14 8,13 5,7 9,7' fill='%2373452C' stroke='%23FFD75E' stroke-width='1'/></svg>"), auto;
 }

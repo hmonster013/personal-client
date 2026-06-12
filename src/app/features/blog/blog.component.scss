@@ -1,78 +1,84 @@
 // ===================================
-// BLOG COMPONENT STYLES
+// RPG BOOKSHELF BLOG COMPONENT STYLES
 // ===================================
 
 .blog {
   width: 100%;
-  max-width: 1216px;
-  display: flex;
-  flex-direction: column;
-  padding: var(--spacing-4xl) var(--spacing-lg);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 100px var(--spacing-xl) var(--spacing-5xl);
   box-sizing: border-box;
   overflow-x: hidden;
-  gap: var(--spacing-4xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
 
-  // Back button
+  // Back button (retro arrow button)
   &__back-btn {
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-xs);
-    padding: var(--spacing-sm) var(--spacing-lg);
-    background-color: transparent;
-    color: var(--black);
-    border: 1px solid var(--white-dark);
-    border-radius: var(--radius-md);
-    font-family: var(--font-family-primary);
-    font-size: var(--font-size-sm);
+    justify-content: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-family: var(--font-pixel);
+    font-weight: 600;
+    font-size: var(--font-size-xs);
+    color: var(--text-ink);
+    background-color: var(--gold);
+    border: none;
     cursor: pointer;
-    transition: all var(--transition-fast);
-    margin-bottom: var(--spacing-3xl);
+    user-select: none;
+    text-decoration: none;
+    box-shadow: var(--pixel-border);
+    transition: transform var(--transition-step), box-shadow var(--transition-step);
+    transform: translateY(0);
+    margin-bottom: var(--spacing-md);
     align-self: flex-start;
 
     &:hover {
-      background-color: var(--white-dark);
-      border-color: var(--primary);
-      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--pixel-border), 4px 4px 0 0 var(--ui-border-dark);
     }
 
-    i {
-      font-size: var(--font-size-xs);
+    &:active {
+      transform: translateY(1px);
+      box-shadow: var(--pixel-border), 2px 2px 0 0 var(--ui-border-dark);
     }
   }
 
-  // Blog header
+  // Blog header (Village Library)
   &__header {
     text-align: center;
-    padding: var(--spacing-3xl) 0;
-    background: linear-gradient(135deg,
-      rgba(var(--primary-rgb), 0.05) 0%,
-      rgba(var(--primary-rgb), 0.1) 100%);
-    border-radius: var(--radius-xl);
-    margin-bottom: var(--spacing-4xl);
+    padding: var(--spacing-3xl) var(--spacing-xl);
+    background-color: var(--bg-dusk);
+    color: var(--text-light);
+    box-shadow: var(--pixel-border);
+    margin-bottom: var(--spacing-xl);
+    position: relative;
 
     h1 {
-      font-size: var(--font-size-6xl);
-      font-weight: var(--font-weight-black);
-      margin-bottom: var(--spacing-lg);
-      color: var(--black);
-      word-wrap: break-word;
-      hyphens: auto;
+      font-family: var(--font-pixel);
+      font-size: var(--font-size-4xl);
+      color: var(--gold);
+      text-shadow: 3px 3px 0 var(--ui-border-dark);
+      margin-top: 0;
+      margin-bottom: var(--spacing-md);
     }
 
     p {
-      font-size: var(--font-size-lg);
-      color: var(--black-light);
-      max-width: 700px;
+      font-family: var(--font-pixel-body);
+      font-size: 1.35rem;
+      line-height: 1.4;
+      color: var(--text-light);
+      max-width: 750px;
       margin: 0 auto;
-      line-height: 1.7;
-      padding: 0 var(--spacing-lg);
     }
   }
 
-  // Search section
+  // Search input bar
   &__search {
-    margin-top: var(--spacing-3xl);
-    max-width: 600px;
+    margin-top: var(--spacing-xl);
+    max-width: 550px;
     margin-left: auto;
     margin-right: auto;
 
@@ -80,121 +86,84 @@
       position: relative;
       display: flex;
       align-items: center;
-      background: var(--white);
-      border: 2px solid var(--white-dark);
-      border-radius: var(--radius-lg);
-      padding: var(--spacing-sm);
-      transition: all var(--transition-normal);
-      box-shadow: var(--shadow-sm);
+      background-color: var(--ui-parchment);
+      border: 2px solid var(--ui-border);
+      padding: 6px var(--spacing-md);
+      box-shadow: 3px 3px 0 0 var(--ui-border-dark);
 
       &:focus-within {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        border-color: var(--ui-border-dark);
+        box-shadow: 3px 3px 0 0 var(--ui-border-dark), 0 0 0 2px var(--gold);
       }
     }
 
     &__icon {
-      color: var(--black-light);
-      margin-left: var(--spacing-sm);
+      color: var(--ui-border-dark);
       margin-right: var(--spacing-md);
-      font-size: var(--font-size-base);
+      font-size: 1rem;
     }
 
     &__input {
       flex: 1;
       border: none;
       outline: none;
-      font-size: var(--font-size-base);
-      color: var(--black);
+      font-size: 1.25rem;
+      font-family: var(--font-pixel-body);
+      color: var(--text-ink);
       background: transparent;
-      padding: var(--spacing-sm) 0;
-      font-family: var(--font-family-primary);
+      padding: 4px 0;
 
       &::placeholder {
-        color: var(--black-light);
+        color: rgba(41, 54, 111, 0.5);
       }
     }
 
     &__submit {
-      background: var(--primary);
-      border: none;
-      color: var(--white);
-      cursor: pointer;
-      padding: var(--spacing-sm) var(--spacing-md);
-      border-radius: var(--radius-md);
-      transition: all var(--transition-fast);
-      margin-right: var(--spacing-xs);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: var(--font-weight-medium);
-
-      &:hover:not(:disabled) {
-        background: var(--primary-dark);
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-sm);
-      }
-
-      &:disabled {
-        background: var(--white-dark);
-        color: var(--black-light);
-        cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-      }
-
-      i {
-        font-size: var(--font-size-sm);
-      }
+      @extend .blog__back-btn;
+      margin: 0 var(--spacing-xs) 0 0;
+      padding: 4px 8px;
     }
 
     &__clear {
       background: none;
       border: none;
-      color: var(--black-light);
+      color: var(--berry);
       cursor: pointer;
+      font-size: 1rem;
       padding: var(--spacing-xs);
-      border-radius: var(--radius-sm);
-      transition: all var(--transition-fast);
-      margin-right: var(--spacing-xs);
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &:hover {
-        background: var(--white-dark);
-        color: var(--primary);
-      }
-
-      i {
-        font-size: var(--font-size-sm);
+        transform: scale(1.1);
       }
     }
 
     &__status {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: var(--spacing-sm);
       margin-top: var(--spacing-md);
-      padding: var(--spacing-sm) var(--spacing-md);
-      background: rgba(var(--primary-rgb), 0.1);
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
-      color: var(--primary);
-
-      i {
-        font-size: var(--font-size-xs);
-      }
+      padding: 4px 8px;
+      background-color: var(--ui-border-dark);
+      border: 1px solid var(--ui-border);
+      font-family: var(--font-pixel-body);
+      font-size: 1.15rem;
+      color: var(--gold);
     }
 
     &__results {
-      font-weight: var(--font-weight-semibold);
-      color: var(--black);
+      font-weight: bold;
+      color: var(--text-light);
     }
   }
 
-  // Main content layout
+  // Main content layout (Two-column layout)
   &__content {
     display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: var(--spacing-4xl);
+    grid-template-columns: 1fr 280px;
+    gap: var(--spacing-3xl);
     align-items: start;
   }
 
@@ -202,469 +171,220 @@
   &__posts {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-3xl);
+    gap: var(--spacing-2xl);
   }
 
-  // Blog grid
+  // BOOKSHELF GRID
   &__grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: var(--spacing-3xl);
     width: 100%;
+    
+    // Drawing a physical bookshelf board
+    border-bottom: 8px solid var(--ui-border);
+    padding-bottom: var(--spacing-lg);
+    box-shadow: 0 4px 0 var(--ui-border-dark);
+    margin-bottom: var(--spacing-lg);
   }
 
-  // Blog item
   &__item {
-    transition: transform var(--transition-normal);
-
-    &:hover {
-      transform: translateY(-2px);
-    }
+    transition: transform var(--transition-step);
   }
 
-  // Pagination
+  // Pagination (Medieval style buttons)
   &__pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: var(--spacing-sm);
-    padding: var(--spacing-2xl) 0;
+    padding: var(--spacing-lg) 0;
     flex-wrap: wrap;
 
     &__btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-width: 2.5rem;
-      height: 2.5rem;
+      min-width: 32px;
+      height: 32px;
       padding: 0 var(--spacing-sm);
-      background-color: var(--white-light);
-      color: var(--black);
-      border: 1px solid var(--white-dark);
-      border-radius: var(--radius-md);
+      background-color: var(--ui-parchment);
+      color: var(--text-ink);
+      border: 2px solid var(--ui-border);
       cursor: pointer;
-      transition: all var(--transition-fast);
+      font-family: var(--font-pixel);
       font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
+      font-weight: bold;
+      box-shadow: 2px 2px 0 var(--ui-border-dark);
+      transition: transform var(--transition-step), box-shadow var(--transition-step);
 
       &:hover:not(:disabled) {
-        background-color: var(--primary);
-        color: var(--white-light);
-        border-color: var(--primary);
-        transform: translateY(-1px);
-        box-shadow: var(--shadow-sm);
+        background-color: var(--gold);
+        transform: translateY(-2px);
+        box-shadow: 2px 2px 0 var(--ui-border-dark), 2px 2px 0 var(--ui-border-dark);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(1px);
+        box-shadow: 1px 1px 0 var(--ui-border-dark);
       }
 
       &:disabled {
-        opacity: 0.4;
+        opacity: 0.5;
         cursor: not-allowed;
-        background-color: var(--white-dark);
+        background-color: var(--ui-parchment-dark);
+        box-shadow: 1px 1px 0 var(--ui-border-dark);
       }
 
       &--active {
-        background-color: var(--primary);
-        color: var(--white-light);
-        border-color: var(--primary);
-        box-shadow: var(--shadow-sm);
+        background-color: var(--gold);
+        box-shadow: 2px 2px 0 var(--ui-border-dark) inset;
+        transform: translateY(1px);
       }
     }
 
     &__info {
       width: 100%;
       text-align: center;
-      font-size: var(--font-size-sm);
-      color: var(--black-light);
-      font-weight: var(--font-weight-medium);
-      margin-top: var(--spacing-lg);
-      padding: var(--spacing-md);
-      background-color: var(--white-light);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--white-dark);
+      font-family: var(--font-pixel-body);
+      font-size: 1.25rem;
+      color: var(--text-light);
+      margin-top: var(--spacing-md);
+      padding: var(--spacing-sm);
+      background-color: var(--bg-dusk);
+      box-shadow: var(--pixel-border);
     }
   }
 
-  // Sidebar
+  // Sidebar (Themed as a wooden quest/information board)
   &__sidebar {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-3xl);
+    gap: var(--spacing-xl);
 
     &__section {
-      background-color: var(--white-light);
-      border: 1px solid var(--white-dark);
-      border-radius: var(--radius-xl);
-      padding: var(--spacing-2xl);
-      box-shadow: var(--shadow-sm);
+      background-color: var(--ui-parchment);
+      color: var(--text-ink);
+      box-shadow: var(--pixel-border);
+      padding: var(--spacing-xl);
     }
 
     &__title {
-      font-size: var(--font-size-xl);
-      font-weight: var(--font-weight-bold);
-      color: var(--black);
+      font-family: var(--font-pixel);
+      font-size: 1.25rem;
+      font-weight: bold;
+      color: var(--ui-border-dark);
+      margin-top: 0;
       margin-bottom: var(--spacing-sm);
-      padding-bottom: var(--spacing-md);
-      border-bottom: 2px solid var(--primary);
+      padding-bottom: 4px;
+      border-bottom: 2px double var(--ui-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: var(--spacing-sm);
+      gap: var(--spacing-xs);
 
       &__badge {
-        background: var(--primary);
-        color: var(--white);
-        font-size: var(--font-size-xs);
-        font-weight: var(--font-weight-medium);
-        padding: var(--spacing-xs) var(--spacing-sm);
-        border-radius: var(--radius-full);
-        animation: badgeAppear 0.3s ease-out;
-      }
-
-      @keyframes badgeAppear {
-        0% {
-          opacity: 0;
-          transform: scale(0.8);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1);
-        }
+        background-color: var(--ui-border);
+        color: var(--gold);
+        font-size: 0.75rem;
+        padding: 2px 6px;
+        box-shadow: 1px 1px 0 var(--ui-border-dark);
       }
     }
 
     &__subtitle {
-      font-size: var(--font-size-sm);
-      color: var(--black-light);
-      margin-bottom: var(--spacing-lg);
-      font-style: italic;
+      font-family: var(--font-pixel-body);
+      font-size: 1.15rem;
+      color: var(--text-ink);
+      margin-bottom: var(--spacing-md);
     }
 
     &__skills {
       display: flex;
       flex-wrap: wrap;
-      gap: var(--spacing-sm);
-      margin-bottom: var(--spacing-2xl);
+      gap: 6px;
+      margin-bottom: var(--spacing-lg);
     }
 
     &__skill-item {
       flex-shrink: 0;
       position: relative;
       cursor: pointer;
-      transition: all var(--transition-normal);
-      border-radius: var(--radius-lg);
+      transition: transform var(--transition-fast);
 
       &:hover:not(&--selected) {
         transform: translateY(-2px);
-        box-shadow: var(--shadow-md);
-
-        ::ng-deep lib-skill-ui {
-          .skill {
-            border-color: var(--primary) !important;
-            box-shadow: 0 2px 8px rgba(var(--primary-rgb), 0.2) !important;
-          }
-        }
       }
 
       &--selected {
-        // Enhanced selected state - more visible
         ::ng-deep lib-skill-ui {
-          .skill {
-            background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
-            color: var(--white) !important;
-            border: 2px solid var(--primary) !important;
-            box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3) !important;
-            transform: translateY(-2px) !important;
-            font-weight: var(--font-weight-semibold) !important;
+          .skill-badge {
+            background-color: var(--gold) !important;
+            color: var(--text-ink) !important;
+            border-color: var(--ui-border-dark) !important;
+            box-shadow: 2px 2px 0 0 var(--ui-border) !important;
+            transform: translateY(-1px);
           }
         }
 
-        // Enhanced check icon with background
         &::after {
           content: '✓';
           position: absolute;
-          top: -2px;
-          right: -2px;
-          width: 18px;
-          height: 18px;
-          background: var(--white);
-          color: var(--primary);
-          font-size: 12px;
+          top: -4px;
+          right: -4px;
+          width: 14px;
+          height: 14px;
+          background-color: var(--grass);
+          color: var(--text-light);
+          font-size: 9px;
           font-weight: bold;
-          border-radius: 50%;
+          border: 1px solid var(--ui-border-dark);
           display: flex;
           align-items: center;
           justify-content: center;
           z-index: 3;
-          border: 2px solid var(--primary);
-          box-shadow: var(--shadow-sm);
-        }
-
-        // Pulse animation for better visibility
-        animation: skillSelected 0.3s ease-out;
-      }
-
-      // Animation for selected state
-      @keyframes skillSelected {
-        0% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.05);
-        }
-        100% {
-          transform: scale(1);
         }
       }
     }
 
-    // Simple clear all button
     &__clear-all {
+      @extend .blog__back-btn;
       width: 100%;
-      background: var(--white);
-      border: 1px solid var(--primary);
-      color: var(--primary);
-      padding: var(--spacing-sm);
-      border-radius: var(--radius-md);
-      font-size: var(--font-size-sm);
-      font-weight: var(--font-weight-medium);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--spacing-xs);
-      margin-top: var(--spacing-lg);
-
-      &:hover {
-        background: var(--primary);
-        color: var(--white);
-      }
-
-      i {
-        font-size: var(--font-size-xs);
-      }
+      margin-top: var(--spacing-sm);
     }
   }
 }
 
-// Responsive design
-@media (max-width: 1216px) {
+// Tablet Responsive layout
+@media (max-width: 1024px) {
   .blog {
-    max-width: 100vw;
-    padding: var(--spacing-3xl) var(--spacing-2xl);
-
     &__content {
       grid-template-columns: 1fr;
-      gap: var(--spacing-3xl);
     }
-
     &__sidebar {
       order: -1;
-
-      &__section {
-        padding: var(--spacing-lg);
-      }
     }
   }
 }
 
-@media (max-width: 768px) {
+// Mobile Responsive layout
+@media (max-width: 780px) {
   .blog {
-    padding: var(--spacing-2xl) var(--spacing-lg);
-    gap: var(--spacing-3xl);
+    padding-top: 80px;
 
     &__header {
-      padding: var(--spacing-2xl) var(--spacing-lg);
-      margin-bottom: var(--spacing-3xl);
-
-      h1 {
-        font-size: var(--font-size-4xl);
-        line-height: 1.2;
-        margin-bottom: var(--spacing-md);
-      }
-    }
-
-    &__search {
-      margin-top: var(--spacing-2xl);
-      padding: 0 var(--spacing-sm);
-
-      &__container {
-        padding: var(--spacing-xs);
-      }
-
-      &__input {
-        font-size: var(--font-size-sm);
-      }
-
-      &__submit {
-        padding: var(--spacing-xs) var(--spacing-sm);
-
-        i {
-          font-size: var(--font-size-xs);
-        }
-      }
-
-      &__status {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-xs);
-        text-align: left;
-      }
-    }
-
-    &__content {
-      gap: var(--spacing-2xl);
+      h1 { font-size: 1.75rem; }
+      p { font-size: 1.15rem; }
     }
 
     &__grid {
       grid-template-columns: 1fr;
-      gap: var(--spacing-2xl);
-    }
-
-    &__pagination {
-      gap: var(--spacing-xs);
-      padding: var(--spacing-lg) 0;
-
-      &__btn {
-        min-width: 2rem;
-        height: 2rem;
-        font-size: var(--font-size-xs);
-      }
-
-      &__info {
-        font-size: var(--font-size-xs);
-        margin-top: var(--spacing-md);
-      }
-    }
-
-    &__sidebar {
-      &__section {
-        padding: var(--spacing-md);
-      }
-
-      &__title {
-        font-size: var(--font-size-lg);
-        margin-bottom: var(--spacing-md);
-
-        &__badge {
-          font-size: var(--font-size-xs);
-          padding: 2px var(--spacing-xs);
-        }
-      }
     }
   }
 }
 
-@media (max-width: 480px) {
-  .blog {
-    padding: var(--spacing-lg) var(--spacing-md);
-    gap: var(--spacing-2xl);
-
-    &__header {
-      padding: var(--spacing-lg);
-      margin-bottom: var(--spacing-2xl);
-
-      h1 {
-        font-size: var(--font-size-3xl);
-        line-height: 1.1;
-      }
-
-      p {
-        font-size: var(--font-size-sm);
-        padding: 0;
-      }
-    }
-
-    &__search {
-      margin-top: var(--spacing-lg);
-      padding: 0;
-
-      &__container {
-        padding: var(--spacing-xs);
-        border-radius: var(--radius-md);
-      }
-
-      &__input {
-        font-size: var(--font-size-xs);
-        padding: var(--spacing-xs) 0;
-      }
-
-      &__submit {
-        padding: var(--spacing-xs);
-
-        i {
-          font-size: var(--font-size-xs);
-        }
-      }
-
-      &__status {
-        font-size: var(--font-size-xs);
-        padding: var(--spacing-xs) var(--spacing-sm);
-        margin-top: var(--spacing-sm);
-      }
-    }
-
-    &__content {
-      gap: var(--spacing-lg);
-    }
-
-    &__grid {
-      gap: var(--spacing-lg);
-    }
-
-    &__back-btn {
-      padding: var(--spacing-xs) var(--spacing-md);
-      font-size: var(--font-size-xs);
-    }
-
-    &__pagination {
-      &__btn {
-        min-width: 1.75rem;
-        height: 1.75rem;
-        font-size: var(--font-size-xs);
-      }
-
-      &__info {
-        font-size: var(--font-size-xs);
-        padding: var(--spacing-sm);
-      }
-    }
-
-    &__sidebar {
-      &__section {
-        padding: var(--spacing-sm);
-      }
-
-      &__title {
-        font-size: var(--font-size-base);
-        margin-bottom: var(--spacing-sm);
-
-        &__badge {
-          font-size: var(--font-size-xs);
-          padding: 1px var(--spacing-xs);
-        }
-      }
-
-      &__subtitle {
-        font-size: var(--font-size-xs);
-        margin-bottom: var(--spacing-sm);
-      }
-
-      &__skills {
-        gap: var(--spacing-xs);
-        margin-bottom: var(--spacing-lg);
-      }
-
-      &__clear-all {
-        padding: var(--spacing-xs);
-        font-size: var(--font-size-xs);
-        margin-top: var(--spacing-sm);
-      }
-    }
-  }
-}
-
-// Legacy support
+// Backward compatibility extend overrides
 lib-blog-card-ui {
   @extend .blog__item;
 }

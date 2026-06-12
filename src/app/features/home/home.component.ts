@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { FormsModule } from '@angular/forms';
 import { ExperiencesService } from '../../core/services/experiences.service';
@@ -13,6 +13,9 @@ import { ToastService } from '../../core/services/toast.service';
 import { CommonModule } from '@angular/common';
 import { Skill, Experience, Project, ContactModel } from '../../core/models';
 import { SafeHtmlDisplayComponent } from 'src/app/shared/components/safe-html-display/safe-html-display.component';
+import { GameModeService } from '../../core/services/game-mode.service';
+import { ModeSelectionComponent } from '../mode-selection/mode-selection.component';
+import { GameComponent } from '../../game/game.component';
 
 interface ContactData {
   name: string;
@@ -27,7 +30,9 @@ interface ContactData {
     SkillUiComponent,
     SafeHtmlDisplayComponent,
     CommonModule,
-    FormsModule
+    FormsModule,
+    ModeSelectionComponent,
+    GameComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -47,6 +52,7 @@ export class HomeComponent implements OnInit{
   selectedExperience: Experience | null = null;
   response: any;
   socialLinks: any = {};
+  mode = inject(GameModeService).getModeSignal();
 
   contactData: ContactData = {
     name: '',
@@ -61,7 +67,8 @@ export class HomeComponent implements OnInit{
     private experiencesService: ExperiencesService,
     private projectsService: ProjectsService,
     private commonService: CommonService,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private gameModeService: GameModeService
   ) {
 
   }
