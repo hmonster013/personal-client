@@ -1,4 +1,13 @@
-<div class="game-world">
+<div class="game-world" (click)="focusGame()" (pointerdown)="focusGame()">
+  <!-- Retro Loading Screen -->
+  @if (isLoading()) {
+    <div class="game-loading-overlay">
+      <div class="rpg-badge pulse" style="font-size: 1.5rem; letter-spacing: 2px;">
+        LOADING... {{ loadingProgress() }}%
+      </div>
+    </div>
+  }
+
   <!-- Game Scene host canvas -->
   <div class="game-canvas-container">
     <canvas #gameCanvas class="pixelated"></canvas>

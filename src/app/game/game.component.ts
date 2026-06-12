@@ -7,28 +7,27 @@ import {
   ViewChild, 
   NgZone, 
   inject, 
-  signal,
-  HostListener
+  signal
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameStateService } from './services/game-state.service';
 import { GameBridgeService } from './services/game-bridge.service';
 import { InputService } from './engine/input.service';
 import { GameLoop } from './engine/game-loop';
-import { Camera } from './engine/camera';
-import { Tilemap, TiledMapJSON } from './engine/tilemap';
-import { Player } from './entities/player';
-import { NPC } from './entities/npc';
-import { InteractionSystem, InteractionObject } from './engine/interaction';
+import { SceneManager } from './engine/scene-manager';
+import { FollowCamera } from './engine/follow-camera';
+import { AssetLoader } from './engine/asset-loader';
+import { Player3D } from './entities/player-3d';
+import { NPC3D } from './entities/npc-3d';
+import { Vector3, SphereGeometry, MeshStandardMaterial, Mesh } from 'three';
+import { WORLD_SPEC } from './world/world-spec';
 import { SkillsService } from '../core/services/skills.service';
 import { ExperiencesService } from '../core/services/experiences.service';
 import { Skill } from '../core/models';
 import { JCode } from '../shared/utils/JCode';
 import { Subscription } from 'rxjs';
 
-// Import map JSON directly
-import * as mapDataRaw from './world/village.map.json';
-const mapData = (mapDataRaw as any).default || mapDataRaw;
+const PLAYER_MODEL = 'assets/game3d/models/chars/character-male-a.glb';
 
 @Component({
   selector: 'app-game',
@@ -48,26 +47,24 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   private skillsService = inject(SkillsService);
   private experiencesService = inject(ExperiencesService);
 
+  // Loading signals
+  isLoading = signal<boolean>(true);
+  loadingProgress = signal<number>(0);
+
   // Stats signals for character menu
   skills = signal<Skill[]>([]);
   yearsOfExperience = signal<number>(4);
 
   // Engine objects
   private canvas!: HTMLCanvasElement;
-  private ctx!: CanvasRenderingContext2D;
+  private sceneManager!: SceneManager;
+  private camera!: FollowCamera;
+  private assetLoader!: AssetLoader;
+  private player!: Player3D;
   private loop!: GameLoop;
-  private camera!: Camera;
-  private tilemap!: Tilemap;
-  private player!: Player;
-  private npcs: NPC[] = [];
-  private interactionSystem!: InteractionSystem;
-
-  // Asset canvases (generated dynamically)
-  private tilesetCanvas!: HTMLCanvasElement;
-  private playerCanvas!: HTMLCanvasElement;
 
   // Overlap tracking
-  currentInteractionObj = signal<InteractionObject | null>(null);
+  currentInteractionObj = signal<any | null>(null);
 
   // Subscriptions
   private subs = new Subscription();
@@ -75,15 +72,18 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   // ResizeObserver to handle canvas resizing
   private resizeObserver!: ResizeObserver;
 
+  // Milestone M4 additions:
+  npcs: NPC3D[] = [];
+  catNPC: NPC3D | null = null;
+  bannerMeshes: any[] = [];
+  smokeParticles: any[] = [];
+  elapsedTime = 0;
+
   ngOnInit() {
     this.loadSkills();
     this.calculateYearsOfExperience();
-    this.generateAssets();
 
-    // Listen to Keyboard and Touch interactions.
-    // Đăng ký NGOÀI zone: phím giữ di chuyển auto-repeat liên tục, nếu listener nằm trong zone
-    // thì mỗi keydown/keyup đều trigger change detection. Các handler bên dưới tự ngZone.run()
-    // ở đúng chỗ cần cập nhật UI.
+    // Listen to Keyboard and Touch interactions outside Angular zone
     this.ngZone.runOutsideAngular(() => {
       this.inputService.startListening();
     });
@@ -111,56 +111,178 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit() {
     this.canvas = this.canvasRef.nativeElement;
-    const context = this.canvas.getContext('2d');
-    if (!context) {
-      console.error('Could not get 2D context for canvas');
-      return;
-    }
-    this.ctx = context;
-    this.ctx.imageSmoothingEnabled = false;
 
-    // Initialize systems
-    this.tilemap = new Tilemap();
-    this.tilemap.loadMap(mapData as TiledMapJSON, this.tilesetCanvas);
-
-    // Load real tileset asynchronously, fallback to this.tilesetCanvas on error
-    const realTileset = new Image();
-    realTileset.src = 'assets/game/tileset-village.png';
-    realTileset.onload = () => {
-      this.ngZone.runOutsideAngular(() => {
-        this.tilemap.loadMap(mapData as TiledMapJSON, realTileset);
-      });
-    };
-    realTileset.onerror = (err) => {
-      console.warn('Failed to load real tileset image, falling back to code-generated tileset canvas.', err);
-    };
-
-    // Camera will be properly configured on resize
-    this.camera = new Camera(320, 240, 3);
-    this.camera.setMapSize(this.tilemap.pixelWidth, this.tilemap.pixelHeight);
-
-    // Spawn Player near center (320, 240 is central plaza spawn)
-    this.player = new Player(this.playerCanvas, 320, 240);
-    this.camera.snapTo(this.player.x, this.player.y);
-
-    // Spawn NPCs
-    this.spawnNPCs();
-
-    // Spawn Interaction System
-    this.interactionSystem = new InteractionSystem(this.gameState, this.gameBridge);
-
-    // Initialize loop outside Angular Zone
-    this.loop = new GameLoop(
-      this.ngZone,
-      (dt) => this.update(dt),
-      (interpolation) => this.render(interpolation)
-    );
+    // Initialize 3D Core Systems
+    this.sceneManager = new SceneManager(this.canvas);
+    this.camera = new FollowCamera();
+    this.assetLoader = new AssetLoader();
 
     // Setup responsive canvas resizing
     this.setupResizing();
 
-    // Start loop
-    this.loop.start();
+    // Load assets asynchronously
+    this.ngZone.runOutsideAngular(async () => {
+      // Suy danh sách preload từ world-spec — bao gồm cả static objects và NPCs
+      const assetsToLoad = Array.from(new Set([
+        PLAYER_MODEL,
+        ...WORLD_SPEC.objects.map(o => o.modelPath),
+        ...WORLD_SPEC.npcs.map(n => n.modelPath)
+      ]));
+
+      await this.assetLoader.loadAll(assetsToLoad, (progress) => {
+        this.ngZone.run(() => {
+          this.loadingProgress.set(progress);
+        });
+      });
+
+      this.ngZone.run(() => {
+        this.isLoading.set(false);
+      });
+
+      // Build the 3D scene once loaded
+      this.setupScene();
+    });
+  }
+
+  private setupScene() {
+    this.ngZone.runOutsideAngular(() => {
+      // 1. Spawn Player Container (adds player to scene)
+      const playerModel = this.assetLoader.get(PLAYER_MODEL);
+      this.player = new Player3D(playerModel, this.assetLoader.getAnimations(PLAYER_MODEL));
+      this.player.setPosition(WORLD_SPEC.spawnPoint.x, WORLD_SPEC.spawnPoint.y, WORLD_SPEC.spawnPoint.z);
+      this.sceneManager.add(this.player.container);
+
+      // Temporary list of chimney positions for smoke generator
+      const chimneyPositions: Vector3[] = [];
+
+      // 2. Spawn Static World Objects (walls, roofs, tree)
+      WORLD_SPEC.objects.forEach((objSpec) => {
+        const model = this.assetLoader.get(objSpec.modelPath);
+        
+        // Position
+        model.position.set(objSpec.position.x, objSpec.position.y, objSpec.position.z);
+        
+        // Rotation (convert to radians if supplied)
+        if (objSpec.rotation) {
+          if (objSpec.rotation.x) model.rotation.x = objSpec.rotation.x;
+          if (objSpec.rotation.y) model.rotation.y = objSpec.rotation.y;
+          if (objSpec.rotation.z) model.rotation.z = objSpec.rotation.z;
+        }
+
+        // Scale
+        if (objSpec.scale) {
+          model.scale.set(objSpec.scale.x, objSpec.scale.y, objSpec.scale.z);
+        }
+
+        // Traversal for casting shadows
+        model.traverse((child: any) => {
+          if (child.isMesh) {
+            child.castShadow = true;
+            child.receiveShadow = true;
+          }
+        });
+
+        this.sceneManager.add(model);
+
+        // Track chimney positions
+        if (objSpec.modelPath.includes('chimney.glb')) {
+          chimneyPositions.push(new Vector3(objSpec.position.x, objSpec.position.y + 1.6, objSpec.position.z));
+        }
+
+        // Track banners for sway/wind animation
+        if (objSpec.modelPath.includes('banner')) {
+          this.bannerMeshes.push(model);
+        }
+
+        // Glow đọc từ spec — KHÔNG hardcode vị trí
+        if (objSpec.interactionName) {
+          this.sceneManager.registerInteractiveObject(objSpec.interactionName, model);
+        }
+      });
+
+      // 2b. Spawn NPCs from spec (Guide, Cat, etc.)
+      WORLD_SPEC.npcs.forEach((npcSpec) => {
+        const npcModel = this.assetLoader.get(npcSpec.modelPath);
+        const npcAnimations = this.assetLoader.getAnimations(npcSpec.modelPath);
+        const npc = new NPC3D(npcModel, npcAnimations, npcSpec.name);
+        
+        npc.setPosition(npcSpec.position.x, npcSpec.position.y, npcSpec.position.z);
+        
+        if (npcSpec.rotationY !== undefined) {
+          npc.rotationGroup.rotation.y = npcSpec.rotationY;
+        }
+        
+        if (npcSpec.roam) {
+          npc.setRoaming(true, npcSpec.roamRadius || 5);
+        }
+
+        if (npcSpec.name === 'npc_guide') {
+          npc.addExclamationMark();
+        }
+
+        if (npcSpec.name === 'cat_npc') {
+          // Adjust cat scale and speed to make it look like a small cute animal
+          npc.mesh.scale.set(0.24, 0.24, 0.24);
+          npc.hitboxSize = { width: 0.3, depth: 0.3 };
+          npc.speed = 1.2; // slow cute pacing
+          this.catNPC = npc;
+        }
+
+        this.sceneManager.add(npc.container);
+        this.npcs.push(npc);
+      });
+
+      // 2c. Setup Chimney Smoke Particles
+      const particleGeometry = new SphereGeometry(0.12, 5, 5); // small low-poly sphere
+      chimneyPositions.forEach((pos) => {
+        // Create 6 smoke particles per chimney
+        for (let i = 0; i < 6; i++) {
+          const particleMaterial = new MeshStandardMaterial({
+            color: '#e5e7eb', // soft white-grey
+            roughness: 0.9,
+            metalness: 0.1,
+            transparent: true,
+            opacity: 0.0,
+            flatShading: true
+          });
+          const mesh = new Mesh(particleGeometry, particleMaterial);
+          mesh.position.copy(pos);
+          this.sceneManager.add(mesh);
+
+          this.smokeParticles.push({
+            mesh,
+            material: particleMaterial,
+            velocity: new Vector3(0, 0, 0),
+            life: Math.random() * 2.0, // spread starting life times
+            maxLife: 2.0,
+            origin: pos
+          });
+        }
+      });
+
+      // 3. Force logical resize before rendering to ensure perfect projection alignment
+      const parent = this.canvas.parentElement;
+      if (parent) {
+        const rect = parent.getBoundingClientRect();
+        this.resizeCanvas(rect.width, rect.height);
+      }
+
+      // 4. Position and snap the camera (sau lưng nhân vật đang quay mặt vào làng)
+      this.camera.snapTo(this.player.position, Math.PI);
+      this.camera.initControls(this.canvas);
+
+      // 5. Force keyboard focus to the game area
+      this.focusGame();
+
+      // 6. Initialize loop outside Angular Zone
+      this.loop = new GameLoop(
+        this.ngZone,
+        (dt) => this.update(dt),
+        () => this.render()
+      );
+
+      this.loop.start();
+    });
   }
 
   ngOnDestroy() {
@@ -174,6 +296,23 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
+
+    // Full memory disposal of WebGL resources to prevent context leak
+    if (this.camera) {
+      this.camera.dispose();
+    }
+    if (this.sceneManager) {
+      this.sceneManager.dispose();
+    }
+    if (this.assetLoader) {
+      this.assetLoader.clear();
+    }
+
+    // Clear Milestone M4 arrays
+    this.npcs = [];
+    this.catNPC = null;
+    this.bannerMeshes = [];
+    this.smokeParticles = [];
   }
 
   // Handle resizing of the canvas container to calculate viewport and zoom
@@ -200,122 +339,108 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   private resizeCanvas(containerWidth: number, containerHeight: number) {
     if (containerWidth <= 0 || containerHeight <= 0) return;
 
-    // Zoom phải là bội số nguyên theo PIXEL VẬT LÝ, không phải CSS px —
-    // Windows scaling 125%/150% làm 1 CSS px = 1.25/1.5 pixel thật, zoom nguyên
-    // theo CSS px vẫn cho ô pixel lệch nhau (vỡ pixel).
-    const dpr = window.devicePixelRatio || 1;
-    // Nhắm tầm nhìn dọc ~240 game px (~15 tile). Giảm = zoom gần hơn, tăng = xa hơn.
-    const deviceZoom = Math.max(2, Math.floor((containerHeight * dpr) / 240));
-    const cssZoom = deviceZoom / dpr;
-
-    // Canvas không cần to hơn map — thừa chỉ là dải nền đen hai bên
-    let internalWidth = Math.ceil(containerWidth / cssZoom);
-    let internalHeight = Math.ceil(containerHeight / cssZoom);
-    if (this.tilemap) {
-      internalWidth = Math.min(internalWidth, this.tilemap.pixelWidth);
-      internalHeight = Math.min(internalHeight, this.tilemap.pixelHeight);
-    }
-
-    this.canvas.width = internalWidth;
-    this.canvas.height = internalHeight;
-    // Kích thước hiển thị = nội bộ × zoom; flex container tự căn giữa phần dư
-    this.canvas.style.width = `${internalWidth * cssZoom}px`;
-    this.canvas.style.height = `${internalHeight * cssZoom}px`;
-
-    if (this.camera) {
-      this.camera.setViewportSize(internalWidth, internalHeight, cssZoom);
-    }
-
-    if (this.ctx) {
-      this.ctx.imageSmoothingEnabled = false;
+    // Simply delegate sizing and pixel ratios entirely to Three.js!
+    if (this.sceneManager && this.camera) {
+      this.sceneManager.resize(containerWidth, containerHeight, this.camera);
     }
   }
 
-  private spawnNPCs() {
-    // Guide standing near spawn point (no linear patrol)
-    const guideNPC = new NPC(this.playerCanvas, 288, 240, 'Guide DE013', false);
-    this.npcs.push(guideNPC);
-
-    // Roaming Cat
-    const catCanvas = this.generateCatCanvas();
-    const catNPC = new NPC(catCanvas, 340, 230, 'Cat', true);
-    catNPC.speed = 15; // Slow cat speed
-    this.npcs.push(catNPC);
+  /**
+   * Request game input focus (triggered on click/pointerdown or setupScene)
+   */
+  focusGame() {
+    this.inputService.setGameFocus(true);
   }
 
   private update(dt: number) {
-    // If dialog is open, pause entity updating
+    if (this.isLoading()) return;
+
+    // --- MILESTONE M4: Update NPCs and ambient animations ALWAYS for a lively world ---
+    this.npcs.forEach((npc) => {
+      npc.update(dt, WORLD_SPEC.colliders);
+    });
+
+    // Update Cat Interaction Zone dynamically to follow the cat's position
+    const catZone = WORLD_SPEC.interactionZones.find(z => z.name === 'cat_npc');
+    if (catZone && this.catNPC) {
+      const catPos = this.catNPC.position;
+      catZone.minX = catPos.x - 1.2;
+      catZone.maxX = catPos.x + 1.2;
+      catZone.minZ = catPos.z - 1.2;
+      catZone.maxZ = catPos.z + 1.2;
+    }
+
+    // Update ambient sway animations (banners/flags)
+    this.elapsedTime += dt;
+    this.bannerMeshes.forEach((banner) => {
+      banner.rotation.z = Math.sin(this.elapsedTime * 2.2) * 0.08;
+    });
+
+    // Update chimney smoke particles rising and fading
+    this.smokeParticles.forEach((p) => {
+      p.life -= dt;
+      if (p.life <= 0) {
+        p.life = p.maxLife;
+        p.mesh.position.copy(p.origin);
+        p.mesh.scale.setScalar(0.18 + Math.random() * 0.25);
+        p.velocity.set(
+          (Math.random() - 0.5) * 0.35,
+          0.7 + Math.random() * 0.5,
+          (Math.random() - 0.5) * 0.35
+        );
+        p.material.opacity = 0.5;
+      } else {
+        p.mesh.position.addScaledVector(p.velocity, dt);
+        const ratio = p.life / p.maxLife;
+        p.mesh.scale.addScalar(dt * 0.04);
+        p.material.opacity = ratio * 0.5;
+      }
+    });
+
+    // If dialog is open or menu open, pause player update
     if (this.gameState.isDialogOpen() || this.gameState.isCharacterMenuOpen()) {
       return;
     }
 
-    // Update Player movement
+    // Update Player movement (input quy đổi theo hướng camera — third person)
     const currentDir = this.inputService.direction();
-    this.player.update(dt, currentDir, this.tilemap);
+    this.player.update(dt, currentDir, WORLD_SPEC.colliders, this.camera.getYaw());
 
-    // Update NPCs with collision support
-    this.npcs.forEach(npc => npc.update(dt, this.tilemap));
+    // Camera lượn ra sau lưng nhân vật
+    this.camera.update(this.player.position, this.player.facingYaw, dt);
 
-    // Sync cat interaction zone in tilemap with cat NPC's position
-    const catInteraction = this.tilemap.interactions.find(obj => obj.name === 'cat_npc');
-    const catNPC = this.npcs.find(n => n.name === 'Cat');
-    if (catInteraction && catNPC) {
-      catInteraction.x = catNPC.x;
-      catInteraction.y = catNPC.y;
+    // Check interaction zone overlap
+    let activeZone: any = null;
+    for (const zone of WORLD_SPEC.interactionZones) {
+      if (
+        this.player.position.x >= zone.minX &&
+        this.player.position.x <= zone.maxX &&
+        this.player.position.z >= zone.minZ &&
+        this.player.position.z <= zone.maxZ
+      ) {
+        activeZone = zone;
+        break;
+      }
     }
 
-    // Update Camera
-    this.camera.update(this.player.x, this.player.y);
-
-    // Check interaction overlaps
-    const currentOverlap = this.interactionSystem.checkOverlaps(
-      { x: this.player.x, y: this.player.y },
-      this.player.hitboxOffset,
-      this.player.hitboxSize,
-      this.tilemap
-    );
-
     // Update component property inside zone only if overlap changed
-    if (this.currentInteractionObj() !== currentOverlap) {
+    if (this.currentInteractionObj() !== activeZone) {
       this.ngZone.run(() => {
-        this.currentInteractionObj.set(currentOverlap);
+        this.currentInteractionObj.set(activeZone);
+        this.gameState.activeInteraction.set(activeZone ? activeZone.name : null);
       });
+    }
+
+    // Update 3D glow feedback
+    if (this.sceneManager) {
+      this.sceneManager.updateGlows(activeZone ? activeZone.name : null, dt);
     }
   }
 
-  private render(interpolation: number) {
-    if (!this.ctx) return;
-
-    // Clear background
-    this.ctx.fillStyle = '#1A1C2C'; // background night color
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-    // Draw Ground
-    this.tilemap.drawGround(this.ctx, this.camera);
-
-    // Draw Entities sorted by their Y position (classic RPG depth sorting)
-    const entities: { y: number; draw: (ctx: CanvasRenderingContext2D) => void }[] = [];
-    
-    entities.push({
-      y: this.player.y + this.player.height,
-      draw: (c) => this.player.draw(c, this.camera)
-    });
-
-    this.npcs.forEach(npc => {
-      entities.push({
-        y: npc.y + npc.height,
-        draw: (c) => npc.draw(c, this.camera)
-      });
-    });
-
-    // Sort ascending by Y coordinate
-    entities.sort((a, b) => a.y - b.y);
-
-    // Render sorted entities
-    entities.forEach(entity => entity.draw(this.ctx));
-
-    // Draw Above Layer (roofs, tree leaves drawn OVER the player/npcs)
-    this.tilemap.drawAbove(this.ctx, this.camera);
+  private render() {
+    if (this.sceneManager && this.camera && !this.isLoading()) {
+      this.sceneManager.render(this.camera);
+    }
   }
 
   // --- Handlers ---
@@ -325,11 +450,6 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       const activeName = this.gameState.activeInteraction();
       if (activeName === 'sign_skip') {
         this.skipGame();
-      }
-      if (activeName === 'npc_guide') {
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('talked_to_guide', 'true');
-        }
       }
       // Close active dialog
       this.ngZone.run(() => {
@@ -343,7 +463,9 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       // Trigger interaction overlap if available
       this.ngZone.run(() => {
-        this.interactionSystem.handleInteractionKey();
+        if (this.currentInteractionObj() && !this.gameState.isDialogOpen()) {
+          this.gameBridge.triggerInteraction(this.currentInteractionObj()!.name);
+        }
       });
     }
   }
@@ -402,7 +524,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   getInteractionDialogText(name: string): string {
     switch (name) {
       case 'npc_guide':
-        return 'Chào mừng bạn đến với Ngôi Làng Pixel của DE013! Hãy dùng các phím WASD hoặc phím Mũi tên để di chuyển. Bạn có thể ghé thăm Nhà của tôi (About), Xưởng chế tác (Projects), Thư viện (Blog) hoặc Bảng nhiệm vụ (Experiences) bằng cách đến gần cửa và nhấn phím E nhé!';
+        return 'Chào mừng bạn đến với Ngôi Làng 3D của DE013! Hãy dùng các phím WASD hoặc phím Mũi tên để di chuyển. Bạn có thể ghé thăm Nhà của tôi (About), Xưởng chế tác (Projects), Thư viện (Blog) hoặc Bảng nhiệm vụ (Experiences) bằng cách đến gần tòa nhà và nhấn phím E nhé!';
       case 'door_about': 
         return 'Chào mừng đến với nhà của DE013! Tôi là Kỹ sư Hệ thống Thông tin tốt nghiệp xuất sắc. Đây là nơi chứa đựng các thông tin cơ bản về bản thân, các kỹ năng lập trình Angular, Python, và kinh nghiệm xử lý dữ liệu.';
       case 'door_projects':
@@ -431,7 +553,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getInteractionTitle(name: string): string {
     switch (name) {
-      case 'npc_guide': return '💬 NPC HƯỚNG DẪN';
+      case 'npc_guide': return '💬 NPC HƯỚNG Dẫn';
       case 'door_about': return '🏠 NHÀ CỦA DE013 (ABOUT)';
       case 'door_projects':
       case 'desk_projects': 
@@ -449,228 +571,6 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       case 'cat_npc': return '🐱 MÈO CON LAN THANG';
       default: return '🔮 SỰ KIỆN';
     }
-  }
-
-  // --- Dynamic Asset Generation ---
-
-  private generateAssets() {
-    this.tilesetCanvas = document.createElement('canvas');
-    this.tilesetCanvas.width = 192;
-    this.tilesetCanvas.height = 176;
-    const ctx = this.tilesetCanvas.getContext('2d')!;
-    ctx.imageSmoothingEnabled = false;
-
-    // Default fill the whole fallback canvas with Grass (green GID 1)
-    ctx.fillStyle = '#38B764';
-    ctx.fillRect(0, 0, 192, 176);
-
-    // Draw little grass details on GID 1 (Col 0, Row 0)
-    ctx.fillStyle = '#2c9e52';
-    ctx.fillRect(2, 3, 2, 2);
-    ctx.fillRect(10, 6, 2, 2);
-    ctx.fillRect(6, 12, 2, 2);
-
-    // Path tile (GID 9) at Col 8, Row 0
-    ctx.fillStyle = '#F4E4BC'; // beige
-    ctx.fillRect(8 * 16, 0, 16, 16);
-    ctx.fillStyle = '#D6C094';
-    ctx.fillRect(8 * 16 + 2, 5, 2, 2);
-    ctx.fillRect(8 * 16 + 10, 10, 2, 1);
-
-    // Water tile (GID 21) at Col 8, Row 1
-    ctx.fillStyle = '#41A6F6'; // blue
-    ctx.fillRect(8 * 16, 16, 16, 16);
-    ctx.fillStyle = '#29366F';
-    ctx.fillRect(8 * 16 + 4, 20, 8, 2);
-
-    // Wood bridge horizontal (GID 26) at Col 1, Row 2
-    ctx.fillStyle = '#73452C'; // wooden brown
-    ctx.fillRect(1 * 16, 32, 16, 16);
-    ctx.fillStyle = '#3E2731'; // borders
-    ctx.fillRect(1 * 16, 32, 16, 2);
-    ctx.fillRect(1 * 16, 46, 16, 2);
-
-    // Tree Trunk / Collision GID 25 at Col 0, Row 2
-    ctx.fillStyle = '#73452C'; // wood
-    ctx.fillRect(0, 32, 16, 16);
-    ctx.fillStyle = '#3E2731';
-    ctx.fillRect(4, 32, 8, 16);
-
-    // Tree canopy / Roof GID 29 at Col 4, Row 2
-    ctx.fillStyle = '#227B42'; // deep green
-    ctx.fillRect(4 * 16, 32, 16, 16);
-    ctx.fillStyle = '#38B764'; // highlight
-    ctx.fillRect(4 * 16 + 2, 34, 4, 4);
-    ctx.fillRect(4 * 16 + 8, 36, 4, 4);
-
-
-    // Create player character sheet
-    this.playerCanvas = document.createElement('canvas');
-    this.playerCanvas.width = 48; // 3 frames * 16
-    this.playerCanvas.height = 64; // 4 rows * 16
-    const pCtx = this.playerCanvas.getContext('2d')!;
-    pCtx.imageSmoothingEnabled = false;
-
-    const skinColor = '#F4D0A4';
-    const shirtColor = '#EF7D57'; // Berry accent
-    const pantsColor = '#29366F'; // Ink text color
-    const hairColor = '#73452C'; // wood border
-    const outlineColor = '#3E2731'; // dark outline
-
-    // Draw 4 rows: Down, Up, Left, Right
-    for (let r = 0; r < 4; r++) {
-      for (let f = 0; f < 3; f++) {
-        const ox = f * 16;
-        const oy = r * 16;
-
-        pCtx.save();
-        
-        // Head
-        if (r === 0) { // DOWN
-          pCtx.fillStyle = hairColor;
-          pCtx.fillRect(ox + 4, oy + 1, 8, 4);
-          pCtx.fillStyle = skinColor;
-          pCtx.fillRect(ox + 4, oy + 4, 8, 4);
-          pCtx.fillStyle = outlineColor; // Eyes
-          pCtx.fillRect(ox + 5, oy + 5, 2, 2);
-          pCtx.fillRect(ox + 9, oy + 5, 2, 2);
-        } else if (r === 1) { // UP (Back of head)
-          pCtx.fillStyle = hairColor;
-          pCtx.fillRect(ox + 4, oy + 1, 8, 7);
-        } else if (r === 2) { // LEFT
-          pCtx.fillStyle = hairColor;
-          pCtx.fillRect(ox + 5, oy + 1, 7, 4);
-          pCtx.fillStyle = skinColor;
-          pCtx.fillRect(ox + 5, oy + 4, 6, 4);
-          pCtx.fillStyle = hairColor; // back hair
-          pCtx.fillRect(ox + 8, oy + 1, 3, 4);
-          pCtx.fillStyle = outlineColor; // Eye
-          pCtx.fillRect(ox + 6, oy + 5, 1, 2);
-        } else { // RIGHT
-          pCtx.fillStyle = hairColor;
-          pCtx.fillRect(ox + 4, oy + 1, 7, 4);
-          pCtx.fillStyle = skinColor;
-          pCtx.fillRect(ox + 5, oy + 4, 6, 4);
-          pCtx.fillStyle = hairColor; // back hair
-          pCtx.fillRect(ox + 5, oy + 1, 3, 4);
-          pCtx.fillStyle = outlineColor; // Eye
-          pCtx.fillRect(ox + 9, oy + 5, 1, 2);
-        }
-
-        // Shirt
-        pCtx.fillStyle = shirtColor;
-        pCtx.fillRect(ox + 4, oy + 8, 8, 4);
-
-        // Legs/Pants (animating leg cycles)
-        pCtx.fillStyle = pantsColor;
-        if (f === 1) { // Standing
-          pCtx.fillRect(ox + 4, oy + 12, 3, 4);
-          pCtx.fillRect(ox + 9, oy + 12, 3, 4);
-        } else if (f === 0) { // Left leg up
-          pCtx.fillRect(ox + 3, oy + 12, 3, 4);
-          pCtx.fillRect(ox + 9, oy + 12, 2, 2);
-        } else { // Right leg up
-          pCtx.fillRect(ox + 5, oy + 12, 2, 2);
-          pCtx.fillRect(ox + 10, oy + 12, 3, 4);
-        }
-        pCtx.restore();
-      }
-    }
-  }
-
-  private generateCatCanvas(): HTMLCanvasElement {
-    const canvas = document.createElement('canvas');
-    canvas.width = 48;
-    canvas.height = 64;
-    const ctx = canvas.getContext('2d')!;
-    ctx.imageSmoothingEnabled = false;
-
-    const furColor = '#EF7D57'; // Orange fur
-    const bellyColor = '#F4E4BC'; // Light beige belly
-    const eyeColor = '#29366F'; // Dark ink eyes
-
-    for (let r = 0; r < 4; r++) {
-      for (let f = 0; f < 3; f++) {
-        const ox = f * 16;
-        const oy = r * 16;
-
-        ctx.save();
-        
-        if (r === 0) { // DOWN
-          // Ears
-          ctx.fillStyle = furColor;
-          ctx.fillRect(ox + 4, oy + 2, 2, 2);
-          ctx.fillRect(ox + 10, oy + 2, 2, 2);
-          // Head
-          ctx.fillRect(ox + 4, oy + 4, 8, 5);
-          // Eyes
-          ctx.fillStyle = eyeColor;
-          ctx.fillRect(ox + 5, oy + 6, 1, 1);
-          ctx.fillRect(ox + 10, oy + 6, 1, 1);
-          // Body
-          ctx.fillStyle = furColor;
-          ctx.fillRect(ox + 5, oy + 9, 6, 4);
-          ctx.fillStyle = bellyColor;
-          ctx.fillRect(ox + 6, oy + 10, 4, 3);
-        } else if (r === 1) { // UP
-          // Ears
-          ctx.fillStyle = furColor;
-          ctx.fillRect(ox + 4, oy + 2, 2, 2);
-          ctx.fillRect(ox + 10, oy + 2, 2, 2);
-          // Head
-          ctx.fillRect(ox + 4, oy + 4, 8, 5);
-          // Body
-          ctx.fillRect(ox + 5, oy + 9, 6, 5);
-          // Tail
-          ctx.fillRect(ox + 7, oy + 7, 2, 2);
-        } else if (r === 2) { // LEFT
-          // Ear
-          ctx.fillStyle = furColor;
-          ctx.fillRect(ox + 5, oy + 2, 2, 2);
-          // Head
-          ctx.fillRect(ox + 4, oy + 4, 7, 5);
-          // Eye
-          ctx.fillStyle = eyeColor;
-          ctx.fillRect(ox + 5, oy + 6, 1, 1);
-          // Body
-          ctx.fillStyle = furColor;
-          ctx.fillRect(ox + 6, oy + 9, 7, 4);
-          // Tail
-          ctx.fillRect(ox + 13, oy + 9, 2, 2);
-        } else { // RIGHT
-          // Ear
-          ctx.fillStyle = furColor;
-          ctx.fillRect(ox + 9, oy + 2, 2, 2);
-          // Head
-          ctx.fillRect(ox + 5, oy + 4, 7, 5);
-          // Eye
-          ctx.fillStyle = eyeColor;
-          ctx.fillRect(ox + 10, oy + 6, 1, 1);
-          // Body
-          ctx.fillStyle = furColor;
-          ctx.fillRect(ox + 3, oy + 9, 7, 4);
-          // Tail
-          ctx.fillRect(ox + 1, oy + 9, 2, 2);
-        }
-
-        // Paws (walking animation)
-        ctx.fillStyle = furColor;
-        if (f === 1) { // Standing
-          ctx.fillRect(ox + 5, oy + 13, 1, 2);
-          ctx.fillRect(ox + 10, oy + 13, 1, 2);
-        } else if (f === 0) {
-          ctx.fillRect(ox + 4, oy + 13, 1, 2);
-          ctx.fillRect(ox + 10, oy + 13, 1, 1);
-        } else {
-          ctx.fillRect(ox + 5, oy + 13, 1, 1);
-          ctx.fillRect(ox + 11, oy + 13, 1, 2);
-        }
-
-        ctx.restore();
-      }
-    }
-
-    return canvas;
   }
 
   // --- API / Stats loaders ---

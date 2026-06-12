@@ -76,6 +76,19 @@
     padding: var(--spacing-xl);
   }
 
+  .game-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #1a1c2c;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+
   &__menu {
     width: 100%;
     max-width: 500px;
