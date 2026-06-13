@@ -201,25 +201,10 @@
     line-height: 1.5;
     position: relative;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    /* Desktop: preserve formatting */
+    /* Desktop: preserve formatting; mobile cuộn ngang nội bộ qua overflow-x:auto ở trên */
     white-space: pre;
     word-wrap: normal;
     overflow-wrap: normal;
-
-    /* Force mobile wrapping on small screens - HIGHEST SPECIFICITY */
-    @media (max-width: 768px) {
-      /* Override home.component.scss global * selector */
-      &.safe-html-content pre,
-      &.safe-html-content pre * {
-      }
-    }
-
-    @media (max-width: 768px) {
-      /* Override home.component.scss global * selector */
-      &.safe-html-content pre,
-      &.safe-html-content pre * {
-      }
-    }
   }
 
   /* Inline code */
@@ -249,13 +234,6 @@
     word-break: inherit;
     word-wrap: inherit;
     overflow-wrap: inherit;
-
-    /* Force mobile wrapping on small screens */
-    @media (max-width: 768px) {
-    }
-
-    @media (max-width: 768px) {
-    }
   }
 
 
