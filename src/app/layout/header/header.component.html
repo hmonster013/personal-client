@@ -81,12 +81,12 @@
     </nav>
 
     <div class="side-menu__footer" style="margin-top: auto; border-top: 3px double var(--ui-border); padding: var(--spacing-lg);">
-      <div class="side-menu__social" style="display: flex; justify-content: center; gap: var(--spacing-md); margin-bottom: var(--spacing-md);">
-        <a [href]="githubLink" target="_blank" class="rpg-btn" style="padding: 8px;">
-          <i class="fab fa-github"></i>
+      <div class="side-menu__social" style="display: flex; justify-content: center; gap: var(--spacing-xl); margin-bottom: var(--spacing-xl);">
+        <a [href]="githubLink" target="_blank" class="rpg-btn" style="width: 44px; height: 44px; padding: 0; box-shadow: none; border: 2px solid var(--ui-border);">
+          <i class="fab fa-github" style="font-size: 1.25rem;"></i>
         </a>
-        <button (click)="toggleTheme()" class="rpg-btn" style="padding: 8px;">
-          <i class="fas" [ngClass]="isDarkMode ? 'fa-moon' : 'fa-sun'"></i>
+        <button (click)="toggleTheme()" class="rpg-btn" style="width: 44px; height: 44px; padding: 0; box-shadow: none; border: 2px solid var(--ui-border);">
+          <i class="fas" [ngClass]="isDarkMode ? 'fa-moon' : 'fa-sun'" style="font-size: 1.25rem;"></i>
         </button>
       </div>
       <button (click)="playGame(); closeMenu()" class="rpg-btn" style="width: 100%;">
