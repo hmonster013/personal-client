@@ -63,7 +63,7 @@ export class HeaderComponent implements OnInit{
 
   checkScreenSize(): void {
     const wasMobile = this.isMobile;
-    this.isMobile = window.innerWidth <= 780;
+    this.isMobile = window.innerWidth <= 768;
 
     // Debug log
     console.log('Screen size check:', {

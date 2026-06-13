@@ -110,25 +110,24 @@ a {
   width: 80vw;
   max-width: 320px;
   height: 100vh;
-  transform: translateX(100%) !important;
-  transition: transform 0.25s steps(4);
+  transform: translateX(100%);
+  transition: transform 0.25s steps(4), visibility 0s linear 0.25s;
   z-index: var(--z-modal);
   overflow-y: auto;
   will-change: transform;
   visibility: hidden;
-  opacity: 0;
 
   &.open {
-    transform: translateX(0) !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    transform: translateX(0);
+    transition: transform 0.25s steps(4), visibility 0s linear 0s;
+    visibility: visible;
   }
 
   // Active styles in side menu
   li.is-active {
     background-color: var(--ui-parchment-dark);
     a {
-      color: var(--text-ink) !important;
+      color: var(--text-ink);
     }
   }
 }
@@ -152,7 +151,7 @@ a {
 }
 
 .header__icon--menu {
-  display: none !important;
+  display: none;
 }
 
 @keyframes blink {
@@ -170,11 +169,11 @@ a {
   }
 
   .header__icon--menu {
-    display: flex !important;
+    display: flex;
     margin-left: var(--spacing-md);
   }
 
-  .header__menu .rpg-btn:not(.header__icon .rpg-btn) {
+  .header__menu > .rpg-btn {
     display: none;
   }
 }
