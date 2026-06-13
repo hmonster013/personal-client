@@ -2,6 +2,12 @@
 // RPG BOOKSHELF BLOG COMPONENT STYLES
 // ===================================
 
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
 .blog {
   width: 100%;
   max-width: 1200px;

@@ -2,6 +2,12 @@
 // RPG CHARACTER SHEET ABOUT COMPONENT STYLES
 // ===================================
 
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
 .about {
   width: 100%;
   max-width: 1200px;

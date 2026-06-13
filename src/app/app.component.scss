@@ -1,3 +1,15 @@
+// app-root là flex-item của <body> (body { display:flex; justify-content:center }).
+// Không ràng buộc thì nó shrink-to-fit theo nội dung (max-content) → phình rộng hơn viewport
+// trên mobile rồi bị căn giữa → cả trang tràn ngang. Ép về đúng bề rộng viewport + min-width:0
+// để flex-item chịu co lại (chuỗi width:100% bên trong mới có tác dụng).
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100vw;
+  min-width: 0;
+  overflow-x: hidden;
+}
+
 .app {
   width: 100%;
   height: 100%;
@@ -5,21 +17,33 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow-x: hidden;
+  max-width: 100%;
+  min-width: 0;
 }
 
 .app__body {
-  width: 1216px;
+  width: 100%;
+  max-width: 100%;
   min-height: calc(100vh - 120px);
   display: flex;
   flex-direction: column;
   padding-top: 70px; // Height of fixed header
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+@media (min-width: 1217px) {
+  .app__body {
+    width: 1216px;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 @media (max-width: 1216px) {
   .app__body {
-    width: 100%;
     padding: 70px 48px 0px 48px; // 70px top padding for fixed header
-    box-sizing: border-box;
   }
 
   app-header {
@@ -39,12 +63,12 @@
 
 @media (max-width: 780px) {
   .app__body {
-    padding: 60px 28px 0px 28px; // 60px top padding for mobile header height
+    padding: 60px 16px 0px 16px; // gutter mobile gọn (28→16) để nội dung không bị bóp
   }
 }
 
 @media (max-width: 400px) {
   .app__body {
-    padding: 60px 10px 0px 10px; // 60px top padding for mobile header height
+    padding: 60px 12px 0px 12px;
   }
 }

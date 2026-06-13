@@ -47,6 +47,16 @@ export class FollowCamera {
   setAspect(aspect: number) {
     this.camera.aspect = aspect;
     this.camera.updateProjectionMatrix();
+
+    // Viewport game trên mobile: zoom nhỏ hơn (thấy nhiều map hơn vì màn dọc)
+    if (aspect < 1.0) {
+      const factor = Math.min(1.4, 1.0 / aspect);
+      this.distance = 5.5 * factor;
+      this.height = 3.6 * factor;
+    } else {
+      this.distance = 5.5;
+      this.height = 3.6;
+    }
   }
 
   /**

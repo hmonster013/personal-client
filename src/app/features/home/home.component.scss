@@ -2,6 +2,12 @@
 // RPG HOME COMPONENT STYLES
 // ===================================
 
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
 .home {
   width: 100%;
   max-width: 1200px;
@@ -12,10 +18,14 @@
   margin-top: 100px;
   padding: 0 var(--spacing-xl);
   box-sizing: border-box;
+  overflow-x: hidden;
+  min-width: 0;
 
   // ===== HERO / INTRODUCE SECTION =====
   &__introduce {
     width: 100%;
+    max-width: 100%;
+    min-width: 0;
     margin-bottom: var(--spacing-6xl);
     padding: var(--spacing-5xl) var(--spacing-xl);
     text-align: center;
@@ -64,6 +74,7 @@
     p {
       position: relative;
       z-index: 1;
+      width: 100%;
       font-family: var(--font-pixel-body);
       font-size: 1.45rem;
       line-height: 1.5;
@@ -82,6 +93,8 @@
       gap: var(--spacing-md);
       justify-content: center;
       margin-top: var(--spacing-3xl);
+      width: 100%;
+      max-width: 100%;
     }
 
     // Convert skills to badges
@@ -880,12 +893,19 @@
     &__experience {
       &__body {
         flex-direction: column;
+        // align-items mặc định (flex-start) khiến panel phải co theo nội dung (max-content)
+        // → tràn ngang trên mobile. stretch để panel giãn đúng bề rộng cha, chữ wrap lại.
+        align-items: stretch;
       }
       &--left {
         flex: none;
         width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+      &--right {
+        width: 100%;
+        min-width: 0;
       }
     }
 
@@ -901,13 +921,20 @@
 @media (max-width: 780px) {
   .home {
     margin-top: 80px;
+    padding: 0 !important; // gutter do .app__body lo; bỏ lớp padding chồng để nội dung rộng hơn
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
 
     &__introduce {
       h1 {
         font-size: var(--font-size-3xl);
       }
       p {
-        font-size: 1.15rem;
+        line-height: 1.45;
+        word-break: break-word;
+        overflow-wrap: break-word;
       }
     }
 
@@ -917,6 +944,8 @@
         flex-direction: row;
         overflow-x: auto;
         padding-bottom: 8px;
+        width: 100%;
+        max-width: 100%;
 
         button {
           min-width: 160px;
@@ -934,5 +963,35 @@
         grid-template-columns: 1fr;
       }
     }
+  }
+}
+
+// FORCE MOBILE FIT AND WRAP FOR HERO SECTION (DoD M6)
+@media (max-width: 780px) {
+  .home__introduce {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    padding: var(--spacing-2xl) var(--spacing-lg) !important; // card inner 16px (8→16) cho dễ đọc
+    margin: 0 0 var(--spacing-3xl) 0 !important; // giảm khoảng cách dưới (64→32) đỡ trống trải
+    box-sizing: border-box !important;
+  }
+
+  .home__introduce p {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    font-size: 1.1rem !important; // cột rộng hơn → chữ to lại cho dễ đọc
+    line-height: 1.45 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    padding: 0 !important; // bỏ padding thừa, card đã có padding
+    box-sizing: border-box !important;
+  }
+  
+  .home__introduce__skill-group {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex-wrap: wrap !important;
   }
 }

@@ -1,7 +1,13 @@
 @if (mode() === 'select') {
   <app-mode-selection></app-mode-selection>
 } @else if (mode() === 'game') {
-  <app-game></app-game>
+  @defer (when mode() === 'game') {
+    <app-game></app-game>
+  } @placeholder {
+    <div style="text-align: center; padding: 2rem; color: var(--gold); font-family: var(--font-pixel); font-size: 1.5rem; background: var(--bg-night); height: calc(100vh - 160px); display: flex; align-items: center; justify-content: center; border: 6px solid var(--ui-border-dark);">
+      LOADING GAME ENGINE...
+    </div>
+  }
 } @else {
 <div class="home">
   <!-- INTRODUCE -->

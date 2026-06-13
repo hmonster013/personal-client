@@ -2,6 +2,12 @@
 // RPG BLOG DETAIL COMPONENT STYLES
 // ===================================
 
+:host {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
 .blog-detail {
   width: 100%;
   max-width: 1200px;

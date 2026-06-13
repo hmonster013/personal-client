@@ -99,6 +99,9 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   dialogueQueue = signal<string[]>([]);
   dialogueIndex = signal<number>(0);
   showGuideOptions = signal<boolean>(false);
+  activeGuideOptionIndex = signal<number>(0);
+  activeItemIndex = signal<number>(0);
+  showSizeWarning = signal<boolean>(false);
   
   fullDialogueText = signal<string>('');
   displayedDialogueText = signal<string>('');
@@ -162,6 +165,19 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
           this.inputService.setGameFocus(true);
         }
       }
+    });
+
+    effect(() => {
+      const activeOverlay = this.gameState.activeOverlay();
+      if (activeOverlay) {
+        this.activeItemIndex.set(0);
+      }
+    });
+
+    effect(() => {
+      const exp = this.selectedExperience();
+      const proj = this.selectedProject();
+      this.activeItemIndex.set(0);
     });
 
     effect(() => {
@@ -558,6 +574,14 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   private resizeCanvas(containerWidth: number, containerHeight: number) {
     if (containerWidth <= 0 || containerHeight <= 0) return;
 
+    // Màn < 360px hoặc landscape quá thấp (< 400px height): banner gợi ý
+    const isTooSmall = containerWidth < 360 || containerHeight < 400;
+    if (this.showSizeWarning() !== isTooSmall) {
+      this.ngZone.run(() => {
+        this.showSizeWarning.set(isTooSmall);
+      });
+    }
+
     // Simply delegate sizing and pixel ratios entirely to Three.js!
     if (this.sceneManager && this.camera) {
       this.sceneManager.resize(containerWidth, containerHeight, this.camera);
@@ -570,6 +594,9 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   focusGame() {
     if (!this.gameState.isDialogOpen() && !this.gameState.isCharacterMenuOpen() && !this.gameState.activeOverlay()) {
       this.inputService.setGameFocus(true);
+      if (this.canvasRef && this.canvasRef.nativeElement) {
+        this.canvasRef.nativeElement.focus();
+      }
     }
   }
 
@@ -773,13 +800,61 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    // 2. Xử lý phím trong hội thoại (Nhấn E, Enter hoặc Spacebar để tiếp tục thoại)
+    // 2. Xử lý phím trong hội thoại (Nhấn E, Enter hoặc Spacebar để tiếp tục thoại, hoặc di chuyển/chọn tùy chọn bằng phím)
     if (this.gameState.isDialogOpen()) {
-      if (isE || isEnter || isSpace) {
-        event.preventDefault();
-        event.stopPropagation();
-        this.advanceDialogue();
-        return;
+      if (this.showGuideOptions()) {
+        if (key === 'arrowup' || key === 'w') {
+          event.preventDefault();
+          event.stopPropagation();
+          const prevIndex = (this.activeGuideOptionIndex() - 1 + 3) % 3;
+          this.activeGuideOptionIndex.set(prevIndex);
+          return;
+        }
+        if (key === 'arrowdown' || key === 's') {
+          event.preventDefault();
+          event.stopPropagation();
+          const nextIndex = (this.activeGuideOptionIndex() + 1) % 3;
+          this.activeGuideOptionIndex.set(nextIndex);
+          return;
+        }
+        if (key === '1') {
+          event.preventDefault();
+          event.stopPropagation();
+          this.selectGuideOption('projects');
+          return;
+        }
+        if (key === '2') {
+          event.preventDefault();
+          event.stopPropagation();
+          this.selectGuideOption('about');
+          return;
+        }
+        if (key === '3') {
+          event.preventDefault();
+          event.stopPropagation();
+          this.selectGuideOption('none');
+          return;
+        }
+        if (isE || isEnter || isSpace) {
+          event.preventDefault();
+          event.stopPropagation();
+          const currentIndex = this.activeGuideOptionIndex();
+          if (currentIndex === 0) {
+            this.selectGuideOption('projects');
+          } else if (currentIndex === 1) {
+            this.selectGuideOption('about');
+          } else {
+            this.selectGuideOption('none');
+          }
+          return;
+        }
+      } else {
+        if (isE || isEnter || isSpace) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.advanceDialogue();
+          return;
+        }
       }
     }
 
@@ -818,6 +893,99 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
           } else {
             event.preventDefault();
             event.stopPropagation();
+          }
+        }
+      }
+    }
+
+    // 5. Xử lý phím di chuyển và chọn trong các bảng hiển thị (Overlays)
+    const activeOverlay = this.gameState.activeOverlay();
+    const isBackspace = key === 'backspace';
+
+    if (activeOverlay) {
+      // 5.1. Nếu ở trang chi tiết, nhấn Escape, Backspace hoặc E để quay lại trang danh sách
+      if (activeOverlay === 'quest' && this.selectedExperience() !== null) {
+        if (isEscape || isBackspace || isE) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.selectedExperience.set(null);
+          return;
+        }
+      }
+      if (activeOverlay === 'projects' && this.selectedProject() !== null) {
+        if (isEscape || isBackspace || isE) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.selectedProject.set(null);
+          return;
+        }
+      }
+
+      // Ngăn chặn cuộn trang mặc định của trình duyệt cho phím di chuyển khi bảng đang mở
+      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' ', 'spacebar', 'backspace'].includes(key)) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      // 5.2. Trang danh sách nhiệm vụ (Quest List)
+      if (activeOverlay === 'quest' && this.selectedExperience() === null) {
+        const list = this.experiences();
+        if (list.length > 0) {
+          if (key === 'arrowup' || key === 'w') {
+            const nextIdx = (this.activeItemIndex() - 1 + list.length) % list.length;
+            this.activeItemIndex.set(nextIdx);
+            return;
+          }
+          if (key === 'arrowdown' || key === 's') {
+            const nextIdx = (this.activeItemIndex() + 1) % list.length;
+            this.activeItemIndex.set(nextIdx);
+            return;
+          }
+          if (isEnter || isSpace || isE) {
+            this.selectedExperience.set(list[this.activeItemIndex()]);
+            return;
+          }
+        }
+      }
+
+      // 5.3. Trang danh sách dự án (Project Grid List)
+      if (activeOverlay === 'projects' && this.selectedProject() === null) {
+        const list = this.projects();
+        if (list.length > 0) {
+          if (key === 'arrowup' || key === 'arrowleft' || key === 'w' || key === 'a') {
+            const nextIdx = (this.activeItemIndex() - 1 + list.length) % list.length;
+            this.activeItemIndex.set(nextIdx);
+            return;
+          }
+          if (key === 'arrowdown' || key === 'arrowright' || key === 's' || key === 'd') {
+            const nextIdx = (this.activeItemIndex() + 1) % list.length;
+            this.activeItemIndex.set(nextIdx);
+            return;
+          }
+          if (isEnter || isSpace || isE) {
+            this.selectedProject.set(list[this.activeItemIndex()]);
+            return;
+          }
+        }
+      }
+
+      // 5.4. Kệ sách thư viện (Blog Library)
+      if (activeOverlay === 'blog') {
+        const list = this.blogs().slice(0, 8); // Chỉ lấy 8 cuốn trên kệ
+        if (list.length > 0) {
+          if (key === 'arrowup' || key === 'arrowleft' || key === 'w' || key === 'a') {
+            const nextIdx = (this.activeItemIndex() - 1 + list.length) % list.length;
+            this.activeItemIndex.set(nextIdx);
+            return;
+          }
+          if (key === 'arrowdown' || key === 'arrowright' || key === 's' || key === 'd') {
+            const nextIdx = (this.activeItemIndex() + 1) % list.length;
+            this.activeItemIndex.set(nextIdx);
+            return;
+          }
+          if (isEnter || isSpace || isE) {
+            this.navigateToRoute('/blogs/' + list[this.activeItemIndex()].id);
+            return;
           }
         }
       }
@@ -950,6 +1118,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   openDialogueSequence(name: string) {
     this.gameState.openDialog(name);
     this.showGuideOptions.set(false);
+    this.activeGuideOptionIndex.set(0);
     
     let queue: string[] = [];
     if (name === 'npc_guide') {
@@ -997,6 +1166,15 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   startDialogueTypewriter(text: string) {
     this.fullDialogueText.set(text);
     this.displayedDialogueText.set('');
+    
+    // Check prefers-reduced-motion to skip typewriter effect instantly
+    const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      this.displayedDialogueText.set(text);
+      this.isDialogueTyping.set(false);
+      return;
+    }
+
     this.isDialogueTyping.set(true);
     this.dialogueCharIndex = 0;
     if (this.dialogueTimer) {
