@@ -16,7 +16,6 @@
   justify-content: flex-start;
   align-items: flex-start;
   margin-top: 100px;
-  padding: 0 var(--spacing-xl);
   box-sizing: border-box;
   overflow-x: hidden;
   min-width: 0;
@@ -921,20 +920,22 @@
 @media (max-width: 768px) {
   .home {
     margin-top: 80px;
-    padding: 0 !important; // gutter do .app__body lo; bỏ lớp padding chồng để nội dung rộng hơn
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    box-sizing: border-box !important;
 
     &__introduce {
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      margin-bottom: var(--spacing-3xl);
+
       h1 {
         font-size: var(--font-size-3xl);
       }
       p {
+        font-size: 1.1rem;
         line-height: 1.45;
         word-break: break-word;
         overflow-wrap: break-word;
+      }
+      &__skill-group {
+        flex-wrap: wrap;
       }
     }
 
@@ -963,35 +964,5 @@
         grid-template-columns: 1fr;
       }
     }
-  }
-}
-
-// FORCE MOBILE FIT AND WRAP FOR HERO SECTION (DoD M6)
-@media (max-width: 768px) {
-  .home__introduce {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    padding: var(--spacing-2xl) var(--spacing-lg) !important; // card inner 16px (8→16) cho dễ đọc
-    margin: 0 0 var(--spacing-3xl) 0 !important; // giảm khoảng cách dưới (64→32) đỡ trống trải
-    box-sizing: border-box !important;
-  }
-
-  .home__introduce p {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    font-size: 1.1rem !important; // cột rộng hơn → chữ to lại cho dễ đọc
-    line-height: 1.45 !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
-    padding: 0 !important; // bỏ padding thừa, card đã có padding
-    box-sizing: border-box !important;
-  }
-  
-  .home__introduce__skill-group {
-    width: 100% !important;
-    max-width: 100% !important;
-    flex-wrap: wrap !important;
   }
 }
