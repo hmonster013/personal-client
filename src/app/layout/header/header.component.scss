@@ -100,7 +100,11 @@ a {
   margin-left: 15px;
 }
 
-// Side menu (Mobile) styles override
+.side-menu__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .side-menu {
   display: flex;
   flex-direction: column;
@@ -124,6 +128,11 @@ a {
   }
 
   // Active styles in side menu
+  li {
+    margin-left: 0;
+    width: 100%;
+  }
+
   li.is-active {
     background-color: var(--ui-parchment-dark);
     a {
