@@ -29,10 +29,10 @@ export class AboutComponent implements OnInit{
 
   // Personal information
   personalInfo = {
-    name: 'Huy',
-    title: 'Fresh Graduate | Backend Developer | Information Systems Engineer',
+    name: 'Trần Phú Huy',
+    title: 'Fullstack Developer | Information Systems Engineer',
     avatar: 'assets/logo.png',
-    yearsExperience: 2,
+    yearsExperience: 1.5,
     projectsCompleted: 20,
     technologiesUsed: 10
   };

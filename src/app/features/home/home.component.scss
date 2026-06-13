@@ -146,6 +146,7 @@
       gap: var(--spacing-md);
 
       button {
+          justify-content: flex-start;
         display: flex;
         align-items: center;
         padding: var(--spacing-md);
@@ -165,6 +166,11 @@
           color: var(--text-muted);
           margin-right: var(--spacing-md);
           font-weight: bold;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 24px;
+          flex-shrink: 0;
         }
 
         &:hover {

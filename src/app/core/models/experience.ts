@@ -2,7 +2,7 @@ import { Image, ImageModel } from './image';
 
 export interface Experience {
   id: number;
-  company_img: Image;
+  company_img: Image | null;
   company_name: string;
   job_title: string;
   description: string;
@@ -13,7 +13,7 @@ export interface Experience {
 
 export class ExperienceModel implements Experience {
   id: number;
-  company_img: Image;
+  company_img: Image | null;
   company_name: string;
   job_title: string;
   description: string;

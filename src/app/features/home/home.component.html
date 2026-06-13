@@ -13,7 +13,7 @@
   <!-- INTRODUCE -->
   <section class="home__introduce">
     <h1>Hello, I'm <br><span class="text-primary" style="color: var(--gold); font-family: var(--font-pixel); text-shadow: 4px 4px 0 var(--ui-border);">DE013▊</span></h1>
-    <p>I am a fresh graduate Information Systems Engineer awaiting graduation and diploma certification. Currently seeking opportunities as a Backend Developer, Frontend Developer, or Full Stack Developer. I specialize in Angular for frontend development and Python for backend services, with additional experience in Data Engineering. I'm passionate about building responsive web applications and handling complex data pipelines. Ready to contribute to innovative projects while continuing to grow and learn in a professional environment.</p>
+    <p>I'm an Information Systems Engineer with around 1.5 years of fullstack web development experience. I design databases, build REST APIs, integrate third-party systems (digital signatures, payment gateways, messaging) and ship with Docker/Kubernetes. I work primarily with Angular, NestJS and Spring Boot on PostgreSQL, with a backend-leaning focus — and I'm looking for a Backend or Fullstack Developer role to grow deeper into system architecture and build real-world products.</p>
     <div class="home__introduce__skill-group">
       <div class="home__introduce__skill-item" *ngFor="let skill of listSkills">
         <lib-skill-ui [currentSkill]="skill"></lib-skill-ui>
@@ -30,7 +30,7 @@
           [ngClass]="{'home__experience--left--active': experience.id == selectedExperience?.id}"
           (click)="changeExperience(experience)">
           <img
-            [src]="experience.company_img.full_url"
+            [src]="experience.company_img?.full_url || 'assets/logo.png'"
             [alt]="experience.company_name + ' logo'"
             loading="lazy">
           <p>{{experience.company_name}}<span>{{experience.job_title}}</span></p>
@@ -201,7 +201,7 @@
               </div>
               <div class="home__contact__info-details">
                 <h4>Phone</h4>
-                <a href="tel:+84123456789">+84 965199203</a>
+                <a href="tel:+84965199203">+84 965 199 203</a>
               </div>
             </div>
 

@@ -14,12 +14,12 @@
       </h1>
       <p class="about__hero__subtitle">{{ personalInfo.title }}</p>
       <div class="about__hero__description">
-        <p>I'm a fresh graduate Information Systems Engineer, passionate about backend development and data engineering. Ready to start my professional journey and contribute to innovative projects while continuing to learn and grow in the tech industry.</p>
+        <p>I'm an Information Systems Engineer with around 1.5 years of fullstack experience, focused on backend development, database design, REST APIs and system integration. I build and ship real-world products with Angular, NestJS, Spring Boot, PostgreSQL and Docker.</p>
       </div>
       <div class="about__hero__stats">
         <div class="stat-item">
           <span class="stat-number">{{ personalInfo.yearsExperience }}+</span>
-          <span class="stat-label">Years Learning</span>
+          <span class="stat-label">Years Experience</span>
         </div>
         <div class="stat-item">
           <span class="stat-number">{{ personalInfo.projectsCompleted }}+</span>
@@ -41,14 +41,14 @@
     </div>
     <div class="about__section__content">
       <div class="about__story">
-        <p>As a fresh graduate Information Systems Engineer, I bring a solid foundation in software development, database management, and data analytics. My academic journey has equipped me with both theoretical knowledge and practical skills through various projects and coursework.</p>
-        <p>I'm excited to begin my professional career and contribute to innovative projects while continuing to grow and learn in a dynamic tech environment. Ready to bring fresh perspectives and dedication to your team! 🚀</p>
+        <p>With around 1.5 years building fullstack web applications — from a game-analytics CMS at Funtap (Spring Boot + Angular) to an ISO 17025 lab-management system at iRDOP (NestJS + Next.js 14) — I have hands-on experience in backend development, database design and system integration (digital signature, payment gateways, messaging).</p>
+        <p>I enjoy turning complex requirements into reliable, well-architected systems and deploying them with Docker and Kubernetes. I'm looking to grow deeper into system architecture and contribute to impactful, real-world products. 🚀</p>
       </div>
       <div class="about__highlights">
         <div class="highlight-item">
           <i class="fas fa-rocket"></i>
-          <h4>Fresh Perspective</h4>
-          <p>Bringing new ideas and modern approaches</p>
+          <h4>System Integration</h4>
+          <p>Digital signature, payment &amp; messaging integrations</p>
         </div>
         <div class="highlight-item">
           <i class="fas fa-code"></i>
@@ -96,7 +96,7 @@
           *ngFor="let experience of listExperiences; let i = index">
           <div class="timeline-marker">
             <img
-              [src]="experience.company_img.full_url"
+              [src]="experience.company_img?.full_url || 'assets/logo.png'"
               [alt]="experience.company_name + ' logo'"
               class="timeline-company-logo">
           </div>
@@ -170,9 +170,8 @@
               </div>
             </div>
             <p class="education-description">
-              Graduated with Information Systems Engineer degree, specializing in software development,
-              database management, and data analytics. Successfully completed capstone projects in web development and data engineering,
-              demonstrating practical application of theoretical knowledge and readiness for professional challenges.
+              Graduated as an Information Systems Engineer (GPA 3.45/4.0), with a strong foundation in software development,
+              database management and data analytics — applied through web development and data engineering projects.
             </p>
             <div class="education-highlights">
               <div class="highlight-tag">

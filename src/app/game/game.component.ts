@@ -1066,7 +1066,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       case 'npc_guide':
         return 'Chào mừng bạn đến với Ngôi Làng 3D của DE013! Hãy dùng các phím WASD hoặc phím Mũi tên để di chuyển. Bạn có thể ghé thăm Nhà của tôi (About), Xưởng chế tác (Projects), Thư viện (Blog) hoặc Bảng nhiệm vụ (Experiences) bằng cách đến gần tòa nhà và nhấn phím E nhé!';
       case 'door_about':
-        return 'Chào mừng đến với nhà của DE013! Tôi là Kỹ sư Hệ thống Thông tin với hơn 1 năm kinh nghiệm Fullstack, thiên về Backend. Đây là nơi chứa thông tin về bản thân và các kỹ năng: NestJS, Spring Boot, Angular, PostgreSQL, Docker.';
+        return 'Chào mừng đến với nhà của DE013! Tôi là Kỹ sư Hệ thống Thông tin với gần 1.5 năm kinh nghiệm Fullstack, thiên về Backend. Đây là nơi chứa thông tin về bản thân và các kỹ năng: NestJS, Spring Boot, Angular, PostgreSQL, Docker.';
       case 'door_projects':
       case 'desk_projects':
         return 'Bạn đang đứng trước Xưởng Chế Tác (Workshop). Nơi đây trưng bày các "món đồ" đặc biệt chính là các dự án của tôi. Hãy nhấn Xem Dự Án trong Classic Mode để đọc chi tiết hoặc xem code nhé!';
