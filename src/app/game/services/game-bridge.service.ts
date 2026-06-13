@@ -21,7 +21,23 @@ export class GameBridgeService {
    */
   triggerInteraction(name: string) {
     this.interactionTriggeredSource.next(name);
-    this.gameStateService.openDialog(name);
+    
+    const overlayMap: { [key: string]: string } = {
+      'door_about': 'about',
+      'door_projects': 'projects',
+      'desk_projects': 'projects',
+      'door_blog': 'blog',
+      'board_quest': 'quest',
+      'quest_board': 'quest',
+      'mailbox_contact': 'contact'
+    };
+
+    if (overlayMap[name]) {
+      this.gameStateService.activeOverlay.set(overlayMap[name]);
+      this.gameStateService.addVisitedLocation(name);
+    } else {
+      this.gameStateService.openDialog(name);
+    }
   }
 
   /**

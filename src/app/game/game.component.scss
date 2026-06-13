@@ -6,9 +6,15 @@
   // "Sân khấu" game đóng khung trong container trang (không full-bleed)
   width: 100%;
   margin: var(--spacing-lg) 0;
-  border: 3px solid var(--ui-border-dark);
-  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
-  background-color: #1a1c2c; // Night
+  
+  // Double-layered retro arcade border
+  border: 6px solid var(--ui-border-dark);
+  outline: 3px solid var(--gold);
+  outline-offset: -6px;
+  border-radius: 4px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 6px 6px 0 rgba(0, 0, 0, 0.35);
+  background-color: var(--bg-night); // Night
   padding: var(--spacing-xl);
   box-sizing: border-box;
   position: relative;
@@ -38,6 +44,18 @@
     flex-direction: column;
     gap: var(--spacing-xs);
     align-items: flex-end;
+
+    .rpg-badge {
+      background: linear-gradient(135deg, #8a4f2a 0%, #5c2f0d 100%);
+      color: var(--gold) !important;
+      border: 2px solid var(--ui-border-dark) !important;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+      border-radius: 0;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
   }
 
   &__prompt {
@@ -68,7 +86,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.75);
+    background-color: rgba(0, 0, 0, 0.45);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -82,7 +100,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #1a1c2c;
+    background-color: var(--bg-night);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -94,6 +112,24 @@
     max-width: 500px;
     position: relative;
     box-sizing: border-box;
+
+    // Không để panel cao hơn viewport (overlay đã có padding xung quanh).
+    // Header giữ cố định, chỉ thân panel cuộn → không còn tràn trên/dưới khung hình.
+    max-height: 100%;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .rpg-panel__header {
+      flex: 0 0 auto;
+    }
+
+    .rpg-panel__body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+    }
   }
 
   &__close-btn {
@@ -130,11 +166,22 @@
   height: 100%;
   overflow: hidden;
 
+  // Vignette & Scanline overlay
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.55); // Vignette
+    background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.25) 100%);
+    pointer-events: none;
+    z-index: 5;
+  }
+
   canvas {
     display: block;
-    // KHÔNG dùng max-width/max-height: chúng co canvas về tỉ lệ lẻ làm vỡ pixel.
-    // Kích thước hiển thị do resizeCanvas() set (bội số nguyên của zoom),
-    // phần dư vài px được .game-canvas-container overflow:hidden cắt gọn.
     image-rendering: pixelated;
     image-rendering: crisp-edges;
   }
@@ -198,7 +245,7 @@
   cursor: pointer;
 }
 
-// Mobile Virtual D-pad Controls
+// Mobile Virtual D-pad Controls (GameBoy Style)
 .mobile-controls {
   display: none; // Hidden by default, shown on touch screens/smaller devices
   position: absolute;
@@ -218,14 +265,18 @@
     position: relative;
     width: 108px;
     height: 108px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    border: 3px solid var(--ui-border-dark);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
 
     .dpad-btn {
       position: absolute;
       width: 36px;
       height: 36px;
-      background-color: var(--ui-border);
-      color: var(--gold);
-      border: 2px solid var(--ui-border-dark);
+      background-color: #4a4a4a !important; // Gameboy grey plastic
+      color: #b5b5b5 !important;
+      border: 2px solid #222 !important;
       font-size: 1rem;
       font-family: var(--font-pixel);
       display: flex;
@@ -233,14 +284,14 @@
       justify-content: center;
       cursor: pointer;
       user-select: none;
-      box-shadow: 2px 2px 0 var(--ui-border-dark);
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
       touch-action: none;
 
       &:active {
-        background-color: var(--gold);
-        color: var(--text-ink);
+        background-color: #111 !important;
+        color: var(--gold) !important;
         transform: translate(1px, 1px);
-        box-shadow: 1px 1px 0 var(--ui-border-dark);
+        box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
       }
 
       &--up {
@@ -270,7 +321,10 @@
       width: 54px;
       height: 54px;
       border-radius: 50%;
-      box-shadow: var(--pixel-border), 3px 3px 0 var(--ui-border-dark);
+      background: linear-gradient(135deg, #e53e3e 0%, #b82e2e 100%) !important; // GameBoy red button
+      border: 3px solid #222 !important;
+      color: #fff !important;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
       font-size: 1.5rem;
       display: flex;
       align-items: center;
@@ -278,8 +332,9 @@
       touch-action: none;
 
       &:active {
-        transform: translateY(1px);
-        box-shadow: var(--pixel-border), 1px 1px 0 var(--ui-border-dark);
+        transform: translateY(1.5px) !important;
+        box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5) !important;
+        background: #9b1c1c !important;
       }
     }
   }
@@ -335,5 +390,66 @@
 @media (hover: none) and (pointer: coarse) {
   .mobile-controls {
     display: flex; // Force display on touch/mobile devices
+  }
+}
+
+// Red Retro Button variant for skip
+.rpg-btn--danger {
+  background: linear-gradient(135deg, #e53e3e 0%, #9b2c2c 100%) !important;
+  color: var(--text-light) !important;
+  border: 3px solid var(--ui-border-dark) !important;
+  box-shadow: 3px 3px 0 var(--ui-border-dark) !important;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6) !important;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-1px) !important;
+    box-shadow: 3px 3px 0 var(--ui-border-dark), 0 0 8px rgba(239, 125, 87, 0.4) !important;
+  }
+  
+  &:active:not(:disabled) {
+    transform: translate(2px, 2px) !important;
+    box-shadow: 1px 1px 0 var(--ui-border-dark) !important;
+  }
+}
+
+// Sửa tỷ lệ avatar và thêm đèn LED pulsing
+.rpg-hud {
+  &__avatar-frame {
+    position: relative;
+    border-radius: 4px;
+    border: 3px double var(--gold) !important;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover !important; // Chống bóp méo hình đại diện
+      image-rendering: pixelated;
+    }
+  }
+
+  &__online-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--grass);
+    border: 1px solid var(--ui-border-dark);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--grass);
+    animation: pulse-green 1.5s infinite ease-in-out;
+    z-index: 2;
+  }
+}
+
+@keyframes pulse-green {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+    box-shadow: 0 0 10px var(--grass);
   }
 }

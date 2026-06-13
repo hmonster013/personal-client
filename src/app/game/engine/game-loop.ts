@@ -71,8 +71,9 @@ export class GameLoop {
     this.rafId = requestAnimationFrame(this.loop);
 
     if (this.isPaused) {
-      // Just update last time so when we resume we don't have a giant delta
       this.lastTime = currentTime;
+      this.accumulatedTime = 0;
+      this.renderFn(0); // vẫn vẽ scene tĩnh — KHÔNG update logic
       return;
     }
 

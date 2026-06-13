@@ -76,17 +76,23 @@ li {
 a {
   color: var(--text-light);
   text-decoration: none;
-  transition: color 0.1s steps(2);
+  transition: all 0.15s var(--transition-step);
   font-weight: 600;
 
   &:hover {
     color: var(--gold);
+    text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
   }
 }
 
 .header__icon {
   display: flex;
   align-items: center;
+  transition: transform var(--transition-bounce);
+
+  &:hover {
+    transform: scale(1.08) rotate(-2deg);
+  }
 }
 
 .header__icon--github,

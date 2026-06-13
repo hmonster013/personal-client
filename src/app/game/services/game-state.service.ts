@@ -16,10 +16,49 @@ export class GameStateService {
   // Active NPC or interaction point name
   activeInteraction = signal<string | null>(null);
 
+  // Active overlay name: 'about' | 'projects' | 'blog' | 'quest' | 'contact' | 'char_menu' | null
+  activeOverlay = signal<string | null>(null);
+
+  // Visited locations list for exploration tracking
+  visitedFlags = signal<string[]>([]);
+
   // Character Menu visibility
   isCharacterMenuOpen = signal<boolean>(false);
 
-  constructor() {}
+  constructor() {
+    this.loadVisitedFlags();
+  }
+
+  private loadVisitedFlags() {
+    if (typeof window !== 'undefined') {
+      try {
+        const stored = localStorage.getItem('visited_locations');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            this.visitedFlags.set(parsed);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to load visited flags', e);
+      }
+    }
+  }
+
+  addVisitedLocation(loc: string) {
+    const list = this.visitedFlags();
+    if (!list.includes(loc)) {
+      const updated = [...list, loc];
+      this.visitedFlags.set(updated);
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('visited_locations', JSON.stringify(updated));
+        } catch (e) {
+          console.error('Failed to save visited flags', e);
+        }
+      }
+    }
+  }
 
   setPlayerPosition(x: number, y: number) {
     this.playerPosition.set({ x, y });

@@ -47,9 +47,9 @@
   --info-rgb: var(--sky-rgb);
 
   // ===== TYPOGRAPHY =====
-  --font-pixel: 'Pixelify Sans', sans-serif;   // heading, UI, button
-  --font-pixel-body: 'VT323', monospace;       // text trong dialog (cỡ lớn 1.25rem+)
-  --font-family-primary: 'Pixelify Sans', system-ui, sans-serif; // tên cũ, giữ
+  --font-pixel: 'VT323', 'Pixelify Sans', 'Source Code Pro', 'Segoe UI', Arial, sans-serif;   // heading, UI, button
+  --font-pixel-body: 'VT323', 'Pixelify Sans', 'Source Code Pro', 'Segoe UI', Arial, monospace;       // text trong dialog (cỡ lớn 1.25rem+)
+  --font-family-primary: 'VT323', 'Pixelify Sans', 'Source Code Pro', 'Segoe UI', Arial, sans-serif; // tên cũ, giữ
   --font-reading: Georgia, 'Times New Roman', serif; // đoạn văn rất dài trong blog detail
 
   --font-weight-normal: 400;
@@ -124,7 +124,7 @@
 
 // Light Theme (Day mode) Variables
 [data-theme="light"] {
-  --white: #8FDE5D;          // "ban ngày" nền cỏ xanh nhạt
+  --white: #CBE6A8;          // "ban ngày" nền cỏ xanh nhạt trầm hơn, cùng tông với cỏ trong game
   --white-light: var(--ui-parchment); // parchment làm surface cho các panel/card
   --white-dark: var(--ui-parchment-dark);
   --white-rgb: 244, 228, 188;
