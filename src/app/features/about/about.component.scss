@@ -238,16 +238,16 @@
 
     ::ng-deep lib-skill-ui {
       .skill-badge {
-        font-family: var(--font-pixel) !important;
-        background-color: var(--bg-dusk) !important;
-        color: var(--gold) !important;
-        border: 2px solid var(--ui-border) !important;
-        border-radius: 0 !important;
-        box-shadow: 2px 2px 0 0 var(--ui-border-dark) !important;
-        font-weight: 600 !important;
-        text-transform: uppercase !important;
-        padding: 4px 8px !important;
-        font-size: var(--font-size-xs) !important;
+        font-family: var(--font-pixel) ;
+        background-color: var(--bg-dusk) ;
+        color: var(--gold) ;
+        border: 2px solid var(--ui-border) ;
+        border-radius: 0 ;
+        box-shadow: 2px 2px 0 0 var(--ui-border-dark) ;
+        font-weight: 600 ;
+        text-transform: uppercase ;
+        padding: 4px 8px ;
+        font-size: var(--font-size-xs) ;
       }
     }
   }

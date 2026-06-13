@@ -128,8 +128,8 @@
       font-family: var(--font-pixel-body) !important;
       background-color: var(--ui-border) !important;
       color: var(--gold) !important;
-      border: 1px solid var(--ui-border-dark) !important;
-      border-radius: 0 !important;
+      border: 1px solid var(--ui-border-dark);
+      border-radius: 0;
       padding: 2px 6px !important;
       font-size: var(--font-size-xs) !important;
     }
@@ -345,7 +345,7 @@
 
   &--copy {
     background-color: var(--ui-parchment-dark) !important;
-    color: var(--ui-border-dark) !important;
+    color: var(--ui-border-dark);
   }
 }
 
@@ -368,10 +368,10 @@
 // Article Content Reading Styles - Using Georgia/Times New Roman
 .blog-article-content {
   ::ng-deep .safe-html-content {
-    font-family: var(--font-reading) !important; // GA ĐỌC LÀ SỐ 1
-    font-size: 1.0625rem !important; // Cỡ chữ 1.0625rem
-    line-height: 1.7 !important; // Line-height 1.7
-    color: var(--text-ink) !important; // Ink text color
+    font-family: var(--font-reading); // GA ĐỌC LÀ SỐ 1
+    font-size: 1.0625rem; // Cỡ chữ 1.0625rem
+    line-height: 1.7; // Line-height 1.7
+    color: var(--text-ink); // Ink text color
 
     p {
       margin-bottom: var(--spacing-md);
@@ -388,13 +388,13 @@
 
     // Code blocks in post: Source Code Pro on bg-night (preserved)
     pre, code {
-      font-family: 'Source Code Pro', Consolas, Monaco, monospace !important;
-      background-color: var(--bg-night) !important;
-      color: var(--text-muted) !important;
-      border: 1px solid var(--ui-border-dark) !important;
-      border-radius: 0 !important;
+      font-family: 'Source Code Pro', Consolas, Monaco, monospace;
+      background-color: var(--bg-night);
+      color: var(--text-muted);
+      border: 1px solid var(--ui-border-dark);
+      border-radius: 0;
       padding: var(--spacing-sm) var(--spacing-md);
-      font-size: 0.9rem !important;
+      font-size: 0.9rem;
     }
 
     code {
@@ -403,8 +403,8 @@
 
     pre code {
       padding: 0;
-      border: none !important;
-      background: none !important;
+      border: none;
+      background: none;
     }
 
     blockquote {
@@ -416,8 +416,8 @@
     }
 
     h1, h2, h3, h4, h5, h6 {
-      font-family: var(--font-pixel) !important;
-      color: var(--ui-border-dark) !important;
+      font-family: var(--font-pixel);
+      color: var(--ui-border-dark);
       margin-top: var(--spacing-xl);
       margin-bottom: var(--spacing-md);
     }

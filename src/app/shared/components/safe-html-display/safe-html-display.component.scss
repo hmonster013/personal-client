@@ -208,32 +208,16 @@
 
     /* Force mobile wrapping on small screens - HIGHEST SPECIFICITY */
     @media (max-width: 768px) {
-      white-space: pre-wrap !important;
-      word-wrap: break-word !important;
-      overflow-wrap: break-word !important;
-      word-break: break-word !important;
       /* Override home.component.scss global * selector */
       &.safe-html-content pre,
       &.safe-html-content pre * {
-        white-space: pre-wrap !important;
-        word-wrap: break-word !important;
-        overflow-wrap: break-word !important;
-        word-break: break-word !important;
       }
     }
 
     @media (max-width: 768px) {
-      white-space: pre-wrap !important;
-      word-wrap: break-word !important;
-      overflow-wrap: break-word !important;
-      word-break: break-word !important;
       /* Override home.component.scss global * selector */
       &.safe-html-content pre,
       &.safe-html-content pre * {
-        white-space: pre-wrap !important;
-        word-wrap: break-word !important;
-        overflow-wrap: break-word !important;
-        word-break: break-word !important;
       }
     }
   }
@@ -268,31 +252,13 @@
 
     /* Force mobile wrapping on small screens */
     @media (max-width: 768px) {
-      white-space: pre-wrap !important;
-      word-wrap: break-word !important;
-      overflow-wrap: break-word !important;
-      word-break: break-word !important;
     }
 
     @media (max-width: 768px) {
-      white-space: pre-wrap !important;
-      word-wrap: break-word !important;
-      overflow-wrap: break-word !important;
-      word-break: break-word !important;
     }
   }
 
-  /* Tables (if any) */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2em 0;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
+
 
   th, td {
     border: 1px solid var(--ui-border-dark);
@@ -391,62 +357,28 @@
       padding: 0.5em 0.3em;
     }
   }
-}
 
-/* CRITICAL FIX: Override ALL CSS conflicts for mobile code wrapping */
-/* Using ViewEncapsulation.None for global scope */
-
-/* Target all safe-html-content containers globally */
-.safe-html-content,
-.blog-article-content .safe-html-content,
-.experience-description .safe-html-content,
-.project-description .safe-html-content {
-
-  @media (max-width: 768px) {
-    /* Force code wrapping with maximum specificity */
-    pre,
-    pre *,
-    pre code,
-    pre code *,
-    code {
-      white-space: pre-wrap !important;
-      word-wrap: break-word !important;
-      overflow-wrap: break-word !important;
-      word-break: break-word !important;
-      max-width: 100% !important;
-    }
+  /* Images and iframe responsive */
+  img, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
   }
 
-  @media (max-width: 768px) {
-    /* Force code wrapping with maximum specificity */
-    pre,
-    pre *,
-    pre code,
-    pre code *,
-    code {
-      white-space: pre-wrap !important;
-      word-wrap: break-word !important;
-      overflow-wrap: break-word !important;
-      word-break: break-word !important;
-      max-width: 100% !important;
-    }
-  }
-}
-
-/* Additional global override for stubborn cases */
-@media (max-width: 768px) {
-  .safe-html-content pre,
-  .safe-html-content pre *,
-  .safe-html-content pre code,
-  .safe-html-content pre code *,
-  .blog-article-content .safe-html-content pre,
-  .blog-article-content .safe-html-content pre *,
-  .blog-article-content .safe-html-content pre code,
-  .blog-article-content .safe-html-content pre code * {
-    white-space: pre-wrap !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    word-break: break-word !important;
-    max-width: 100% !important;
+  /* Table responsive */
+  table {
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+    margin: 2em 0;
+    border-radius: 8px;
+    overflow-x: auto;
+    display: block; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent content from squishing too much */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }

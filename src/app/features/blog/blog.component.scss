@@ -127,22 +127,22 @@
     &__submit {
       @extend .blog__back-btn;
       margin: 0 var(--spacing-xs) 0 0;
-      padding: 0 !important;
-      width: 32px !important;
-      height: 32px !important;
-      display: inline-flex !important;
-      align-items: center !important;
-      justify-content: center !important;
+      padding: 0 ;
+      width: 32px ;
+      height: 32px ;
+      display: inline-flex ;
+      align-items: center ;
+      justify-content: center ;
 
       i {
         font-size: 0.85rem;
         color: var(--text-ink);
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        display: flex ;
+        align-items: center ;
+        justify-content: center ;
         width: 100%;
         height: 100%;
-        margin: 0 !important;
+        margin: 0 ;
       }
     }
 
@@ -342,10 +342,10 @@
       &--selected {
         ::ng-deep lib-skill-ui {
           .skill-badge {
-            background-color: var(--gold) !important;
-            color: var(--text-ink) !important;
-            border-color: var(--ui-border-dark) !important;
-            box-shadow: 2px 2px 0 0 var(--ui-border) !important;
+            background-color: var(--gold) ;
+            color: var(--text-ink) ;
+            border-color: var(--ui-border-dark) ;
+            box-shadow: 2px 2px 0 0 var(--ui-border) ;
             transform: translateY(-1px);
           }
         }
