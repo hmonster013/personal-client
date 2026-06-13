@@ -222,7 +222,7 @@
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
       white-space: pre-wrap !important;
       word-wrap: break-word !important;
       overflow-wrap: break-word !important;
@@ -274,7 +274,7 @@
       word-break: break-word !important;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
       white-space: pre-wrap !important;
       word-wrap: break-word !important;
       overflow-wrap: break-word !important;
@@ -365,7 +365,7 @@
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     h1 { font-size: 1.8em; }
     h2 { font-size: 1.6em; }
     h3 { font-size: 1.4em; }
@@ -417,7 +417,7 @@
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 768px) {
     /* Force code wrapping with maximum specificity */
     pre,
     pre *,

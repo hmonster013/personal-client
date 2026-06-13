@@ -22,6 +22,12 @@
   --text-light: #F4F4F4;
   --text-muted: #94B0C2;
 
+  // ===== BREAKPOINTS (tham chiếu — @media phải dùng đúng các px này) =====
+  --bp-mobile-sm: 400px;
+  --bp-mobile:    768px;
+  --bp-tablet:    1024px;
+  --bp-shell:     1216px;
+
   // ===== ALIAS backward-compat (để SCSS cũ không vỡ trước khi restyle xong) =====
   --primary: var(--gold);
   --primary-light: #FFE38A;

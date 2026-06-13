@@ -746,7 +746,7 @@
       grid-template-columns: 1fr 1fr;
       gap: var(--spacing-lg);
 
-      @media (max-width: 576px) {
+      @media (max-width: 768px) {
         grid-template-columns: 1fr;
         gap: var(--spacing-sm);
       }
@@ -918,7 +918,7 @@
 }
 
 // Mobile Responsive styles
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .home {
     margin-top: 80px;
     padding: 0 !important; // gutter do .app__body lo; bỏ lớp padding chồng để nội dung rộng hơn
@@ -967,7 +967,7 @@
 }
 
 // FORCE MOBILE FIT AND WRAP FOR HERO SECTION (DoD M6)
-@media (max-width: 780px) {
+@media (max-width: 768px) {
   .home__introduce {
     width: 100% !important;
     max-width: 100% !important;
