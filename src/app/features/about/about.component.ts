@@ -31,7 +31,7 @@ export class AboutComponent implements OnInit{
   personalInfo = {
     name: 'Huy',
     title: 'Fresh Graduate | Backend Developer | Information Systems Engineer',
-    avatar: 'assets/img.png',
+    avatar: 'assets/logo.png',
     yearsExperience: 2,
     projectsCompleted: 20,
     technologiesUsed: 10

@@ -15,7 +15,7 @@ import { JCode } from '../../shared/utils/JCode';
       <!-- HUD -->
       <div class="game-world__hud rpg-hud">
         <div class="rpg-hud__avatar-frame">
-          <img src="assets/img.png" alt="Avatar DE013" class="pixelated" (click)="toggleCharacterMenu()" style="cursor: pointer;" onerror="this.src='https://placehold.co/48x48/29366f/ffd75e?text=DE'"/>
+          <img src="assets/logo.png" alt="Avatar DE013" class="pixelated" (click)="toggleCharacterMenu()" style="cursor: pointer;" onerror="this.src='https://placehold.co/48x48/29366f/ffd75e?text=DE'"/>
         </div>
         <div class="rpg-hud__info">
           <div class="rpg-hud__name">DE013</div>
@@ -75,7 +75,7 @@ import { JCode } from '../../shared/utils/JCode';
         <div class="game-scene__house">🏠</div>
         <div class="game-scene__sign">🪧</div>
         <div class="game-scene__character animate-bounce">
-          <img src="assets/img.png" alt="DE013 Hero" class="pixelated" onerror="this.style.display='none'"/>
+          <img src="assets/logo.png" alt="DE013 Hero" class="pixelated" onerror="this.style.display='none'"/>
           <span class="hero-label">DE013</span>
         </div>
         <div class="game-scene__info">BẢN ĐỒ LÀNG GAME 2D CANVAS ĐANG ĐƯỢC XÂY DỰNG</div>
