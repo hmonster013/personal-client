@@ -32,3 +32,15 @@ html {
               color var(--transition-normal),
               border-color var(--transition-normal);
 }
+
+// Global Layout Fix for Blog Detail (Prevent Margin Collapsing & Scoped Host Constraints)
+lib-blog-detail {
+  display: block;
+  margin-top: 16px !important;
+}
+
+@media (max-width: 768px) {
+  lib-blog-detail {
+    margin-top: 12px !important;
+  }
+}

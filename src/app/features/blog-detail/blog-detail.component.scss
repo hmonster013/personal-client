@@ -11,7 +11,7 @@
 .blog-detail {
   width: 100%;
   max-width: 1200px;
-  margin: 15px auto 0 auto; // Sử dụng margin-top để đẩy toàn bộ component xuống dưới, tránh dính sát vào Header
+  margin: 0 auto;
   min-height: 100vh;
   box-sizing: border-box;
 
@@ -22,7 +22,7 @@
     border-bottom: 3px double var(--ui-border);
     background-color: var(--bg-dusk);
     position: sticky;
-    top: 85px; // Ghim cách header 15px (70px header + 15px khoảng cách)
+    top: 86px; // Ghim cách header 16px (70px header + 16px khoảng cách từ global host margin)
     z-index: var(--z-sticky);
     display: flex;
     align-items: center;
@@ -447,10 +447,8 @@
 // Mobile Responsive layout
 @media (max-width: 768px) {
   .blog-detail {
-    margin-top: 12px; // Đẩy toàn bộ component xuống dưới trên mobile
-
     &__nav {
-      top: 72px; // Ghim cách header 12px (60px header + 12px khoảng cách)
+      top: 72px; // Ghim cách header 12px (60px header + 12px khoảng cách từ global host margin)
     }
     &__breadcrumb {
       font-size: 0.95rem;
