@@ -21,7 +21,7 @@
     border-bottom: 3px double var(--ui-border);
     background-color: var(--bg-dusk);
     position: sticky;
-    top: 69px; // Account for fixed header (overlap 1px to prevent subpixel black gap on scroll)
+    top: 67px; // Overlap 3px (the border thickness) with fixed header to blend perfectly and prevent any scroll gap
     z-index: var(--z-sticky);
     display: flex;
     align-items: center;
@@ -447,7 +447,7 @@
 @media (max-width: 768px) {
   .blog-detail {
     &__nav {
-      top: 59px; // Overlap 1px to prevent subpixel black gap on scroll
+      top: 57px; // Overlap 3px with fixed header to blend perfectly and prevent any scroll gap
     }
     &__breadcrumb {
       font-size: 0.95rem;
