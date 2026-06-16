@@ -1,12 +1,12 @@
-import { 
-  Component, 
-  OnInit, 
-  OnDestroy, 
-  AfterViewInit, 
-  ElementRef, 
-  ViewChild, 
-  NgZone, 
-  inject, 
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  AfterViewInit,
+  ElementRef,
+  ViewChild,
+  NgZone,
+  inject,
   signal,
   effect,
   computed,
@@ -35,9 +35,16 @@ import { AnalyticsService } from '../core/services/analytics.service';
 import { ToastService } from '../core/services/toast.service';
 import { Skill } from '../core/models';
 import { JCode } from '../shared/utils/JCode';
-import { Subscription } from 'rxjs';
+import { Subscription, from } from 'rxjs';
 
-const PLAYER_MODEL = 'assets/game3d/models/chars/character-male-a.glb';
+const PLAYER_MODELS = [
+  'assets/game3d/models/chars/character-male-a.glb',
+  'assets/game3d/models/chars/character-male-b.glb',
+  'assets/game3d/models/chars/character-male-c.glb',
+  'assets/game3d/models/chars/character-female-a.glb',
+  'assets/game3d/models/chars/character-female-b.glb',
+  'assets/game3d/models/chars/character-female-c.glb',
+];
 
 @Component({
   selector: 'app-game',
@@ -102,7 +109,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   activeGuideOptionIndex = signal<number>(0);
   activeItemIndex = signal<number>(0);
   showSizeWarning = signal<boolean>(false);
-  
+
   fullDialogueText = signal<string>('');
   displayedDialogueText = signal<string>('');
   isDialogueTyping = signal<boolean>(false);
@@ -153,9 +160,9 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       const isDialogOpen = this.gameState.isDialogOpen();
       const isCharOpen = this.gameState.isCharacterMenuOpen();
       const activeOverlay = this.gameState.activeOverlay();
-      
+
       const shouldPause = isDialogOpen || isCharOpen || !!activeOverlay;
-      
+
       if (this.loop) {
         if (shouldPause) {
           this.loop.pause();
@@ -245,7 +252,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     this.ngZone.runOutsideAngular(async () => {
       // Suy danh sách preload từ world-spec — bao gồm cả static objects và NPCs
       const assetsToLoad = Array.from(new Set([
-        PLAYER_MODEL,
+        ...PLAYER_MODELS,
         ...WORLD_SPEC.objects.map(o => o.modelPath),
         ...WORLD_SPEC.npcs.map(n => n.modelPath)
       ]));
@@ -279,8 +286,9 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
         }));
 
       // 1. Spawn Player Container (adds player to scene)
-      const playerModel = this.assetLoader.get(PLAYER_MODEL);
-      this.player = new Player3D(playerModel, this.assetLoader.getAnimations(PLAYER_MODEL));
+      const selectedModel = this.gameState.selectedPlayerModel();
+      const playerModel = this.assetLoader.get(selectedModel);
+      this.player = new Player3D(playerModel, this.assetLoader.getAnimations(selectedModel));
       this.player.setPosition(WORLD_SPEC.spawnPoint.x, WORLD_SPEC.spawnPoint.y, WORLD_SPEC.spawnPoint.z);
       this.sceneManager.add(this.player.container);
 
@@ -290,10 +298,10 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       // 2. Spawn Static World Objects (walls, roofs, tree)
       WORLD_SPEC.objects.forEach((objSpec) => {
         const model = this.assetLoader.get(objSpec.modelPath);
-        
+
         // Position
         model.position.set(objSpec.position.x, objSpec.position.y, objSpec.position.z);
-        
+
         // Rotation (convert to radians if supplied)
         if (objSpec.rotation) {
           if (objSpec.rotation.x) model.rotation.x = objSpec.rotation.x;
@@ -348,13 +356,13 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
         const npcModel = this.assetLoader.get(npcSpec.modelPath);
         const npcAnimations = this.assetLoader.getAnimations(npcSpec.modelPath);
         const npc = new NPC3D(npcModel, npcAnimations, npcSpec.name);
-        
+
         npc.setPosition(npcSpec.position.x, npcSpec.position.y, npcSpec.position.z);
-        
+
         if (npcSpec.rotationY !== undefined) {
           npc.rotationGroup.rotation.y = npcSpec.rotationY;
         }
-        
+
         if (npcSpec.roam) {
           npc.setRoaming(true, npcSpec.roamRadius || 5);
         }
@@ -678,7 +686,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       const focusPos = this.cameraFocusOverride() || this.player.position;
       const focusYaw = this.cameraYawOverride() !== null ? this.cameraYawOverride()! : this.player.facingYaw;
       this.camera.update(focusPos, focusYaw, dt);
-      
+
       if (this.indicatorStar) {
         this.indicatorStar.rotation.y += dt * 2;
         this.indicatorStar.position.y = 2.5 + Math.sin(this.elapsedTime * 4) * 0.25;
@@ -1043,16 +1051,16 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     switch (name) {
       case 'npc_guide': return 'Nói chuyện với NPC Hướng Dẫn 💬';
       case 'door_about': return 'Vào nhà của DE013 🏠';
-      case 'door_projects': 
-      case 'desk_projects': 
+      case 'door_projects':
+      case 'desk_projects':
         return 'Xem xưởng chế tác (Projects) ⚒️';
       case 'door_blog': return 'Vào thư viện (Blog) 📚';
-      case 'board_quest': 
-      case 'quest_board': 
+      case 'board_quest':
+      case 'quest_board':
         return 'Xem bảng nhiệm vụ (Experience) 🛡️';
       case 'mailbox_contact': return 'Gửi tin nhắn liên hệ (Contact) 📫';
-      case 'sign_controls': 
-      case 'signpost_help': 
+      case 'sign_controls':
+      case 'signpost_help':
         return 'Đọc biển hướng dẫn điều khiển 🪧';
       case 'sign_skip': return 'Sử dụng đường tắt (Skip Game) 🚪';
       case 'well_easteregg': return 'Xem giếng nước cổ ⛲';
@@ -1096,15 +1104,15 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       case 'npc_guide': return '💬 NPC HƯỚNG Dẫn';
       case 'door_about': return '🏠 NHÀ CỦA DE013 (ABOUT)';
       case 'door_projects':
-      case 'desk_projects': 
+      case 'desk_projects':
         return '⚒️ XƯỞNG CHẾ TÁC (PROJECTS)';
       case 'door_blog': return '📚 THƯ VIỆN SÁCH (BLOG)';
       case 'board_quest':
-      case 'quest_board': 
+      case 'quest_board':
         return '🛡️ BẢNG NHIỆM VỤ (EXPERIENCE)';
       case 'mailbox_contact': return '📫 HÒM THƯ LIÊN LẠC (CONTACT)';
       case 'sign_controls':
-      case 'signpost_help': 
+      case 'signpost_help':
         return '🪧 BẢNG ĐIỀU KHIỂN';
       case 'sign_skip': return '🚪 ĐƯỜNG TẮT RA QUỐC LỘ';
       case 'well_easteregg': return '⛲ GIẾNG NƯỚC CỔ TÍCH';
@@ -1119,7 +1127,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     this.gameState.openDialog(name);
     this.showGuideOptions.set(false);
     this.activeGuideOptionIndex.set(0);
-    
+
     let queue: string[] = [];
     if (name === 'npc_guide') {
       queue = [
@@ -1166,7 +1174,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   startDialogueTypewriter(text: string) {
     this.fullDialogueText.set(text);
     this.displayedDialogueText.set('');
-    
+
     // Check prefers-reduced-motion to skip typewriter effect instantly
     const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReducedMotion) {
@@ -1254,7 +1262,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isCameraPanning = true;
     this.cameraFocusOverride.set({ x: targetX, y: 0, z: targetZ });
     this.cameraYawOverride.set(yaw);
-    
+
     // Spawn/activate indicator star for projects workshop
     if (targetX === -8.5) {
       if (!this.indicatorStar) {
@@ -1290,7 +1298,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       this.gameState.activeOverlay.set(overlayMap[name]);
       this.gameState.addVisitedLocation(name);
       this.analyticsService.trackEvent('building_entered_' + name, 'Game');
-      
+
       if (overlayMap[name] === 'projects') {
         this.loadProjects();
       } else if (overlayMap[name] === 'blog') {
@@ -1381,7 +1389,7 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
       this.toastService.error('Vui lòng điền đầy đủ các trường bắt buộc!');
       return;
     }
-    
+
     this.isSubmittingContact.set(true);
     this.contactService.create(this.contactForm).subscribe({
       next: (res: any) => {
@@ -1446,6 +1454,37 @@ export class GameComponent implements OnInit, OnDestroy, AfterViewInit {
   getSkillLevel(skill: Skill): number {
     const percent = this.getSkillPercentage(skill);
     return Math.max(1, Math.min(10, Math.floor(percent / 10)));
+  }
+
+  getAvailableModels() {
+    return PLAYER_MODELS;
+  }
+
+  changePlayerModel(path: string) {
+    if (this.gameState.selectedPlayerModel() === path) return;
+
+    this.ngZone.runOutsideAngular(() => {
+      // 1. Lưu state
+      this.gameState.setPlayerModel(path);
+
+      // 2. Thay thế model trong game
+      if (this.player) {
+        // Lưu vị trí cũ
+        const oldPos = this.player.position.clone();
+
+        // Remove cũ
+        this.sceneManager.remove(this.player.container);
+
+        // Tạo mới
+        const model = this.assetLoader.get(path);
+        const animations = this.assetLoader.getAnimations(path);
+        this.player = new Player3D(model, animations);
+        this.player.setPosition(oldPos.x, oldPos.y, oldPos.z);
+
+        // Add mới
+        this.sceneManager.add(this.player.container);
+      }
+    });
   }
 
   getPlayerTargetHeight(x: number, z: number): number {

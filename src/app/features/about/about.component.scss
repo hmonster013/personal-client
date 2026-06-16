@@ -311,11 +311,15 @@
     }
 
     .timeline-content {
+      width: 100%;
       background-color: var(--ui-parchment);
       color: var(--text-ink);
       padding: var(--spacing-xl);
+      border: 2px solid var(--ui-border-dark);
+      border-right-width: 4px;
+      box-sizing: border-box;
       box-shadow: var(--pixel-border);
-      transition: transform var(--transition-step);
+      transition: transform var(--transition-step), box-shadow var(--transition-step);
 
       &:hover {
         transform: translateY(-2px);

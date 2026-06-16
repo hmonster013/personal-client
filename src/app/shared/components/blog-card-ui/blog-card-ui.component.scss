@@ -6,10 +6,12 @@
   position: relative;
   background-color: var(--ui-parchment) !important;
   color: var(--text-ink) !important;
-  border: none !important;
+  border: 3px solid var(--ui-border) !important;
   border-radius: 0 !important;
   padding: var(--spacing-md) var(--spacing-md) var(--spacing-md) 32px !important; // Space on left for book spine
-  box-shadow: var(--pixel-border) !important;
+  box-shadow: 4px 4px 0 0 var(--ui-border-dark) !important;
+  outline: 2px solid var(--ui-parchment-dark);
+  outline-offset: -6px;
   transition: transform var(--transition-step), box-shadow var(--transition-step) !important;
   display: flex;
   flex-direction: column;
@@ -115,6 +117,7 @@
     border: 3px dashed var(--ui-border) !important;
     background-color: var(--ui-parchment-dark) !important;
     opacity: 0.8;
+    box-shadow: 4px 4px 0 0 var(--ui-border-dark) !important;
   }
 
   &__empty-state {

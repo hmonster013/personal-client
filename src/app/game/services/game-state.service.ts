@@ -6,13 +6,13 @@ import { Injectable, signal } from '@angular/core';
 export class GameStateService {
   // Coordinates of the player in the map
   playerPosition = signal<{ x: number; y: number }>({ x: 100, y: 100 });
-  
+
   // Current active map
   currentMap = signal<string>('village');
-  
+
   // Is a dialog currently open?
   isDialogOpen = signal<boolean>(false);
-  
+
   // Active NPC or interaction point name
   activeInteraction = signal<string | null>(null);
 
@@ -25,8 +25,28 @@ export class GameStateService {
   // Character Menu visibility
   isCharacterMenuOpen = signal<boolean>(false);
 
+  // Selected player model
+  selectedPlayerModel = signal<string>('assets/game3d/models/chars/character-male-a.glb');
+
   constructor() {
     this.loadVisitedFlags();
+    this.loadSelectedModel();
+  }
+
+  private loadSelectedModel() {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('selected_player_model');
+      if (stored) {
+        this.selectedPlayerModel.set(stored);
+      }
+    }
+  }
+
+  setPlayerModel(path: string) {
+    this.selectedPlayerModel.set(path);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('selected_player_model', path);
+    }
   }
 
   private loadVisitedFlags() {

@@ -13,7 +13,6 @@
     <!-- Search Bar -->
     <div class="blog__search">
       <div class="blog__search__container">
-        <i class="fas fa-search blog__search__icon"></i>
         <input
           type="text"
           class="blog__search__input"
@@ -22,18 +21,18 @@
           (keydown.enter)="onSearchSubmit()"
           [value]="searchKeyword">
         <button
-          class="blog__search__submit"
-          (click)="onSearchSubmit()"
-          [disabled]="!searchKeyword || !searchKeyword.trim()"
-          title="Search blogs">
-          <i class="fas fa-search"></i>
-        </button>
-        <button
           *ngIf="searchKeyword || selectedSkills.size > 0"
           class="blog__search__clear"
           (click)="clearAllFilters()"
           title="Clear all filters">
           <i class="fas fa-times"></i>
+        </button>
+        <button
+          class="blog__search__submit-icon"
+          (click)="onSearchSubmit()"
+          [disabled]="!searchKeyword || !searchKeyword.trim()"
+          title="Search blogs">
+          <i class="fas fa-search"></i>
         </button>
       </div>
 

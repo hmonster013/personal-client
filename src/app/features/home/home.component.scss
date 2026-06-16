@@ -15,9 +15,9 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin-top: 100px;
+  margin: 100px auto 0 auto; // Centered to leave equal margin on left and right for box-shadows
   box-sizing: border-box;
-  overflow-x: hidden;
+  // overflow-x: hidden; // Removed to prevent clipping the outer box-shadow pixel-borders
   min-width: 0;
 
   // ===== HERO / INTRODUCE SECTION =====
@@ -30,7 +30,11 @@
     text-align: center;
     box-sizing: border-box;
     position: relative;
-    box-shadow: var(--pixel-border);
+    box-shadow: 
+      0 -3px 0 0 var(--ui-border), 
+      0 3px 0 0 var(--ui-border),
+      0 -6px 0 0 var(--ui-border-dark), 
+      0 6px 0 0 var(--ui-border-dark);
     background-color: var(--bg-night);
     
     // Starry Retro Sky Background for Hero
@@ -143,7 +147,7 @@
       flex: 0 0 280px;
       display: flex;
       flex-direction: column;
-      gap: var(--spacing-md);
+      gap: var(--spacing-xl);
 
       button {
           justify-content: flex-start;
@@ -519,7 +523,7 @@
 
       &__actions {
         display: flex;
-        gap: var(--spacing-xs);
+        gap: var(--spacing-xl);
       }
 
       &__action-btn {
@@ -571,7 +575,11 @@
     padding: var(--spacing-3xl) var(--spacing-xl);
     box-sizing: border-box;
     background-color: var(--bg-dusk);
-    box-shadow: var(--pixel-border);
+    box-shadow: 
+      0 -3px 0 0 var(--ui-border), 
+      0 3px 0 0 var(--ui-border),
+      0 -6px 0 0 var(--ui-border-dark), 
+      0 6px 0 0 var(--ui-border-dark);
     border: none;
     border-radius: 0;
     position: relative;
@@ -705,6 +713,9 @@
     }
 
     &__social-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       background-color: rgba(26, 28, 44, 0.6);
       border: 2px solid var(--ui-border);
       border-radius: 0;

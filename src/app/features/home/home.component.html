@@ -152,14 +152,14 @@
                 (click)="openLink(project.link_github.url)"
                 class="home__project__card__action-btn home__project__card__action-btn--secondary">
                 <i class="fab fa-github"></i>
-                View Code
+                <span>&nbsp;View Code</span>
               </button>
               <button
                 *ngIf="project.link_website?.url"
                 (click)="openLink(project.link_website.url)"
                 class="home__project__card__action-btn home__project__card__action-btn--primary">
                 <i class="fas fa-external-link-alt"></i>
-                Live Demo
+                <span>&nbsp;Live Demo</span>
               </button>
             </div>
           </div>

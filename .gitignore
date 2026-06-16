@@ -94,3 +94,8 @@ Icon?
 /playwright-report
 /blob-report
 /playwright/.cache
+
+# Temporary / AI tools
+.aider.chat.history.md
+*.py
+*.stackdump
