@@ -115,7 +115,7 @@ a {
   max-width: 320px;
   height: 100vh;
   transform: translateX(100%);
-  transition: transform 0.25s steps(4), visibility 0s linear 0.25s;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.28s;
   z-index: var(--z-modal);
   overflow-y: auto;
   will-change: transform;
@@ -123,7 +123,7 @@ a {
 
   &.open {
     transform: translateX(0);
-    transition: transform 0.25s steps(4), visibility 0s linear 0s;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0s;
     visibility: visible;
   }
 

@@ -18,7 +18,6 @@
   // Breadcrumb Navigation
   &__nav {
     padding: var(--spacing-md) var(--spacing-xl);
-    border-bottom: 3px double var(--ui-border);
     background-color: var(--bg-dusk);
     position: sticky;
     top: 86px; // Ghim cách header 16px (70px header + 16px khoảng cách từ global host margin)
@@ -250,6 +249,7 @@
     box-shadow: var(--pixel-border);
     padding: var(--spacing-3xl) var(--spacing-xl);
     margin-top: var(--spacing-5xl);
+    margin-bottom: var(--spacing-5xl); // Tạo khoảng cách lề dưới rộng rãi để không bị dính sát vào dải cỏ chân trang
     box-sizing: border-box;
   }
 
