@@ -961,12 +961,28 @@
         display: flex;
         flex-direction: row;
         overflow-x: auto;
-        padding-bottom: 8px;
+        padding-bottom: var(--spacing-sm);
         width: 100%;
         max-width: 100%;
+        gap: var(--spacing-md); // Khoảng cách nhỏ hơn trên mobile để cân đối
+
+        // Đảm bảo thanh cuộn ngang hiển thị rõ trên mobile
+        &::-webkit-scrollbar {
+          height: 6px;
+          display: block !important;
+        }
+        &::-webkit-scrollbar-track {
+          background: rgba(26, 28, 44, 0.2);
+        }
+        &::-webkit-scrollbar-thumb {
+          background: var(--ui-border);
+          border-radius: 3px;
+        }
 
         button {
-          min-width: 160px;
+          flex: 0 0 80%; // Mỗi card chiếm 80% chiều ngang màn hình
+          max-width: 300px;
+          min-width: 220px;
           flex-shrink: 0;
 
           &::before {
