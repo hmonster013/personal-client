@@ -13,11 +13,11 @@
   max-width: 1200px;
   margin: 0 auto;
   min-height: 100vh;
+  padding-top: 15px; // Thêm padding-top để tránh hiện tượng Margin Collapsing, đẩy nội dung cách header 15px một cách chắc chắn
   box-sizing: border-box;
 
   // Breadcrumb Navigation
   &__nav {
-    margin-top: 15px; // Thêm khoảng cách phía dưới header
     padding: var(--spacing-md) var(--spacing-xl);
     border-top: 3px double var(--ui-border); // Viền kép phía trên để cân đối khi tách rời
     border-bottom: 3px double var(--ui-border);
@@ -448,8 +448,9 @@
 // Mobile Responsive layout
 @media (max-width: 768px) {
   .blog-detail {
+    padding-top: 12px; // Tránh Margin Collapsing trên mobile
+
     &__nav {
-      margin-top: 12px; // Thêm khoảng cách phía dưới header trên mobile
       top: 72px; // Ghim cách header 12px (60px header + 12px khoảng cách)
     }
     &__breadcrumb {
