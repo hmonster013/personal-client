@@ -26,6 +26,7 @@
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    margin-bottom: var(--spacing-xl); // Tạo khoảng cách phía dưới để tách biệt hoàn toàn với Hero Section, tránh dính và gộp viền
   }
 
   &__breadcrumb {
