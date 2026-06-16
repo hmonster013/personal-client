@@ -18,7 +18,6 @@
   // Breadcrumb Navigation
   &__nav {
     padding: var(--spacing-md) var(--spacing-xl);
-    border-top: 3px double var(--ui-border); // Viền kép phía trên để cân đối khi tách rời
     border-bottom: 3px double var(--ui-border);
     background-color: var(--bg-dusk);
     position: sticky;
