@@ -51,8 +51,9 @@
     position: relative;
     padding: var(--spacing-xl);
     background-color: var(--bg-night);
-    border-bottom: 3px double var(--ui-border);
+    box-shadow: var(--pixel-border); // Viền pixel bao quanh toàn bộ phần Hero
     box-sizing: border-box;
+    margin-bottom: var(--spacing-xl); // Khoảng cách tới nội dung chính phía dưới
   }
 
   &__hero-content {
@@ -238,7 +239,7 @@
   &__share-buttons {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md); // Tăng khoảng cách từ 8px lên 12px để nút thoáng hơn
   }
 
   // Footer (Themed as a wooden sign block)
@@ -319,18 +320,33 @@
   cursor: pointer;
   user-select: none;
   text-decoration: none;
-  box-shadow: var(--pixel-border);
+  // Sử dụng viền pixel 1 lớp mảnh hơn (3px) thay cho viền đôi 6px để tránh nuốt khoảng trống của nút nhỏ
+  box-shadow:
+    0 -3px 0 0 var(--ui-border-dark),
+    0 3px 0 0 var(--ui-border-dark),
+    -3px 0 0 0 var(--ui-border-dark),
+    3px 0 0 0 var(--ui-border-dark);
   transition: transform var(--transition-step), box-shadow var(--transition-step);
   transform: translateY(0);
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: var(--pixel-border), 4px 4px 0 0 var(--ui-border-dark);
+    box-shadow:
+      0 -3px 0 0 var(--ui-border-dark),
+      0 3px 0 0 var(--ui-border-dark),
+      -3px 0 0 0 var(--ui-border-dark),
+      3px 0 0 0 var(--ui-border-dark),
+      4px 4px 0 0 var(--ui-border-dark);
   }
 
   &:active:not(:disabled) {
     transform: translateY(1px);
-    box-shadow: var(--pixel-border), 2px 2px 0 0 var(--ui-border-dark);
+    box-shadow:
+      0 -3px 0 0 var(--ui-border-dark),
+      0 3px 0 0 var(--ui-border-dark),
+      -3px 0 0 0 var(--ui-border-dark),
+      3px 0 0 0 var(--ui-border-dark),
+      2px 2px 0 0 var(--ui-border-dark);
   }
 
   &--twitter {
