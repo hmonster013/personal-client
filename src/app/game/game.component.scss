@@ -1,0 +1,480 @@
+.game-world {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: calc(100vh - 160px);
+  // "Sân khấu" game đóng khung trong container trang (không full-bleed)
+  width: 100%;
+  margin: var(--spacing-lg) 0;
+  
+  // Double-layered retro arcade border
+  border: 6px solid var(--ui-border-dark);
+  outline: 3px solid var(--gold);
+  outline-offset: -6px;
+  border-radius: 4px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 6px 6px 0 rgba(0, 0, 0, 0.35);
+  background-color: var(--bg-night); // Night
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+
+  &__hud {
+    position: absolute;
+    top: var(--spacing-lg);
+    left: var(--spacing-lg);
+    z-index: 10;
+  }
+
+  &__controls {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--spacing-sm);
+    z-index: 10;
+  }
+
+  &__hints {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+    align-items: flex-end;
+
+    .rpg-badge {
+      background: linear-gradient(135deg, #8a4f2a 0%, #5c2f0d 100%);
+      color: var(--gold) !important;
+      border: 2px solid var(--ui-border-dark) !important;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.5);
+      border-radius: 0;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  &__prompt {
+    position: absolute;
+    bottom: calc(var(--spacing-xl) + 120px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    cursor: pointer;
+    text-align: center;
+    pointer-events: auto;
+
+    .rpg-badge {
+      font-size: 0.875rem;
+      padding: var(--spacing-sm) var(--spacing-lg);
+      border-color: var(--gold);
+      box-shadow: 4px 4px 0 var(--ui-border-dark);
+      background-color: var(--ui-border);
+      color: var(--gold);
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+  }
+
+  &__size-warning {
+    position: absolute;
+    top: var(--spacing-sm);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 35;
+    background: var(--berry) !important;
+    border-color: var(--gold) !important;
+    color: #fff !important;
+    font-size: 0.75rem;
+    padding: var(--spacing-xs) var(--spacing-md);
+    box-shadow: 2px 2px 0 var(--ui-border-dark);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    white-space: nowrap;
+    pointer-events: auto;
+    
+    .rpg-btn {
+      color: var(--text-ink) !important;
+    }
+  }
+
+  &__menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: var(--spacing-xl);
+  }
+
+  .game-loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bg-night);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+  }
+
+  &__menu {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    box-sizing: border-box;
+
+    // Không để panel cao hơn viewport (overlay đã có padding xung quanh).
+    // Header giữ cố định, chỉ thân panel cuộn → không còn tràn trên/dưới khung hình.
+    max-height: 100%;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .rpg-panel__header {
+      flex: 0 0 auto;
+    }
+
+    .rpg-panel__body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow-y: auto;
+    }
+  }
+
+  &__close-btn {
+    background-color: var(--berry);
+    color: var(--text-light);
+    border: 2px solid var(--ui-border-dark);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-pixel);
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    box-shadow: 2px 2px 0 var(--ui-border-dark);
+
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 2px 2px 0 var(--ui-border-dark), 1px 1px 0 var(--ui-border-dark);
+    }
+  }
+}
+
+.game-canvas-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  // Vignette & Scanline overlay
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.55); // Vignette
+    background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.25) 100%);
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+}
+
+.character-stats {
+  font-family: var(--font-pixel-body);
+  font-size: 1.3rem;
+  color: var(--text-ink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed var(--ui-border);
+    padding-bottom: 4px;
+  }
+
+  .stats-label {
+    font-weight: bold;
+  }
+
+  .stats-value {
+    color: var(--ui-border-dark);
+  }
+}
+
+[data-theme="dark"] .character-stats {
+  color: var(--text-light);
+  .stats-value {
+    color: var(--gold);
+  }
+}
+
+.skills-xp {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  max-height: 250px;
+  overflow-y: auto;
+  padding-right: var(--spacing-xs);
+}
+
+.skill-xp-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.skill-xp-name {
+  font-family: var(--font-pixel);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.rpg-dialog {
+  margin-top: auto;
+  z-index: 30;
+  cursor: pointer;
+}
+
+// Mobile Virtual D-pad Controls (GameBoy Style)
+.mobile-controls {
+  display: none; // Hidden by default, shown on touch screens/smaller devices
+  position: absolute;
+  bottom: calc(var(--spacing-xl) + 10px);
+  left: var(--spacing-lg);
+  right: var(--spacing-lg);
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none; // Let events fall through to container, except buttons
+  z-index: 25;
+
+  .dpad, .action-buttons {
+    pointer-events: auto; // Capture touch/pointer events
+  }
+
+  .dpad {
+    position: relative;
+    width: 144px;
+    height: 144px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 50%;
+    border: 3px solid var(--ui-border-dark);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
+
+    .dpad-btn {
+      position: absolute;
+      width: 48px;
+      height: 48px;
+      background-color: #4a4a4a !important; // Gameboy grey plastic
+      color: #b5b5b5 !important;
+      border: 2px solid #222 !important;
+      font-size: 1.25rem;
+      font-family: var(--font-pixel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+      touch-action: none;
+
+      &:active {
+        background-color: #111 !important;
+        color: var(--gold) !important;
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.4);
+      }
+
+      &--up {
+        top: 0;
+        left: 48px;
+      }
+      &--left {
+        top: 48px;
+        left: 0;
+      }
+      &--right {
+        top: 48px;
+        right: 0;
+      }
+      &--down {
+        bottom: 0;
+        left: 48px;
+      }
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+
+    .action-btn {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #e53e3e 0%, #b82e2e 100%) !important; // GameBoy red button
+      border: 3px solid #222 !important;
+      color: #fff !important;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+
+      &:active {
+        transform: translateY(1.5px) !important;
+        box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.5) !important;
+        background: #9b1c1c !important;
+      }
+    }
+  }
+}
+
+.pulse {
+  animation: pulse-anim 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse-anim {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.95;
+  }
+}
+
+// Media queries
+@media (max-width: 768px) {
+  .game-world {
+    padding: var(--spacing-sm);
+    height: calc(100vh - 120px);
+
+    &__hints {
+      display: none;
+    }
+
+    &__hud {
+      left: var(--spacing-sm);
+      top: var(--spacing-sm);
+    }
+
+    &__prompt {
+      bottom: calc(var(--spacing-xl) + 140px);
+    }
+
+    .mobile-controls {
+      display: flex; // Show virtual controls on mobile width
+    }
+
+    .rpg-dialog {
+      font-size: 1.15rem;
+      padding: var(--spacing-md);
+      margin-top: 0;
+    }
+  }
+}
+
+// Ensure pointer-events work nicely on touchscreens
+@media (hover: none) and (pointer: coarse) {
+  .mobile-controls {
+    display: flex; // Force display on touch/mobile devices
+  }
+}
+
+// Red Retro Button variant for skip
+.rpg-btn--danger {
+  background: linear-gradient(135deg, #e53e3e 0%, #9b2c2c 100%) !important;
+  color: var(--text-light) !important;
+  border: 3px solid var(--ui-border-dark) !important;
+  box-shadow: 3px 3px 0 var(--ui-border-dark) !important;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.6) !important;
+  
+  &:hover:not(:disabled) {
+    transform: translateY(-1px) !important;
+    box-shadow: 3px 3px 0 var(--ui-border-dark), 0 0 8px rgba(239, 125, 87, 0.4) !important;
+  }
+  
+  &:active:not(:disabled) {
+    transform: translate(2px, 2px) !important;
+    box-shadow: 1px 1px 0 var(--ui-border-dark) !important;
+  }
+}
+
+// Sửa tỷ lệ avatar và thêm đèn LED pulsing
+.rpg-hud {
+  &__avatar-frame {
+    position: relative;
+    border-radius: 4px;
+    border: 3px double var(--gold) !important;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover !important; // Chống bóp méo hình đại diện
+      image-rendering: pixelated;
+    }
+  }
+
+  &__online-dot {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    background-color: var(--grass);
+    border: 1px solid var(--ui-border-dark);
+    border-radius: 50%;
+    box-shadow: 0 0 6px var(--grass);
+    animation: pulse-green 1.5s infinite ease-in-out;
+    z-index: 2;
+  }
+}
+
+@keyframes pulse-green {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+    box-shadow: 0 0 10px var(--grass);
+  }
+}

@@ -24,6 +24,16 @@ export class BlogDetailComponent implements OnInit {
   currentBlog: any;
   response: any;
   toc: { id: string; title: string }[] = [];
+  readingProgress = 0; // % đã đọc, cho thanh tiến độ pixel ở đỉnh trang
+
+  @HostListener('window:scroll')
+  onScroll(): void {
+    const doc = document.documentElement;
+    const max = doc.scrollHeight - doc.clientHeight;
+    this.readingProgress = max > 0
+      ? Math.min(100, Math.max(0, (doc.scrollTop / max) * 100))
+      : 0;
+  }
 
   constructor(
     private route: ActivatedRoute,

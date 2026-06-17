@@ -3,48 +3,103 @@
 // ===================================
 
 :root {
-  // Primary Colors
-  --primary: #2563EB;
-  --primary-light: #497DEE;
-  --primary-dark: #134FD2;
-  --primary-rgb: 37, 99, 235;
+  // ===== ISLAND PALETTE (rút từ scene 3D golden-hour, tinh chỉnh nhẹ cho UI) =====
+  // Nguồn màu gốc trong game (scene-manager.ts): trời #a8c8e8 · biển #3f7fc4 ·
+  // cỏ #5d8a4e · cát #d9c389 · vách đất #8b6b4f · nắng/glow #ffdfae→#ffd75e→#ffaa22
+  --bg-night: #16213E;       // trời đêm trên đảo (navy xanh sâu — bluer hơn để hợp tông biển)
+  --bg-dusk: #243A63;        // chân trời hoàng hôn / nền section phụ
+  --ui-parchment: #F4E4BC;   // = cát #d9c389 sáng lên → surface panel/card
+  --ui-parchment-dark: #E8D5A3; // hover trên parchment
+  --ui-border: #7A5A3F;      // viền nâu — đồng tông vách đất game #8b6b4f
+  --ui-border-dark: #4A3526; // viền nâu đậm (lớp dưới của pixel border)
+  --gold: #FFD75E;           // = glow nắng trong game (giữ nguyên, đã khớp)
+  --gold-rgb: 255, 215, 94;
+  --grass: #6AA35C;          // tinh chỉnh từ cỏ game #5d8a4e (tươi hơn chút cho accent UI)
+  --grass-rgb: 106, 163, 92;
+  --sky: #4A90D9;            // tinh chỉnh giữa trời #a8c8e8 và biển #3f7fc4 (đủ đậm để đọc)
+  --sky-rgb: 74, 144, 217;
+  --berry: #EF7D57;          // coral hoàng hôn (giữ — đã hợp tông ấm golden hour)
+  --berry-rgb: 239, 125, 87;
+  --text-ink: #29366F;       // chữ tối (navy) trên nền sáng
+  --text-light: #F4F4F4;
+  --text-muted: #94B0C2;
 
-  // Secondary Colors
-  --secondary: #111827;
-  --secondary-light: #172135;
-  --secondary-dark: #090D15;
-  --secondary-rgb: 17, 24, 39;
+  // ===== Ô NỘI DUNG (card) — theme-aware: light = giấy da + chữ navy =====
+  --card-ink: var(--text-ink);            // chữ thân trên card
+  --card-heading: var(--ui-border-dark);  // tiêu đề trên card (nâu ở light)
+  --card-muted: var(--ui-border-dark);    // chữ phụ/ngày tháng trên card
+  // Nền CHIP logo/avatar — LUÔN sáng ở cả 2 theme (logo có phần tối/trong suốt cần nền sáng để nổi)
+  --logo-bg: #F4E4BC;
+  // Placeholder ô input — light: navy mờ trên giấy da
+  --input-placeholder: rgba(41, 54, 111, 0.5);
 
-  // Neutral Colors (Light Theme)
-  --white: #F7F3F3;
-  --white-light: #FFFFFF;
-  --white-dark: #E3E8ED;
-  --white-rgb: 255, 255, 255;
+  // ===== BREAKPOINTS (tham chiếu — @media phải dùng đúng các px này) =====
+  --bp-mobile-sm: 400px;
+  --bp-mobile:    768px;
+  --bp-tablet:    1024px;
+  --bp-shell:     1216px;
 
-  --black: #060504;
-  --black-light: #120F0C;
-  --black-dark: #000000;
-  --black-rgb: 6, 5, 4;
+  // ===== ALIAS backward-compat (để SCSS cũ không vỡ trước khi restyle xong) =====
+  --primary: var(--gold);
+  --primary-light: #FFE38A;
+  --primary-dark: #D9B33E;
+  --primary-rgb: var(--gold-rgb);
+  --secondary: var(--text-light);
+  --secondary-rgb: 244, 244, 244;
+  // Nền TRANG (tách khỏi surface card): mặc định = surface; light override thành trời ban ngày
+  --page-bg: var(--white-light);
+  // PANEL chrome (header / banner / hero): mặc định = màu đêm (giữ nguyên dark);
+  // light override thành NÂU GỖ để hết "khối tối lạc lõng", khớp viền gỗ + card cát.
+  --panel: var(--bg-dusk);        // header, banner section, skill badge, share bar
+  --panel-deep: var(--bg-night);  // hero lớn (blog-detail)
+  --white: var(--bg-night);
+  --white-light: var(--bg-dusk);
+  --white-dark: #0F1830;     // sâu hơn bg-night một bậc (đáy biển đêm)
+  --white-rgb: 22, 33, 62;   // = bg-night #16213E
+  --black: var(--text-light);
+  --black-light: var(--text-muted);
+  --black-dark: #FFFFFF;
+  --black-rgb: 244, 244, 244;
+  --success: var(--grass);
+  --success-rgb: var(--grass-rgb);
+  --warning: var(--gold);
+  --warning-rgb: var(--gold-rgb);
+  --error: var(--berry);
+  --error-rgb: var(--berry-rgb);
+  --info: var(--sky);
+  --info-rgb: var(--sky-rgb);
 
-  // Semantic Colors
-  --success: #10B981;
-  --success-rgb: 16, 185, 129;
-  --warning: #F59E0B;
-  --warning-rgb: 245, 158, 11;
-  --error: #EF4444;
-  --error-rgb: 239, 68, 68;
-  --info: #3B82F6;
-  --info-rgb: 59, 130, 246;
+  // ===== TYPOGRAPHY =====
+  --font-pixel: 'VT323', 'Pixelify Sans', 'Source Code Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;   // heading, UI, button
+  --font-pixel-body: 'VT323', 'Pixelify Sans', 'Source Code Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;       // text trong dialog (cỡ lớn 1.25rem+)
+  --font-family-primary: 'VT323', 'Pixelify Sans', 'Source Code Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; // tên cũ, giữ
+  --font-reading: Georgia, 'Times New Roman', serif; // đoạn văn rất dài trong blog detail
 
-  // Typography
-  --font-family-primary: 'Source Code Pro', monospace;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
   --font-weight-black: 900;
 
-  // Font Sizes
+  // ===== PIXEL BORDERS =====
+  // KHÔNG dùng border-radius (pixel art = vuông). Radius về 0:
+  --radius-sm: 0;
+  --radius-md: 0;
+  --radius-lg: 0;
+  --radius-xl: 0;
+  --radius-2xl: 0;
+  --radius-full: 0;
+
+  // Viền pixel 2 lớp làm bằng box-shadow (kỹ thuật "pixel border"):
+  --pixel-border:
+    0 -3px 0 0 var(--ui-border), 0 3px 0 0 var(--ui-border),
+    -3px 0 0 0 var(--ui-border), 3px 0 0 0 var(--ui-border),
+    -3px -3px 0 0 var(--ui-border-dark), 3px -3px 0 0 var(--ui-border-dark),
+    -3px 3px 0 0 var(--ui-border-dark), 3px 3px 0 0 var(--ui-border-dark),
+    0 -6px 0 0 var(--ui-border-dark), 0 6px 0 0 var(--ui-border-dark),
+    -6px 0 0 0 var(--ui-border-dark), 6px 0 0 0 var(--ui-border-dark);
+
+  // Font Sizes (GIỮ NGUYÊN hệ hiện tại)
   --font-size-xs: 0.75rem;    // 12px
   --font-size-sm: 0.875rem;   // 14px
   --font-size-base: 1rem;     // 16px
@@ -56,7 +111,7 @@
   --font-size-5xl: 3rem;      // 48px
   --font-size-6xl: 3.75rem;   // 60px
 
-  // Spacing
+  // Spacing (GIỮ NGUYÊN hệ hiện tại)
   --spacing-xs: 0.25rem;   // 4px
   --spacing-sm: 0.5rem;    // 8px
   --spacing-md: 0.75rem;   // 12px
@@ -69,25 +124,18 @@
   --spacing-6xl: 4rem;     // 64px
   --spacing-8xl: 6rem;     // 96px
 
-  // Border Radius
-  --radius-sm: 0.25rem;    // 4px
-  --radius-md: 0.375rem;   // 6px
-  --radius-lg: 0.5rem;     // 8px
-  --radius-xl: 0.75rem;    // 12px
-  --radius-2xl: 1rem;      // 16px
-  --radius-full: 9999px;
-
   // Shadows
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
-  // Transitions
+  // Transitions (GIỮ, nhưng thêm --transition-step)
   --transition-fast: 0.15s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
   --transition-bounce: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-step: steps(4); // animation kiểu giật pixel có chủ đích
 
   // Z-index
   --z-dropdown: 1000;
@@ -99,20 +147,40 @@
   --z-tooltip: 1070;
 }
 
-// Dark Theme Variables
+// Light Theme (Day mode) — ĐẢO BAN NGÀY: nền cỏ/cát sáng, chữ navy
+[data-theme="light"] {
+  --page-bg: #C8E0F0;        // TRỜI BAN NGÀY: nền trời xanh mát (rút từ trời game #a8c8e8/#cfe2ff)
+  --panel: #5E3F20;          // BIỂN GỖ nâu ấm cho header/banner (chữ trắng + tiêu đề vàng vẫn rõ)
+  --panel-deep: #45331F;     // gỗ sẫm hơn cho hero lớn — đồng tông footer #4A3526
+  --white: #CBE6A8;          // nền cỏ xanh nhạt ban ngày, cùng tông cỏ trong game
+  --white-light: var(--ui-parchment); // parchment (= cát) làm surface cho panel/card
+  --white-dark: var(--ui-parchment-dark);
+  --white-rgb: 244, 228, 188;
+  --black: var(--text-ink);   // chữ tối màu (ink navy) trên nền parchment/sáng
+  --black-light: var(--ui-border-dark);
+  --black-dark: #16213E;      // track bg-night mới
+  --black-rgb: 41, 54, 111;
+  --secondary: var(--text-ink);
+  --secondary-rgb: 41, 54, 111;
+}
+
+// Dark Theme (Night mode) — ĐÊM TRÊN ĐẢO: nền navy biển đêm, accent cỏ/trời/vàng dịu
 [data-theme="dark"] {
-  --white: #1F2937;
-  --white-light: #111827;
-  --white-dark: #374151;
-  --white-rgb: 17, 24, 39;
-
-  --black: #F9FAFB;
-  --black-light: #F3F4F6;
-  --black-dark: #E5E7EB;
-  --black-rgb: 249, 250, 251;
-
-  --secondary: #E5E7EB;
-  --secondary-light: #F3F4F6;
-  --secondary-dark: #D1D5DB;
-  --secondary-rgb: 229, 231, 235;
+  --white: var(--bg-night);
+  --white-light: var(--bg-dusk);
+  --white-dark: #0F1830;     // đáy biển đêm — sâu hơn bg-night
+  --black: var(--text-light);
+  --black-light: var(--text-muted);
+  --black-dark: #FFFFFF;
+  --secondary: var(--text-light);
+  // CHIỀU SÂU: nền trang tối nhất (night) → panel dusk nổi lên như biển hiệu được chiếu sáng
+  --page-bg: var(--bg-night);     // trước đây = dusk (trùng panel) → phẳng; giờ tối hơn 1 bậc
+  --panel-deep: var(--bg-dusk);   // hero lớn cũng dùng dusk để nổi trên nền đêm (không chìm)
+  // Ô NỘI DUNG trong dark = NAVY NỔI (sáng hơn panel dusk 1 bậc) thay vì giấy da → hết chói
+  --ui-parchment: #2E4673;        // surface ô (light dùng #F4E4BC)
+  --ui-parchment-dark: #26395C;   // bản đậm hơn cho input/hover/disabled
+  --card-ink: var(--text-light);  // chữ thân SÁNG trên ô navy
+  --card-heading: var(--gold);    // tiêu đề VÀNG trên ô navy
+  --card-muted: var(--text-muted);// chữ phụ/ngày trên ô navy
+  --input-placeholder: rgba(244, 244, 244, 0.5); // placeholder sáng mờ trên ô input navy
 }

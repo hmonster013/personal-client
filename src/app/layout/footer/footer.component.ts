@@ -28,7 +28,11 @@ export class FooterComponent implements OnInit{
   }
 
   goToHome() {
-    this.router.navigate(['']);
+    if (this.router.url === '/' || this.router.url === '') {
+      window.location.reload();
+    } else {
+      this.router.navigate(['/']);
+    }
   }
 
   getAllConfigs() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from '../../core/services/theme.service';
 import { JCode } from '../../shared/utils/JCode';
@@ -6,14 +6,15 @@ import { LinkNames } from '../../shared/utils/LinkNames';
 
 import { ToastService } from '../../core/services/toast.service';
 import { ToastStatus } from '../../shared/utils/ToastStatus';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonService } from 'src/app/core/services/common.service';
 import { NavigationService } from '../../core/services/navigation.service';
 import { PerformanceUtil } from '../../shared/utils/performance.util';
+import { GameModeService } from '../../core/services/game-mode.service';
 
 @Component({
   selector: 'app-header',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -23,6 +24,7 @@ export class HeaderComponent implements OnInit{
   response: any;
   dictLinks: any;
   isMobile = false;
+  mode = inject(GameModeService).getModeSignal();
 
   // Cache DOM elements for better performance
   private sideMenuElement: HTMLElement | null = null;
@@ -34,7 +36,8 @@ export class HeaderComponent implements OnInit{
     private commonService: CommonService,
     private toastService: ToastService,
     private router: Router,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private gameModeService: GameModeService
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +63,7 @@ export class HeaderComponent implements OnInit{
 
   checkScreenSize(): void {
     const wasMobile = this.isMobile;
-    this.isMobile = window.innerWidth <= 780;
+    this.isMobile = window.innerWidth <= 768;
 
     // Debug log
     console.log('Screen size check:', {
@@ -88,7 +91,16 @@ export class HeaderComponent implements OnInit{
   }
 
   goToHome() {
-    this.router.navigate(['']);
+    if (this.router.url === '/' || this.router.url === '') {
+      window.location.reload();
+    } else {
+      this.router.navigate(['/']);
+    }
+  }
+
+  playGame() {
+    this.gameModeService.setMode('game');
+    this.router.navigate(['/']);
   }
 
   get githubLink() {

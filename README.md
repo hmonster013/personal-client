@@ -184,6 +184,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - FontAwesome for the icon library
 - CKEditor team for the rich text editor
 - All open-source contributors
+- Game Assets by Kenney (Kenney.nl) - CC0 License
 
 ---
 

@@ -18,7 +18,7 @@ body {
   font-size: var(--font-size-base);
   line-height: 1.6;
   color: var(--black);
-  background-color: var(--white-light);
+  background-color: var(--page-bg, var(--white-light));
   transition: background-color var(--transition-normal),
               color var(--transition-normal);
   display: flex;
@@ -32,8 +32,9 @@ body {
 
 // Typography
 h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-pixel) !important;
   font-weight: var(--font-weight-bold);
-  line-height: 1.2;
+  line-height: 1.35;
   margin-bottom: var(--spacing-lg);
   color: var(--black);
   transition: color var(--transition-normal);
@@ -89,7 +90,7 @@ a {
 
 // Buttons
 button {
-  font-family: inherit;
+  font-family: var(--font-pixel) !important;
   font-weight: var(--font-weight-semibold);
   border: none;
   border-radius: var(--radius-lg);

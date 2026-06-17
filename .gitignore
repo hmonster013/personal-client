@@ -87,3 +87,15 @@ Icon?
 
 # Augument Code
 .augment-guidelines
+
+# Playwright e2e (ảnh chụp + artifacts; browser cài local trong node_modules đã bị /node_modules bỏ qua)
+/e2e/screenshots
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
+
+# Temporary / AI tools
+.aider.chat.history.md
+*.py
+*.stackdump
