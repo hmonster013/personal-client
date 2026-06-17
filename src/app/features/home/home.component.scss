@@ -33,10 +33,10 @@
     box-shadow: 
       0 -3px 0 0 var(--ui-border), 
       0 3px 0 0 var(--ui-border),
-      0 -6px 0 0 var(--ui-border-dark), 
+      0 -6px 0 0 var(--ui-border-dark),
       0 6px 0 0 var(--ui-border-dark);
-    background-color: var(--bg-night);
-    
+    background-color: var(--panel-deep);
+
     // Starry Retro Sky Background for Hero
     background-image: 
       radial-gradient(1px 1px at 20px 30px, var(--text-light), transparent),
@@ -51,7 +51,7 @@
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(26, 28, 44, 0.4); // Dark tint overlay
+      background: rgba(0, 0, 0, 0.2); // Dark tint overlay (trung tính — hợp cả nền gỗ lẫn navy)
       pointer-events: none;
     }
 
@@ -104,7 +104,7 @@
     ::ng-deep lib-skill-ui {
       .skill-badge {
         font-family: var(--font-pixel) !important;
-        background-color: var(--bg-dusk) !important;
+        background-color: var(--panel) !important;
         color: var(--gold) !important;
         border: 2px solid var(--ui-border) !important;
         border-radius: 0 !important;
@@ -154,7 +154,7 @@
         display: flex;
         align-items: center;
         padding: var(--spacing-md);
-        background-color: var(--bg-dusk);
+        background-color: var(--panel);
         color: var(--text-light);
         border: none;
         box-shadow: var(--pixel-border);
@@ -199,7 +199,7 @@
           image-rendering: pixelated;
           border: 1px solid var(--ui-border-dark);
           margin-right: var(--spacing-md);
-          background-color: var(--ui-parchment);
+          background-color: var(--logo-bg); // chip logo luôn sáng (cả dark) để logo công ty nổi
           object-fit: contain;
         }
 
@@ -226,7 +226,7 @@
       flex: 1;
       padding: var(--spacing-xl);
       background-color: var(--ui-parchment);
-      color: var(--text-ink);
+      color: var(--card-ink);
       box-shadow: var(--pixel-border);
       border: none;
       min-width: 0;
@@ -246,7 +246,7 @@
         font-family: var(--font-pixel);
         font-size: 1.75rem;
         font-weight: 700;
-        color: var(--ui-border-dark);
+        color: var(--card-heading);
         margin: 0 0 var(--spacing-xs) 0;
       }
 
@@ -254,7 +254,7 @@
         font-family: var(--font-pixel);
         font-size: 1.25rem;
         font-weight: 600;
-        color: var(--text-ink);
+        color: var(--card-ink);
         margin: 0 0 var(--spacing-sm) 0;
       }
 
@@ -277,19 +277,19 @@
       &__dates {
         font-family: var(--font-pixel-body);
         font-size: 1.2rem;
-        color: var(--ui-border-dark);
+        color: var(--card-heading);
       }
 
       &__content {
         font-family: var(--font-pixel-body);
         font-size: 1.35rem;
         line-height: 1.5;
-        color: var(--text-ink);
+        color: var(--card-ink);
 
         ::ng-deep .safe-html-content {
           font-family: var(--font-pixel-body) !important;
           font-size: 1.35rem;
-          color: var(--text-ink);
+          color: var(--card-ink);
 
           ul {
             list-style: none;
@@ -314,7 +314,7 @@
       &--placeholder {
         background-color: var(--ui-parchment-dark);
         border: 4px dashed var(--ui-border);
-        color: var(--ui-border-dark);
+        color: var(--card-heading);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -383,7 +383,7 @@
     // Projects Wood Panel Card style
     &__card {
       background-color: var(--ui-parchment);
-      color: var(--text-ink);
+      color: var(--card-ink);
       box-shadow: var(--pixel-border);
       overflow: hidden;
       display: flex;
@@ -420,7 +420,7 @@
       &__image-overlay {
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(41, 54, 111, 0.85); // Ink color translucent overlay
+        background: rgba(0, 0, 0, 0.7); // overlay hover trung tính (hết ám navy), nút vàng vẫn nổi
         display: flex;
         align-items: center;
         justify-content: center;
@@ -464,7 +464,7 @@
         font-family: var(--font-pixel);
         font-size: 1.35rem;
         font-weight: bold;
-        color: var(--ui-border-dark);
+        color: var(--card-heading);
         margin: 0 0 var(--spacing-md) 0;
       }
 
@@ -476,7 +476,7 @@
           font-family: var(--font-pixel-body);
           font-size: 1.2rem;
           line-height: 1.4;
-          color: var(--text-ink);
+          color: var(--card-ink);
         }
       }
 
@@ -562,7 +562,7 @@
 
         &--secondary {
           background-color: var(--ui-parchment-dark);
-          color: var(--ui-border-dark);
+          color: var(--card-heading);
         }
       }
     }
@@ -574,11 +574,11 @@
     margin-bottom: var(--spacing-5xl);
     padding: var(--spacing-3xl) var(--spacing-xl);
     box-sizing: border-box;
-    background-color: var(--bg-dusk);
-    box-shadow: 
-      0 -3px 0 0 var(--ui-border), 
+    background-color: var(--panel);
+    box-shadow:
+      0 -3px 0 0 var(--ui-border),
       0 3px 0 0 var(--ui-border),
-      0 -6px 0 0 var(--ui-border-dark), 
+      0 -6px 0 0 var(--ui-border-dark),
       0 6px 0 0 var(--ui-border-dark);
     border: none;
     border-radius: 0;
@@ -643,7 +643,7 @@
       align-items: center;
       gap: var(--spacing-lg);
       padding: var(--spacing-md) var(--spacing-lg);
-      background-color: rgba(26, 28, 44, 0.6);
+      background-color: rgba(0, 0, 0, 0.22); // recessed — đậm hơn nền panel, hợp cả gỗ lẫn navy
       border: 2px solid var(--ui-border);
       border-radius: 0;
       box-shadow: 2px 2px 0 0 var(--ui-border-dark);
@@ -716,7 +716,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background-color: rgba(26, 28, 44, 0.6);
+      background-color: rgba(0, 0, 0, 0.22); // recessed — hợp cả nền gỗ lẫn navy
       border: 2px solid var(--ui-border);
       border-radius: 0;
       color: var(--text-light);
@@ -779,7 +779,7 @@
         font-family: var(--font-pixel);
         font-size: 0.875rem;
         font-weight: 600;
-        color: var(--text-ink);
+        color: var(--card-ink);
         display: block;
         text-align: left;
       }
@@ -790,7 +790,7 @@
         background-color: var(--ui-parchment-dark);
         border: 2px solid var(--ui-border);
         border-radius: 0;
-        color: var(--text-ink);
+        color: var(--card-ink);
         font-family: var(--font-pixel-body);
         font-size: 1.3rem;
         padding: var(--spacing-md);
@@ -802,7 +802,7 @@
         }
 
         &::placeholder {
-          color: rgba(41, 54, 111, 0.5);
+          color: var(--input-placeholder);
         }
 
         &.ng-invalid.ng-touched {
@@ -972,7 +972,7 @@
           display: block !important;
         }
         &::-webkit-scrollbar-track {
-          background: rgba(26, 28, 44, 0.2);
+          background: rgba(0, 0, 0, 0.12);
         }
         &::-webkit-scrollbar-thumb {
           background: var(--ui-border);

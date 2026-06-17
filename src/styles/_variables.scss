@@ -3,24 +3,35 @@
 // ===================================
 
 :root {
-  // ===== PIXEL PALETTE (Sweetie-16 based) =====
-  --bg-night: #1A1C2C;
-  --bg-dusk: #29366F;        // nền section phụ
-  --ui-parchment: #F4E4BC;
+  // ===== ISLAND PALETTE (rút từ scene 3D golden-hour, tinh chỉnh nhẹ cho UI) =====
+  // Nguồn màu gốc trong game (scene-manager.ts): trời #a8c8e8 · biển #3f7fc4 ·
+  // cỏ #5d8a4e · cát #d9c389 · vách đất #8b6b4f · nắng/glow #ffdfae→#ffd75e→#ffaa22
+  --bg-night: #16213E;       // trời đêm trên đảo (navy xanh sâu — bluer hơn để hợp tông biển)
+  --bg-dusk: #243A63;        // chân trời hoàng hôn / nền section phụ
+  --ui-parchment: #F4E4BC;   // = cát #d9c389 sáng lên → surface panel/card
   --ui-parchment-dark: #E8D5A3; // hover trên parchment
-  --ui-border: #73452C;
-  --ui-border-dark: #3E2731;
-  --gold: #FFD75E;
+  --ui-border: #7A5A3F;      // viền nâu — đồng tông vách đất game #8b6b4f
+  --ui-border-dark: #4A3526; // viền nâu đậm (lớp dưới của pixel border)
+  --gold: #FFD75E;           // = glow nắng trong game (giữ nguyên, đã khớp)
   --gold-rgb: 255, 215, 94;
-  --grass: #38B764;
-  --grass-rgb: 56, 183, 100;
-  --sky: #41A6F6;
-  --sky-rgb: 65, 166, 246;
-  --berry: #EF7D57;
+  --grass: #6AA35C;          // tinh chỉnh từ cỏ game #5d8a4e (tươi hơn chút cho accent UI)
+  --grass-rgb: 106, 163, 92;
+  --sky: #4A90D9;            // tinh chỉnh giữa trời #a8c8e8 và biển #3f7fc4 (đủ đậm để đọc)
+  --sky-rgb: 74, 144, 217;
+  --berry: #EF7D57;          // coral hoàng hôn (giữ — đã hợp tông ấm golden hour)
   --berry-rgb: 239, 125, 87;
-  --text-ink: #29366F;
+  --text-ink: #29366F;       // chữ tối (navy) trên nền sáng
   --text-light: #F4F4F4;
   --text-muted: #94B0C2;
+
+  // ===== Ô NỘI DUNG (card) — theme-aware: light = giấy da + chữ navy =====
+  --card-ink: var(--text-ink);            // chữ thân trên card
+  --card-heading: var(--ui-border-dark);  // tiêu đề trên card (nâu ở light)
+  --card-muted: var(--ui-border-dark);    // chữ phụ/ngày tháng trên card
+  // Nền CHIP logo/avatar — LUÔN sáng ở cả 2 theme (logo có phần tối/trong suốt cần nền sáng để nổi)
+  --logo-bg: #F4E4BC;
+  // Placeholder ô input — light: navy mờ trên giấy da
+  --input-placeholder: rgba(41, 54, 111, 0.5);
 
   // ===== BREAKPOINTS (tham chiếu — @media phải dùng đúng các px này) =====
   --bp-mobile-sm: 400px;
@@ -35,10 +46,16 @@
   --primary-rgb: var(--gold-rgb);
   --secondary: var(--text-light);
   --secondary-rgb: 244, 244, 244;
+  // Nền TRANG (tách khỏi surface card): mặc định = surface; light override thành trời ban ngày
+  --page-bg: var(--white-light);
+  // PANEL chrome (header / banner / hero): mặc định = màu đêm (giữ nguyên dark);
+  // light override thành NÂU GỖ để hết "khối tối lạc lõng", khớp viền gỗ + card cát.
+  --panel: var(--bg-dusk);        // header, banner section, skill badge, share bar
+  --panel-deep: var(--bg-night);  // hero lớn (blog-detail)
   --white: var(--bg-night);
   --white-light: var(--bg-dusk);
-  --white-dark: #141623;
-  --white-rgb: 26, 28, 44;
+  --white-dark: #0F1830;     // sâu hơn bg-night một bậc (đáy biển đêm)
+  --white-rgb: 22, 33, 62;   // = bg-night #16213E
   --black: var(--text-light);
   --black-light: var(--text-muted);
   --black-dark: #FFFFFF;
@@ -130,27 +147,40 @@
   --z-tooltip: 1070;
 }
 
-// Light Theme (Day mode) Variables
+// Light Theme (Day mode) — ĐẢO BAN NGÀY: nền cỏ/cát sáng, chữ navy
 [data-theme="light"] {
-  --white: #CBE6A8;          // "ban ngày" nền cỏ xanh nhạt trầm hơn, cùng tông với cỏ trong game
-  --white-light: var(--ui-parchment); // parchment làm surface cho các panel/card
+  --page-bg: #C8E0F0;        // TRỜI BAN NGÀY: nền trời xanh mát (rút từ trời game #a8c8e8/#cfe2ff)
+  --panel: #5E3F20;          // BIỂN GỖ nâu ấm cho header/banner (chữ trắng + tiêu đề vàng vẫn rõ)
+  --panel-deep: #45331F;     // gỗ sẫm hơn cho hero lớn — đồng tông footer #4A3526
+  --white: #CBE6A8;          // nền cỏ xanh nhạt ban ngày, cùng tông cỏ trong game
+  --white-light: var(--ui-parchment); // parchment (= cát) làm surface cho panel/card
   --white-dark: var(--ui-parchment-dark);
   --white-rgb: 244, 228, 188;
-  --black: var(--text-ink);   // chữ tối màu (ink) trên nền parchment/sáng
+  --black: var(--text-ink);   // chữ tối màu (ink navy) trên nền parchment/sáng
   --black-light: var(--ui-border-dark);
-  --black-dark: #1A1C2C;
+  --black-dark: #16213E;      // track bg-night mới
   --black-rgb: 41, 54, 111;
   --secondary: var(--text-ink);
   --secondary-rgb: 41, 54, 111;
 }
 
-// Dark Theme (Night mode) Variables
+// Dark Theme (Night mode) — ĐÊM TRÊN ĐẢO: nền navy biển đêm, accent cỏ/trời/vàng dịu
 [data-theme="dark"] {
   --white: var(--bg-night);
   --white-light: var(--bg-dusk);
-  --white-dark: #141623;
+  --white-dark: #0F1830;     // đáy biển đêm — sâu hơn bg-night
   --black: var(--text-light);
   --black-light: var(--text-muted);
   --black-dark: #FFFFFF;
   --secondary: var(--text-light);
+  // CHIỀU SÂU: nền trang tối nhất (night) → panel dusk nổi lên như biển hiệu được chiếu sáng
+  --page-bg: var(--bg-night);     // trước đây = dusk (trùng panel) → phẳng; giờ tối hơn 1 bậc
+  --panel-deep: var(--bg-dusk);   // hero lớn cũng dùng dusk để nổi trên nền đêm (không chìm)
+  // Ô NỘI DUNG trong dark = NAVY NỔI (sáng hơn panel dusk 1 bậc) thay vì giấy da → hết chói
+  --ui-parchment: #2E4673;        // surface ô (light dùng #F4E4BC)
+  --ui-parchment-dark: #26395C;   // bản đậm hơn cho input/hover/disabled
+  --card-ink: var(--text-light);  // chữ thân SÁNG trên ô navy
+  --card-heading: var(--gold);    // tiêu đề VÀNG trên ô navy
+  --card-muted: var(--text-muted);// chữ phụ/ngày trên ô navy
+  --input-placeholder: rgba(244, 244, 244, 0.5); // placeholder sáng mờ trên ô input navy
 }

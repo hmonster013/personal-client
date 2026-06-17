@@ -18,7 +18,7 @@
   // Breadcrumb Navigation
   &__nav {
     padding: var(--spacing-md) var(--spacing-xl);
-    background-color: var(--bg-dusk);
+    background-color: var(--page-bg); // trùng nền trang để thanh breadcrumb không lòi ra (sticky vẫn che nội dung)
     position: sticky;
     top: 86px; // Ghim cách header 16px (70px header + 16px khoảng cách từ global host margin)
     z-index: var(--z-sticky);
@@ -31,7 +31,7 @@
   &__breadcrumb {
     font-family: var(--font-pixel);
     font-size: 1.15rem;
-    color: var(--gold);
+    color: var(--card-heading); // nâu (light) / vàng (dark) — đọc rõ trên nền trang
     display: flex;
     align-items: center;
     gap: 4px;
@@ -42,7 +42,7 @@
     &-title {
       font-family: var(--font-pixel-body);
       font-size: 1.25rem;
-      color: var(--text-light);
+      color: var(--card-ink); // navy (light) / sáng (dark)
     }
   }
 
@@ -50,7 +50,7 @@
   &__hero {
     position: relative;
     padding: var(--spacing-xl);
-    background-color: var(--bg-night);
+    background-color: var(--panel-deep);
     box-shadow: var(--pixel-border); // Viền pixel bao quanh toàn bộ phần Hero
     box-sizing: border-box;
     margin-bottom: var(--spacing-xl); // Khoảng cách tới nội dung chính phía dưới
@@ -66,7 +66,7 @@
     position: relative;
     margin-bottom: var(--spacing-lg);
     box-shadow: var(--pixel-border);
-    background-color: var(--bg-dusk);
+    background-color: var(--panel);
   }
 
   &__featured-image {
@@ -80,7 +80,7 @@
   &__image-overlay {
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(26, 28, 44, 0.4);
+    background: rgba(0, 0, 0, 0.3); // tint trung tính trên ảnh — hợp cả 2 theme
   }
 
   // Meta Information
@@ -151,7 +151,7 @@
   // Article Content (Parchment scroll style)
   &__content {
     background-color: var(--ui-parchment) !important;
-    color: var(--text-ink) !important;
+    color: var(--card-ink) !important;
     box-shadow: var(--pixel-border);
     padding: var(--spacing-2xl);
     overflow-wrap: break-word;
@@ -172,14 +172,14 @@
   // Table of Contents
   &__toc {
     background-color: var(--ui-parchment);
-    color: var(--text-ink);
+    color: var(--card-ink);
     box-shadow: var(--pixel-border);
     padding: var(--spacing-xl);
 
     h3 {
       font-family: var(--font-pixel);
       font-size: 1.15rem;
-      color: var(--ui-border-dark);
+      color: var(--card-heading);
       margin-top: 0;
       margin-bottom: var(--spacing-md);
       padding-bottom: 4px;
@@ -199,7 +199,7 @@
     a {
       font-family: var(--font-pixel-body);
       font-size: 1.2rem;
-      color: var(--text-ink);
+      color: var(--card-ink);
       text-decoration: none;
       display: flex;
       align-items: center;
@@ -212,7 +212,7 @@
       }
 
       &:hover {
-        color: var(--ui-border-dark);
+        color: var(--card-heading);
         text-decoration: underline;
       }
     }
@@ -221,14 +221,14 @@
   // Share Section
   &__share {
     background-color: var(--ui-parchment);
-    color: var(--text-ink);
+    color: var(--card-ink);
     box-shadow: var(--pixel-border);
     padding: var(--spacing-xl);
 
     h3 {
       font-family: var(--font-pixel);
       font-size: 1.15rem;
-      color: var(--ui-border-dark);
+      color: var(--card-heading);
       margin-top: 0;
       margin-bottom: var(--spacing-md);
       padding-bottom: 4px;
@@ -244,7 +244,7 @@
 
   // Footer (Themed as a wooden sign block)
   &__footer {
-    background-color: var(--bg-dusk);
+    background-color: var(--panel);
     color: var(--text-light);
     box-shadow: var(--pixel-border);
     padding: var(--spacing-3xl) var(--spacing-xl);
@@ -315,7 +315,7 @@
   font-family: var(--font-pixel);
   font-weight: 600;
   font-size: var(--font-size-xs);
-  color: var(--text-ink);
+  color: var(--text-ink); // nút nền vàng → chữ navy cố định (cả 2 theme)
   background-color: var(--gold);
   border: none;
   cursor: pointer;
@@ -362,7 +362,7 @@
 
   &--copy {
     background-color: var(--ui-parchment-dark) !important;
-    color: var(--ui-border-dark);
+    color: var(--card-heading);
   }
 }
 
@@ -373,12 +373,12 @@
 
   &--primary {
     background-color: var(--gold);
-    color: var(--text-ink);
+    color: var(--text-ink); // nút nền vàng → chữ navy cố định
   }
 
   &--secondary {
     background-color: var(--ui-parchment-dark);
-    color: var(--ui-border-dark);
+    color: var(--card-heading);
   }
 }
 
@@ -388,7 +388,7 @@
     font-family: var(--font-reading); // GA ĐỌC LÀ SỐ 1
     font-size: 1.0625rem; // Cỡ chữ 1.0625rem
     line-height: 1.7; // Line-height 1.7
-    color: var(--text-ink); // Ink text color
+    color: var(--card-ink); // Ink text color
 
     p {
       margin-bottom: var(--spacing-md);
@@ -434,7 +434,7 @@
 
     h1, h2, h3, h4, h5, h6 {
       font-family: var(--font-pixel);
-      color: var(--ui-border-dark);
+      color: var(--card-heading);
       margin-top: var(--spacing-xl);
       margin-bottom: var(--spacing-md);
     }

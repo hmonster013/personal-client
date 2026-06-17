@@ -56,7 +56,7 @@
   &__header {
     text-align: center;
     padding: var(--spacing-3xl) var(--spacing-xl);
-    background-color: var(--bg-dusk);
+    background-color: var(--panel);
     color: var(--text-light);
     box-shadow: var(--pixel-border);
     margin-bottom: var(--spacing-xl);
@@ -111,19 +111,19 @@
       outline: none;
       font-size: 1.2rem;
       font-family: var(--font-pixel-body);
-      color: var(--text-ink);
+      color: var(--card-ink);
       background: transparent;
       padding: 0;
 
       &::placeholder {
-        color: rgba(41, 54, 111, 0.5);
+        color: var(--input-placeholder);
       }
     }
 
     &__submit-icon {
       background: none;
       border: none;
-      color: var(--ui-border-dark);
+      color: var(--card-heading);
       cursor: pointer;
       font-size: 1.15rem;
       padding: 0 0 0 var(--spacing-sm);
@@ -238,7 +238,7 @@
       height: 32px;
       padding: 0 var(--spacing-sm);
       background-color: var(--ui-parchment);
-      color: var(--text-ink);
+      color: var(--card-ink);
       border: 2px solid var(--ui-border);
       cursor: pointer;
       font-family: var(--font-pixel);
@@ -280,7 +280,7 @@
       color: var(--text-light);
       margin-top: var(--spacing-md);
       padding: var(--spacing-sm);
-      background-color: var(--bg-dusk);
+      background-color: var(--panel);
       box-shadow: var(--pixel-border);
     }
   }
@@ -293,7 +293,7 @@
 
     &__section {
       background-color: var(--ui-parchment);
-      color: var(--text-ink);
+      color: var(--card-ink);
       box-shadow: var(--pixel-border);
       padding: var(--spacing-xl);
     }
@@ -302,7 +302,7 @@
       font-family: var(--font-pixel);
       font-size: 1.25rem;
       font-weight: bold;
-      color: var(--ui-border-dark);
+      color: var(--card-heading);
       margin-top: 0;
       margin-bottom: var(--spacing-sm);
       padding-bottom: 4px;
@@ -325,7 +325,7 @@
     &__subtitle {
       font-family: var(--font-pixel-body);
       font-size: 1.15rem;
-      color: var(--text-ink);
+      color: var(--card-ink);
       margin-bottom: var(--spacing-md);
     }
 

@@ -401,8 +401,8 @@
   }
 
   &--secondary {
-    background-color: var(--ui-parchment);
-    color: var(--ui-border-dark);
+    background-color: var(--ui-parchment); // light: giấy da · dark: navy #2E4673
+    color: var(--card-heading);            // light: nâu · dark: vàng → đọc rõ trên cả 2 nền
   }
 
   &--danger {

@@ -18,7 +18,7 @@ body {
   font-size: var(--font-size-base);
   line-height: 1.6;
   color: var(--black);
-  background-color: var(--white-light);
+  background-color: var(--page-bg, var(--white-light));
   transition: background-color var(--transition-normal),
               color var(--transition-normal);
   display: flex;
