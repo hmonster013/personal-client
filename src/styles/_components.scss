@@ -448,6 +448,29 @@
   }
 }
 
+// ===== Dây leo pixel trang trí 2 góc trên của panel (đỡ trống trải) =====
+// Global class → gắn vào element trong component được (style global không bị scope).
+.vine-corners {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 50px;
+    height: 50px;
+    background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' shape-rendering='crispEdges'><rect x='6' y='0' width='6' height='32' fill='%235a7d3f'/><rect x='12' y='26' width='14' height='6' fill='%235a7d3f'/><rect x='0' y='6' width='6' height='6' fill='%236AA35C'/><rect x='0' y='12' width='6' height='6' fill='%235d8a4e'/><rect x='12' y='6' width='6' height='6' fill='%236AA35C'/><rect x='12' y='12' width='6' height='6' fill='%235d8a4e'/><rect x='18' y='12' width='6' height='6' fill='%236AA35C'/><rect x='24' y='18' width='6' height='6' fill='%235d8a4e'/><rect x='30' y='24' width='6' height='6' fill='%236AA35C'/><rect x='12' y='0' width='6' height='6' fill='%23FFD75E'/><rect x='0' y='18' width='5' height='5' fill='%23EF7D57'/></svg>") no-repeat;
+    background-size: contain;
+    image-rendering: pixelated;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  &::before { left: -10px; }
+  &::after  { right: -10px; transform: scaleX(-1); }
+}
+
 // ===== rpg-progress — RPG Experience/Health bar =====
 .rpg-progress {
   display: flex;

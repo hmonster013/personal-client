@@ -12,7 +12,9 @@
 <div class="home">
   <!-- INTRODUCE -->
   <section class="home__introduce">
-    <h1>Hello, I'm <br><span class="text-primary" style="color: var(--gold); font-family: var(--font-pixel); text-shadow: 4px 4px 0 var(--ui-border);">DE013▊</span></h1>
+    <span class="hero-moon" aria-hidden="true"></span>
+    <span class="hero-firefly" [ngClass]="'hero-firefly--' + i" *ngFor="let f of fireflies; let i = index" aria-hidden="true"></span>
+    <h1>Hello, I'm <br><span class="text-primary" style="color: var(--gold); font-family: var(--font-pixel); text-shadow: 4px 4px 0 var(--ui-border);">{{ typedName }}</span></h1>
     <p>I'm an Information Systems Engineer with around 1.5 years of fullstack web development experience. I design databases, build REST APIs, integrate third-party systems (digital signatures, payment gateways, messaging) and ship with Docker/Kubernetes. I work primarily with Angular, NestJS and Spring Boot on PostgreSQL, with a backend-leaning focus — and I'm looking for a Backend or Fullstack Developer role to grow deeper into system architecture and build real-world products.</p>
     <div class="home__introduce__skill-group">
       <div class="home__introduce__skill-item" *ngFor="let skill of listSkills">

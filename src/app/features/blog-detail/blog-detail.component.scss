@@ -8,6 +8,20 @@
   max-width: 100%;
 }
 
+// Thanh tiến độ đọc bài — dải vàng pixel chạy theo scroll, ghim đỉnh trang trên cả header
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 5px;
+  width: 0;
+  background-color: var(--gold);
+  box-shadow: 0 1px 0 0 var(--ui-border-dark), 2px 0 0 0 var(--ui-border-dark);
+  z-index: calc(var(--z-fixed) + 5);
+  transition: width 0.12s linear;
+  pointer-events: none;
+}
+
 .blog-detail {
   width: 100%;
   max-width: 1200px;

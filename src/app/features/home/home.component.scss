@@ -37,15 +37,34 @@
       0 6px 0 0 var(--ui-border-dark);
     background-color: var(--panel-deep);
 
-    // Starry Retro Sky Background for Hero
-    background-image: 
-      radial-gradient(1px 1px at 20px 30px, var(--text-light), transparent),
-      radial-gradient(1px 1px at 150px 70px, var(--gold), transparent),
-      radial-gradient(2px 2px at 300px 150px, var(--text-light), transparent),
-      radial-gradient(1.5px 1.5px at 500px 80px, var(--sky), transparent),
-      radial-gradient(1px 1px at 750px 130px, var(--text-light), transparent),
-      radial-gradient(2px 2px at 900px 50px, var(--gold), transparent);
-    background-repeat: repeat;
+    // TRỜI SAO: dày & đa dạng hơn (chấm nhỏ nhiều màu + vài ngôi sáng có quầng). Tách ::before
+    // để twinkle bằng opacity. Ẩn ở LIGHT (ban ngày đã có lá rơi).
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image:
+        radial-gradient(1px 1px at 30px 40px, var(--text-light), transparent),
+        radial-gradient(1px 1px at 130px 80px, var(--gold), transparent),
+        radial-gradient(1px 1px at 230px 30px, var(--text-light), transparent),
+        radial-gradient(2px 2px at 320px 150px, var(--text-light), transparent),
+        radial-gradient(1px 1px at 420px 60px, var(--sky), transparent),
+        radial-gradient(1.5px 1.5px at 520px 110px, var(--text-light), transparent),
+        radial-gradient(1px 1px at 620px 40px, var(--gold), transparent),
+        radial-gradient(1px 1px at 700px 160px, var(--text-light), transparent),
+        radial-gradient(1.5px 1.5px at 800px 90px, var(--sky), transparent),
+        radial-gradient(1px 1px at 900px 50px, var(--text-light), transparent),
+        radial-gradient(1px 1px at 1000px 130px, var(--gold), transparent),
+        radial-gradient(1px 1px at 1100px 70px, var(--text-light), transparent),
+        // 2 ngôi sao sáng có quầng nhẹ
+        radial-gradient(2.5px 2.5px at 180px 120px, var(--gold) 40%, rgba(var(--gold-rgb), 0.25) 60%, transparent 75%),
+        radial-gradient(2.5px 2.5px at 980px 30px, var(--text-light) 40%, rgba(255,255,255,0.2) 60%, transparent 75%);
+      background-repeat: repeat;
+      animation: hero-twinkle 4.5s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    // LIGHT: tắt trời sao (ban ngày), chỉ giữ lá rơi
+    :host-context([data-theme="light"]) &::before { display: none; }
 
     &::after {
       content: '';
@@ -53,6 +72,64 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0, 0, 0, 0.2); // Dark tint overlay (trung tính — hợp cả nền gỗ lẫn navy)
       pointer-events: none;
+    }
+
+    // MẶT TRĂNG lưỡi liềm phát sáng ở góc trời (chỉ DARK — ban đêm). drop-shadow tạo quầng.
+    .hero-moon {
+      position: absolute;
+      top: 28px;
+      right: 58px;
+      width: 42px;
+      height: 42px;
+      z-index: 1;
+      background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'><defs><mask id='m'><rect width='40' height='40' fill='white'/><circle cx='27' cy='15' r='15' fill='black'/></mask></defs><circle cx='18' cy='21' r='14' fill='%23ffe9a8' mask='url(%23m)'/></svg>") no-repeat center / contain;
+      filter: drop-shadow(0 0 6px rgba(var(--gold-rgb), 0.55));
+      pointer-events: none;
+      animation: hero-twinkle 6s ease-in-out infinite alternate;
+    }
+    // LIGHT: không có trăng (ban ngày)
+    :host-context([data-theme="light"]) & .hero-moon { display: none; }
+
+    // ĐOM ĐÓM pixel bay lượn — đốm sáng vàng trôi nhẹ + nhấp nháy, lấp khoảng trống bằng
+    // CHUYỂN ĐỘNG (chữa được cả vùng trống giữa mà cây cối ở mép không với tới). Hợp trời sao.
+    .hero-firefly {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--gold);
+      box-shadow: 0 0 8px 2px rgba(var(--gold-rgb), 0.8), 0 0 2px 0 rgba(255, 255, 255, 0.7);
+      z-index: 1; // trên lớp tint
+      opacity: 0;
+      pointer-events: none;
+      animation: hero-firefly 7s ease-in-out infinite;
+    }
+    @for $i from 0 through 15 {
+      .hero-firefly--#{$i} {
+        left: #{(($i * 37) % 92) + 4 + '%'};
+        top: #{(($i * 53) % 78) + 8 + '%'};
+        width: #{3 + ($i % 2)}px;
+        height: #{3 + ($i % 2)}px;
+        animation-duration: #{5 + ($i % 5)}s;
+        animation-delay: #{-($i * 0.6)}s;
+      }
+    }
+
+    // LIGHT mode: đom đóm -> LÁ/CÁNH HOA pixel rơi là đà (ban ngày có gió), khác hẳn vibe đêm.
+    // :host-context vì [data-theme] nằm ở <html> (selector ancestor, encapsulation an toàn).
+    :host-context([data-theme="light"]) & .hero-firefly {
+      width: 9px;
+      height: 9px;
+      background: none;
+      box-shadow: none;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8' shape-rendering='crispEdges'><rect x='3' y='0' width='2' height='2' fill='%236AA35C'/><rect x='2' y='2' width='4' height='2' fill='%235d8a4e'/><rect x='1' y='4' width='6' height='2' fill='%236AA35C'/><rect x='3' y='6' width='2' height='2' fill='%235d8a4e'/></svg>");
+      background-repeat: no-repeat;
+      background-size: contain;
+      image-rendering: pixelated;
+      animation-name: hero-petal;
+    }
+    // xen kẽ vài cánh hoa vàng cho đa dạng
+    :host-context([data-theme="light"]) & .hero-firefly:nth-child(3n) {
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8' shape-rendering='crispEdges'><rect x='3' y='1' width='2' height='6' fill='%23FFD75E'/><rect x='1' y='3' width='6' height='2' fill='%23FFD75E'/><rect x='3' y='3' width='2' height='2' fill='%23EF7D57'/></svg>");
     }
 
     h1 {
@@ -858,6 +935,30 @@
   50% { opacity: 0; }
 }
 
+// Sao nền hero nhấp nháy
+@keyframes hero-twinkle {
+  from { opacity: 0.4; }
+  to   { opacity: 1; }
+}
+
+// Đom đóm: trôi nhẹ lên + mờ tỏ
+@keyframes hero-firefly {
+  0%   { opacity: 0; transform: translate(0, 0); }
+  20%  { opacity: 0.95; }
+  50%  { opacity: 0.35; transform: translate(12px, -16px); }
+  80%  { opacity: 0.9; }
+  100% { opacity: 0; transform: translate(-8px, -30px); }
+}
+
+// Lá/cánh hoa (light): rơi là đà xuống + đung đưa + xoay nhẹ
+@keyframes hero-petal {
+  0%   { opacity: 0; transform: translate(0, -12px) rotate(0deg); }
+  15%  { opacity: 1; }
+  50%  { transform: translate(18px, 28px) rotate(120deg); }
+  85%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(-10px, 64px) rotate(220deg); }
+}
+
 // Dark Mode Overrides (if any)
 [data-theme="dark"] {
   .home {
@@ -936,7 +1037,7 @@
 // Mobile Responsive styles
 @media (max-width: 768px) {
   .home {
-    margin-top: 80px;
+    margin-top: 16px; // .app__body đã padding-top 60px chừa header → chỉ cần khoảng thở nhỏ (trước 80px → dư)
 
     &__introduce {
       padding: var(--spacing-2xl) var(--spacing-lg);

@@ -33,6 +33,31 @@ html {
               border-color var(--transition-normal);
 }
 
+// Chuyển theme ngày<->đêm MƯỢT: lúc đổi theme, ThemeService gắn .theme-transitioning lên <html>
+// trong ~0.5s. !important ép cả những element tự định nghĩa transition (card/panel) cùng cross-fade
+// màu (trước đây chúng "đổi tách" vì transition riêng của chúng ghi đè transition màu toàn cục).
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 0.45s ease,
+              color 0.45s ease,
+              border-color 0.45s ease,
+              fill 0.45s ease !important;
+}
+
+// Icon mặt trời/mặt trăng xoay + hiện dần khi đổi theme
+.theme-transitioning .header__icon--theme i,
+.theme-transitioning .side-menu__footer i.fa-sun,
+.theme-transitioning .side-menu__footer i.fa-moon {
+  animation: theme-icon-pop 0.5s ease;
+}
+
+@keyframes theme-icon-pop {
+  0%   { transform: rotate(-160deg) scale(0.4); opacity: 0.2; }
+  100% { transform: rotate(0) scale(1); opacity: 1; }
+}
+
 // Global Layout Fix for Blog Detail (Prevent Margin Collapsing & Scoped Host Constraints)
 lib-blog-detail {
   display: block;

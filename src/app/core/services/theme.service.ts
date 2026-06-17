@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 })
 export class ThemeService {
   private isDarkMode = true; // Mặc định: dark (night) cho user mới
+  private firstApply = true; // lần áp dụng đầu (load trang) không animate để tránh chớp
 
   constructor() {
     // Load saved theme from localStorage
@@ -39,6 +40,13 @@ export class ThemeService {
     // Use requestAnimationFrame for better performance
     requestAnimationFrame(() => {
       const root = document.documentElement;
+
+      // Bật cross-fade ngày<->đêm (trừ lần load đầu). Gỡ class sau khi transition xong.
+      if (!this.firstApply) {
+        root.classList.add('theme-transitioning');
+        window.setTimeout(() => root.classList.remove('theme-transitioning'), 500);
+      }
+      this.firstApply = false;
 
       // Set data-theme attribute for CSS variables in SCSS to handle
       root.setAttribute('data-theme', this.isDarkMode ? 'dark' : 'light');

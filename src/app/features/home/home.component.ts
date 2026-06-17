@@ -54,6 +54,13 @@ export class HomeComponent implements OnInit{
   socialLinks: any = {};
   mode = inject(GameModeService).getModeSignal();
 
+  // Hero typewriter cho tên (con trỏ nhấp nháy do span::after lo)
+  typedName = '';
+  private readonly fullName = 'DE013';
+
+  // Đom đóm pixel bay lượn trong hero (số lượng; vị trí/animation do SCSS theo index)
+  fireflies = Array.from({ length: 16 });
+
   contactData: ContactData = {
     name: '',
     email: '',
@@ -74,10 +81,23 @@ export class HomeComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.startTypewriter();
     this.getListSkills();
     this.getListExperiences();
     this.getListProjects();
     this.getAllConfig();
+  }
+
+  private startTypewriter(): void {
+    let i = 0;
+    const tick = () => {
+      if (i <= this.fullName.length) {
+        this.typedName = this.fullName.slice(0, i);
+        i++;
+        setTimeout(tick, 150);
+      }
+    };
+    setTimeout(tick, 400); // chờ một nhịp rồi mới "gõ"
   }
 
   getListSkills() {
